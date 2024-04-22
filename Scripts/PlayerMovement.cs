@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    // [Header("GameObjects")]
+    // public Transform camTransform;
+
     [Header("Player Components")]
     private Rigidbody2D rb2D;
 
@@ -11,16 +14,16 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalInput;
     [SerializeField] private float speedMovement = 5.0f;
 
-    // Start is called before the first frame update
     void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
+        // camTransform = Camera.main.transform;
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         Movement();
+        // camTransform.position = new Vector3(transform.position.x, camTransform.position.y, camTransform.position.z);
     }
 
     void Movement()
