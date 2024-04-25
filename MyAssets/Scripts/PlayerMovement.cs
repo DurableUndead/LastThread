@@ -6,6 +6,8 @@ public class PlayerMovement : MonoBehaviour
 {
     // [Header("GameObjects")]
     // public Transform camTransform;
+    [Header("Scripts")]
+    public OpeningGameplay openingGameplay;
 
     [Header("Player Components")]
     private Rigidbody2D rb2D;
@@ -20,8 +22,11 @@ public class PlayerMovement : MonoBehaviour
         // camTransform = Camera.main.transform;
     }
     
-    void Update()
+    void FixedUpdate()
     {
+        if (!openingGameplay.canPlayGame)
+            return;
+
         Movement();
         // camTransform.position = new Vector3(transform.position.x, camTransform.position.y, camTransform.position.z);
     }
