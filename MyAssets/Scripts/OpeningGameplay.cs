@@ -7,17 +7,32 @@ using UnityEngine.UI;
 public class OpeningGameplay : MonoBehaviour
 {
     private List<System.Action> functionList = new List<System.Action>();
-    public int runFunc = 0;
+    // private List<System.Action> funcGuideList = new List<System.Action>();
+    public int runFunc = 1;
+    // public int transitionGuideNow = 0;
+    [Header("Scripts")]
+    public PlayerMovement scriptPlayerMovement;
+    public GuideScript scriptGuide;
 
     [Header("Black Screen")]
     public GameObject blackScreenGO;
-    public Image blackscreen;
+    public Image blackScreenImage;
     [SerializeField] float fadeOutBlackScreen = 5f; //time to fade out blackscreen
-    public bool canPlayGame = false;
+    // public bool canMove = false;
 
     [Header("Title Game")]
-    public string[] titleChapter = new string[3];
-    public string[] titleGame = new string[3];
+    public string[] titleChapter = 
+    {
+        "Chapter 1",
+        "Chapter 2",
+        "Chapter 3"
+    };
+    public string[] titleGame = 
+    {
+        "The Beginning",
+        "The Middle",
+        "The End"
+    };
     public int chapterNowInt = 0;
 
     [Header("Title Game Fade In Out")]
@@ -28,13 +43,22 @@ public class OpeningGameplay : MonoBehaviour
     public float fadeInText = 3f;
     public float fadeOutText = 3f;
 
-    [Header("Guide Gameobjects")]
-    public float fadeInGuide = 1f;
-    public Image guideImages;
-    public Text guideText;
-    public Image IconA;
-    public Image IconD;
-    public Image bgA, bgB;
+
+    // [Header("Guide Gameobjects")]
+    // public float fadeInGuide = 1f;
+    // public float fadeOutGuide = 0.5f;
+    // public Image guideImages;
+    // public Text guideText;
+    // public Image IconA;
+    // public Image IconD;
+    // public Image bgA, bgB;
+    // private bool canFadeOutGuideR = true;
+    // private bool canFadeOutGuideL = true; 
+    // private bool endTransitionL = false;
+    // private bool endTransitionR = false;
+    // public GameObject transparentWallGuide;
+    // public bool enableTransitionRight = false;
+    // public bool enableTransitionLeft = false;
 
     // Start is called before the first frame update
     void Start()
@@ -42,20 +66,11 @@ public class OpeningGameplay : MonoBehaviour
         blackScreenGO.SetActive(true);
         titleGameGO.SetActive(true);
 
+        functionList.Add(NothingHappend);
         functionList.Add(BlackScreenFadeOut);
         functionList.Add(TitleGameFadeIn);
         functionList.Add(TitleGameFadeOut);
-        functionList.Add(NothingHappend);
-
-        // Set Title Game
-        titleChapter[0] = "Chapter 1";
-        titleChapter[1] = "Chapter 2";
-        titleChapter[2] = "Chapter 3";
-
-        titleGame[0] = "The Beginning";
-        titleGame[1] = "The Middle";
-        titleGame[2] = "The End";
-
+        
         titleChapterText.text = titleChapter[chapterNowInt];
         titleGameText.text = titleGame[chapterNowInt];
         
@@ -63,12 +78,6 @@ public class OpeningGameplay : MonoBehaviour
         titleChapterText.color = new Color(255, 255, 255, 0);
         iconTitleGame.color = new Color(255, 255, 255, 0);
 
-        guideImages.color = new Color(255, 255, 255, 0);
-        guideText.color = new Color(0, 0, 0, 0);
-        IconA.color = new Color(255, 255, 255, 0);
-        IconD.color = new Color(255, 255, 255, 0);
-        bgA.color = new Color(255, 255, 255, 0);
-        bgB.color = new Color(255, 255, 255, 0);
     }
 
     // Update is called once per frame
@@ -79,13 +88,17 @@ public class OpeningGameplay : MonoBehaviour
 
     void BlackScreenFadeOut()
     {
-        blackscreen.color = new Color(0, 0, 0, blackscreen.color.a - Time.deltaTime / fadeOutBlackScreen);
+        blackScreenImage.color = new Color(0, 0, 0, blackScreenImage.color.a - Time.deltaTime / fadeOutBlackScreen);
         
-        if (blackscreen.color.a < 0)
+        if (blackScreenImage.color.a < 0)
         {
+            blackScreenImage.color = new Color(0, 0, 0, 0);
             blackScreenGO.SetActive(false);
-            canPlayGame = true;
+            scriptPlayerMovement.canMove = true;
+            // transitionGuideNow = 1;
             runFunc++;
+            // runFunc = 0;
+            scriptGuide.transitionGuideNow = 2;
         }
     }
 
@@ -95,18 +108,8 @@ public class OpeningGameplay : MonoBehaviour
         titleChapterText.color = new Color(255, 255, 255, titleChapterText.color.a + Time.deltaTime / fadeInText);
         iconTitleGame.color = new Color(255,255,255, iconTitleGame.color.a + Time.deltaTime / fadeInText);
 
-        //Guide Image transition
-        guideImages.color = new Color(255, 255, 255, guideImages.color.a + Time.deltaTime / fadeInGuide);
-        guideText.color = new Color(0, 0, 0, guideText.color.a + Time.deltaTime / fadeInGuide);
-        IconA.color = new Color(255, 255, 255, IconA.color.a + Time.deltaTime / fadeInGuide);
-        IconD.color = new Color(255, 255, 255, IconD.color.a + Time.deltaTime / fadeInGuide);
-        bgA.color = new Color(255, 255, 255, bgA.color.a + Time.deltaTime / fadeInGuide);
-        bgB.color = new Color(255, 255, 255, bgB.color.a + Time.deltaTime / fadeInGuide);
-
         if (titleGameText.color.a >= 1)
-        {
             runFunc++;
-        }
     }
 
     void TitleGameFadeOut()
@@ -117,9 +120,9 @@ public class OpeningGameplay : MonoBehaviour
 
         if (titleGameText.color.a <= 0)
         {
-            runFunc++;
+            runFunc = 0;
             //disabled script
-            this.enabled = false;
+            // this.enabled = false;
         }
     }
 

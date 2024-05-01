@@ -57,7 +57,7 @@ public class MainMenu : MonoBehaviour
     {
         //Load Scene Gameplay
         PlayerPrefs.SetFloat("Volume", volumeSlider.value);
-        SceneManager.LoadScene("Chapter1");
+        SceneManager.LoadScene("Chapter0");
     }
 
     //Button Exit Game
