@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     // public OpeningGameplay openingGameplay;
 
     [Header("Player Components")]
-    private Rigidbody2D rb2D;
+    public Rigidbody2D rb2D;
 
     [Header("Player Movement")]
     public bool canMove = true;

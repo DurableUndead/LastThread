@@ -19,6 +19,7 @@ public class GuideScript : MonoBehaviour
     public bool enableTransitionLeft = false;
 
     [Header("Guide Gameobjects")]
+    public GameObject guideGO;
     public Image guideImages;
     public Text guideText;
     public Image IconA;
@@ -30,6 +31,11 @@ public class GuideScript : MonoBehaviour
     public Text guideTextJump;
     public Image IconJump;
     public Image bgJump;
+
+    [Header("Guide Interaction [E]")]
+    public Image guideInteractionImage;
+    public Image iconE;
+    public Image bgE;
 
     // Start is called before the first frame update
     void Start()
@@ -56,7 +62,8 @@ public class GuideScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        functionList[transitionGuideNow]();
+        if (transitionGuideNow != 0)
+            functionList[transitionGuideNow]();
     }
 
     void NothingHappend()
@@ -153,5 +160,25 @@ public class GuideScript : MonoBehaviour
         if (guideImagesJump.color.a >= 1)
             transitionGuideNow = 0;
             // transitionGuideNow = 4;
-    }    
+    }
+
+    public void FadeInGuideInteraction()
+    {
+        guideGO.SetActive(true);
+        guideImages.color = new Color(255, 255, 255, 1);
+        guideText.color = new Color(0, 0, 0, 1);
+        iconE.color = new Color(255, 255, 255, 1);
+        bgE.color = new Color(255, 255, 255, 1);
+        guideText.text = "Press [E] to interact";
+    }
+
+    public void FadeOutGuideInteraction()
+    {
+        guideGO.SetActive(false);
+        guideImages.color = new Color(255, 255, 255, 0);
+        guideText.color = new Color(0, 0, 0, 0);
+        iconE.color = new Color(255, 255, 255, 0);
+        bgE.color = new Color(255, 255, 255, 0);
+        guideText.text = "Press [A/D] to Move";
+    }
 }

@@ -43,23 +43,6 @@ public class OpeningGameplay : MonoBehaviour
     public float fadeInText = 3f;
     public float fadeOutText = 3f;
 
-
-    // [Header("Guide Gameobjects")]
-    // public float fadeInGuide = 1f;
-    // public float fadeOutGuide = 0.5f;
-    // public Image guideImages;
-    // public Text guideText;
-    // public Image IconA;
-    // public Image IconD;
-    // public Image bgA, bgB;
-    // private bool canFadeOutGuideR = true;
-    // private bool canFadeOutGuideL = true; 
-    // private bool endTransitionL = false;
-    // private bool endTransitionR = false;
-    // public GameObject transparentWallGuide;
-    // public bool enableTransitionRight = false;
-    // public bool enableTransitionLeft = false;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -83,7 +66,8 @@ public class OpeningGameplay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        functionList[runFunc]();
+        if (runFunc != 0)
+            functionList[runFunc]();
     }
 
     void BlackScreenFadeOut()
@@ -122,7 +106,7 @@ public class OpeningGameplay : MonoBehaviour
         {
             runFunc = 0;
             //disabled script
-            // this.enabled = false;
+            this.enabled = false;
         }
     }
 
