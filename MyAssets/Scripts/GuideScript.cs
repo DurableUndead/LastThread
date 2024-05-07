@@ -52,11 +52,11 @@ public class GuideScript : MonoBehaviour
         bgA.color = new Color(255, 255, 255, 0);
         bgD.color = new Color(255, 255, 255, 0);
 
-        guideImagesJump.color = new Color(255, 255, 255, 0);
-        guideTextJump.color = new Color(0, 0, 0, 0);
-        IconJump.color = new Color(255, 255, 255, 0);
-        bgJump.color = new Color(255, 255, 255, 0);
-        guideJumpGO.SetActive(false);
+        // guideImagesJump.color = new Color(255, 255, 255, 0);
+        // guideTextJump.color = new Color(0, 0, 0, 0);
+        // IconJump.color = new Color(255, 255, 255, 0);
+        // bgJump.color = new Color(255, 255, 255, 0);
+        // guideJumpGO.SetActive(false);
     }
 
     // Update is called once per frame

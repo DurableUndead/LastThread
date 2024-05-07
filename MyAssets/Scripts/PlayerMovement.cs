@@ -25,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
         // camTransform = Camera.main.transform;
         functionMovePlayer.Add(Movement);
         functionMovePlayer.Add(AutoMovementToRight);
+        functionMovePlayer.Add(AutoMovementToLeft);
     }
     
     void FixedUpdate()
@@ -46,5 +47,10 @@ public class PlayerMovement : MonoBehaviour
     void AutoMovementToRight()
     {
         rb2D.velocity = new Vector2(speedMovement, rb2D.velocity.y);
+    }
+
+    void AutoMovementToLeft()
+    {
+        rb2D.velocity = new Vector2(-speedMovement, rb2D.velocity.y);
     }
 }
