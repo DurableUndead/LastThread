@@ -13,18 +13,17 @@ public class PauseGameplay : MonoBehaviour
     [Header("Pause Menu")]
     public GameObject pauseMenuPanel;
     public bool isPaused = false;
-
-    [Header("Settings Menu")]
-    public GameObject settingsPanel;
-    public AudioSource audioSource;
-    public Slider volumeSlider;
-
-    [Header ("Menu Text")]
+    [Header ("Menu Panel")]
+    public GameObject menuPanel;
     public Text continueText;
     public Text settingsText;
     public Text exitText;
     public Text volumeText;
     public Text backText;
+    [Header("Settings Menu")]
+    public GameObject settingsPanel;
+    public AudioSource audioSource;
+    public Slider volumeSlider;
 
     // Start is called before the first frame update
     void Start()
@@ -52,6 +51,8 @@ public class PauseGameplay : MonoBehaviour
     void ResumeGame()
     {
         pauseMenuPanel.SetActive(false);
+        menuPanel.SetActive(true);
+        settingsPanel.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
     }
@@ -141,13 +142,13 @@ public class PauseGameplay : MonoBehaviour
 
     public void openSettings()
     {
-        pauseMenuPanel.SetActive(false);
+        menuPanel.SetActive(false);
         settingsPanel.SetActive(true);
     }
 
     public void closeSettings()
     {
-        pauseMenuPanel.SetActive(true);
+        menuPanel.SetActive(true);
         settingsPanel.SetActive(false);
     }
 }

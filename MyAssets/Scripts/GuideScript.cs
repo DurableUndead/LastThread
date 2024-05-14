@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class GuideScript : MonoBehaviour
 {
+    public bool isChapter0 = true;
     private List<System.Action> functionList = new List<System.Action>();
     [Header("Guide Config")]
     public int transitionGuideNow = 0;
@@ -17,6 +18,7 @@ public class GuideScript : MonoBehaviour
     public GameObject transparentWallGuide;
     public bool enableTransitionRight = false;
     public bool enableTransitionLeft = false;
+    public bool isFadeInGuideJump;
 
     [Header("Guide Gameobjects")]
     public GameObject guideGO;
@@ -52,11 +54,14 @@ public class GuideScript : MonoBehaviour
         bgA.color = new Color(255, 255, 255, 0);
         bgD.color = new Color(255, 255, 255, 0);
 
-        // guideImagesJump.color = new Color(255, 255, 255, 0);
-        // guideTextJump.color = new Color(0, 0, 0, 0);
-        // IconJump.color = new Color(255, 255, 255, 0);
-        // bgJump.color = new Color(255, 255, 255, 0);
-        // guideJumpGO.SetActive(false);
+
+        if (!isChapter0)
+            return;
+        guideImagesJump.color = new Color(255, 255, 255, 0);
+        guideTextJump.color = new Color(0, 0, 0, 0);
+        IconJump.color = new Color(255, 255, 255, 0);
+        bgJump.color = new Color(255, 255, 255, 0);
+        guideJumpGO.SetActive(false);
     }
 
     // Update is called once per frame
@@ -158,7 +163,10 @@ public class GuideScript : MonoBehaviour
         bgJump.color = new Color(255, 255, 255, bgJump.color.a + Time.deltaTime / fadeInGuide);
 
         if (guideImagesJump.color.a >= 1)
+        {
             transitionGuideNow = 0;
+            isFadeInGuideJump = true;
+        }
             // transitionGuideNow = 4;
     }
 

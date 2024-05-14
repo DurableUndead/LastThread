@@ -5,6 +5,7 @@ using UnityEngine;
 public class ObjectInterect : MonoBehaviour
 {
     public Chapter1Scene scriptChapter1Scene;
+    public TransitionFunction scriptTransitionFunction;
     public GuideScript scriptGuideScript;
     public bool canInteract = false;
     public Collider2D currentCollider;
@@ -14,7 +15,7 @@ public class ObjectInterect : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && canInteract)
         {
-            if (scriptChapter1Scene.isDialogue)
+            if (scriptTransitionFunction.isDialogue)
                 return;
             if (currentCollider.gameObject.tag == "Photo")
                 scriptChapter1Scene.TriggerObjectPhoto();

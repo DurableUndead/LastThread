@@ -9,4 +9,5 @@ public class ExpressionCharacters : MonoBehaviour
     public Sprite[] cindyExpressions;
     public Sprite[] alanMomExpressions;
     public Sprite[] alanDadExpressions;
+    public Sprite[] alanBossExpressions;
 }

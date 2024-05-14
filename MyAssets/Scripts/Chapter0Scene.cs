@@ -4,215 +4,103 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 
 public class Chapter0Scene : MonoBehaviour
 {
-    private List<System.Action> scriptAlanFunction = new List<System.Action>();
-    private List<System.Action> transitionAlanFunction = new List<System.Action>();
-    [SerializeField] int alanFunc = 1;
-    [SerializeField] int alanTransition = 1;
-    // [SerializeField] bool thisCanRun = true;
+    private List<System.Action> flowFunctionsChapter0 = new List<System.Action>();
+    private List<System.Action> flowTransitionChapter0 = new List<System.Action>();
 
-    [Header("Player")]
+    [Header("Cinemachine")]
+    public CinemachineVirtualCamera virtualCamera;
+
+    [Header("Character GameObject")]
+    public GameObject playerGO;
+    public GameObject cindyGO;
+    public GameObject stalkerGO;
     public PlayerMovement scriptPlayerMovement;
     public Vector3 playerPositionSpawn;
-    public Transform playerTransform;
-
-    [Header("Stalker")]
-    public Transform stalkerTransform;
-    public StalkerMovement scriptStalkerMovement;
 
     [Header("Scripts")]
+    public TransitionFunction scriptTransitionFunction;
+    public DialogueChapter0 scriptDialogueChapter0;
     public OpeningGameplay openingGameplay;
     public GuideScript scriptGuide;
 
-    [Header("Character Text")]
-    public GameObject characterTextGO;
-    public GameObject middleTextGO;
-    public GameObject rightTextGO;
-    public Text characterText;
-    public Text middleText;
-    public Text rightText;
-    public Text targetTextForTransition;
-    [SerializeField] int intCharacterText = 0;
-    [SerializeField] float delayTextTime;
-    [SerializeField] float fadeInText = 1f;
-    [SerializeField] float fadeOutText = 1f;
-    private float defaultDelayText;
-    
-    [Header("BlackScreen Scene")]
-    public bool blackScreenFadeOut = false;
-    public bool blackScreenFadeIn = false;
-    public string[] blackScreenScene;
-    public GameObject blackScreenGO;
-    public Image blackScreenImage;
-    public Text blackScreenText;
-    [SerializeField] float fadeInBlackScreen = 1.5f;
-    [SerializeField] float fadeOutBlackScreen = 1.5f;
-    private float delayTextBlackScreen;
-
-    [Header("Dialogue")]
-    public string[] characterDialogue;
-    public GameObject dialogueGO;
-    public Text dialogueText;
-
     [Header("Alan Scene")]
-    public string[] alanBlackScreenScene = new string[] {
-        "Life was very smooth,",
-        "until last year.",
-        "It has been a painful year.",
-    };
-    public string[] alanDialogueWithBoss = new string[] {
-        "Alan`s boss: \"Even after a year, all of your work are still trash!\"",
-        "Alan`s boss: \"You were never grown, shame on you.\"",
-        "Alan`s boss: \"Alan, no thanks to you. You`re fired!\"",
-        "Alan_blank:  \"…\""
-    };
-    public string[] thoughts1 = new string[]
-    {
-        "How did it come to this?",
-        "Wasn't I good enough?",
-        "Wasn't my dedication worth anything?",
-        "I’ve done whatever they asked.",
-        "I thought things would just gonna run perfectly.",
-        //Music Stop
-        "Maybe they were right to let me go.",
-        "Maybe I am just a failure.",
-        "I may have never been a grown man."
-    };
-    public string[] thoughts2 = new string[]
-    {
-        "I keep walking…",
-        "Why do I keep walking?",
-        "There’s no future for me…",
-        "Maybe they were right to let me go.",
-        "Maybe I am just a failure.",
-        "I may have never been a grown man."
-    };
-    public string[] alanDialogueOnBridge = new string[] {
-        "Alan: \"The river whispers promises of peace, of an end to this pain. \"",
-        "Alan: \"Maybe it's time to let its cold embrace take me.\"",
-        "Alan: \"Mum, Dad... I'm sorry. Your son could only make it this far.\""
-    };
-    public string[] alanThoughtsBridge = new string[]
-    {
-        "Just jump…",
-        "End it…",
-        "End your suffering…"
-    };
-
-    [Header("Thoughts Scene")]
-    [SerializeField] bool isThougts2Done = false;
-    public string[] characterThoughts;
+    private string[] alanBlackScreenScene;
+    private string[] alanDialogueWithBoss;
+    private string[] thoughts1;
     [SerializeField] float maxDistanceThoughts = 10f;
-    [SerializeField] Text thoughtsText;
-    [SerializeField] float fadeInTextThoughtScene = 1f;
-    [SerializeField] float fadeOutTextThoughtScene = 1f;
-    private float delayTextThoughtScene;
+    private string[] thoughts2;
+    private string[] alanDialogueOnBridge;
+    private string[] alanThoughtsBridge;
 
     [Header("Bridge Scene")]
-    public Text alanBridgeText;
-    public bool isJump = false;
-    public bool isBridgeScene = false;
     public GameObject bridgeGO;
     public GameObject bridgeSpawn;
     public GameObject roadGO;
-    // public float fadeInTextBridge = 1f;
-    // public float fadeOutTextBridge = 1f;
-
 
     //Cindy
     [Header("Cindy Scene")]
-    public string[] cindyBlackScene = new string[] {
-        "That guy creeps me out.",
-        "I guess he still following me.",
-        "He’s getting closer.",
-        "I think I have to run now."
-    };
-    public string[] cindyThoughts = new string[] {
-        "Why is this happening?",
-        "Just keep moving, Cindy",
-        "Almost outrun him…"
-    };
-    public string[] cindyDialogue = new string[] {
-        "???: \"Ah… this is wearing me down.\"",
-        "???: \"Is he gone already?\"",
-        "???: \"I think it’s a good time to leave.\""
-    };
-    bool can = true;
-    [SerializeField] bool cindyMoved = false;
-    public bool isCindyScene = false; 
-    [SerializeField] float roamingTimeCindy = 10f;
+    private string[] cindyThoughtBlackScene;
+    private string[] cindyThoughtWalking;
+    private string[] cindyDialogueBehindTree;
     public float stalkerDistanceAway = 15f;
+    public bool cindyMoved = false;
+    public float roamingTimeCindy = 10f;
     public Image exclamationMark;
-    [SerializeField] bool endOfChapter0 = false;
-
-    // public GameObject cindyGO;
-    // public GameObject cindySpawn;
-    // public GameObject stalkerCindy;
-    // [SerializeField] float fadeInTextCindy = 1f;
-    // [SerializeField] float fadeOutTextCindy = 1f;
-    // [SerializeField] float delayTextCindy = 2f;
-    // [SerializeField] float fadeInCindy = 2f;
-    // [SerializeField] float fadeOutCindy = 2f;
-
-    // public GameObject stalkerSpawn;
-
+    
     // Start is called before the first frame update
     void Start()
     {
-        // alanBridgeText.enabled = false;
-        rightTextGO.SetActive(false);
-        middleTextGO.SetActive(true);
-        blackScreenGO.SetActive(true);
-        dialogueGO.SetActive(false);
-        // alanThougtsGO.SetActive(false);
-
         openingGameplay.enabled = false;
 
-        scriptAlanFunction.Add(DoNothing); // 0
-        scriptAlanFunction.Add(CharactersOPBlackScreen); // 1
-        scriptAlanFunction.Add(Dialogue); // 2
-        scriptAlanFunction.Add(AutoWalk); // 3
-        scriptAlanFunction.Add(Thoughts); // 4
-        scriptAlanFunction.Add(JumpToRiver); // 5
-        scriptAlanFunction.Add(CindyFadeOut); // 6
-        scriptAlanFunction.Add(CindyGoHiding); // 7
-        scriptAlanFunction.Add(CindyIsHiding); // 8
-        scriptAlanFunction.Add(StalkerAppears); // 9
-        scriptAlanFunction.Add(CindyOutOfHiding); // 10
-        scriptAlanFunction.Add(CindyRoaming); // 11
+        flowFunctionsChapter0.Add(NothingHappend); // 0
+        flowFunctionsChapter0.Add(AlanThougtsBlackScreen); // 1
+        flowFunctionsChapter0.Add(GoToDialogueWithBoss); // 2
+        flowFunctionsChapter0.Add(GoToFadeOutBlackScreen); // 3
+        flowFunctionsChapter0.Add(FadeInTitleGameAndGuideAD); // 4
+        flowFunctionsChapter0.Add(AutoWalkAndThoughts); // 5
+        flowFunctionsChapter0.Add(FadeInBlackScreenAfterThought1); // 6
+        flowFunctionsChapter0.Add(FadeOutBlackScreenGoToThought2); // 7
+        flowFunctionsChapter0.Add(GoToThought2); // 8
+        flowFunctionsChapter0.Add(FadeInBlackScreenAfterThought2); // 9
+        flowFunctionsChapter0.Add(FadeOutBlackScreenGoToBridge); // 10
+        flowFunctionsChapter0.Add(GoToDialogueOnBridge); // 11
+        flowFunctionsChapter0.Add(GoToFadeInJump); // 12
+        flowFunctionsChapter0.Add(FadeInGuideJump); // 13
+        flowFunctionsChapter0.Add(StartThoughtOnBridge); // 14
+        flowFunctionsChapter0.Add(EndThoughtToJump); // 15
+        flowFunctionsChapter0.Add(CindyThoughtBlackScreen); // 16
+        flowFunctionsChapter0.Add(FadeOutAfterCindyThoughtBlackScreen); // 17
+        flowFunctionsChapter0.Add(GoToCindyThoughtWithRunning); // 18
+        flowFunctionsChapter0.Add(CindyThoughtWithRunning); // 19
+        flowFunctionsChapter0.Add(FadeInToHiddenBehindTree); // 20
+        flowFunctionsChapter0.Add(FadeOutToHiddenBehindTree); // 21
+        flowFunctionsChapter0.Add(CindyDialogueAfterStalkerAway); // 22
+        flowFunctionsChapter0.Add(StalkerWalkingGoToFadeIn); // 23
+        flowFunctionsChapter0.Add(GoToFadeOutAfterStalker); // 24
+        flowFunctionsChapter0.Add(FadeOutAfterStalker); // 25
+        flowFunctionsChapter0.Add(CindyRoaming); // 26
+        flowFunctionsChapter0.Add(EndGameplayChapter0); // 27
 
-        //Cindy
-        // scriptAlanFunction.Add(CindyOpening);
 
-        thoughtsText = middleText;
-        alanBridgeText = rightText;
-        blackScreenText = middleText;
+        flowTransitionChapter0.Add(NothingHappend); //0
+        flowTransitionChapter0.Add(() => scriptTransitionFunction.TransitionCharacterText(scriptTransitionFunction.targetTextForTransition)); //1
+        flowTransitionChapter0.Add(scriptTransitionFunction.Dialogue); //2
+        flowTransitionChapter0.Add(scriptTransitionFunction.FadeInBlackscreenTransition); //3
+        flowTransitionChapter0.Add(scriptTransitionFunction.FadeOutBlackscreenTransition); //4
+        flowTransitionChapter0.Add(scriptTransitionFunction.FadeInImageSceneTransition); //5
+        flowTransitionChapter0.Add(scriptTransitionFunction.FadeOutImageSceneTransition); //6
 
-        blackScreenScene = alanBlackScreenScene;
-        blackScreenText.text = alanBlackScreenScene[intCharacterText];
-        blackScreenText.color = new Color(255, 255, 255, 0);
-        thoughtsText.color = new Color(255, 255, 255, 0);
-        alanBridgeText.color = new Color(255, 255, 255, 0);
+        playerPositionSpawn = playerGO.transform.position;
 
-        transitionAlanFunction.Add(DoNothing); //0
-        transitionAlanFunction.Add(() => TransitioncharacterText(targetTextForTransition)); //1
-        transitionAlanFunction.Add(FadeInBlackscreenTransition); //2
-        transitionAlanFunction.Add(FadeOutBlackscreenTransition); //3
+        InitialAddDialogue();
 
-        playerPositionSpawn = playerTransform.position;
-        targetTextForTransition = blackScreenText;
-        characterText = thoughtsText;
-
-        // Invoke("Opening", 1f);
-
-        fadeInText = fadeInBlackScreen;
-        fadeOutText = fadeOutBlackScreen;
-        delayTextBlackScreen = fadeInBlackScreen + fadeOutBlackScreen;
-        delayTextThoughtScene = fadeInTextThoughtScene + fadeOutTextThoughtScene;
-        delayTextTime = delayTextBlackScreen;
-        defaultDelayText = delayTextTime;
+        scriptTransitionFunction.intFunctionNumbersNow = 1;
+        scriptTransitionFunction.intTransitionNumbersNow = 0;
+        scriptTransitionFunction.isChapter1 = false;
     }
 
     // Update is called once per frame
@@ -220,472 +108,363 @@ public class Chapter0Scene : MonoBehaviour
     {
         // if (!thisCanRun)
         //     return;
-        if (alanFunc != 0)
-            scriptAlanFunction[alanFunc]();
+        if (scriptTransitionFunction.intFunctionNumbersNow != 0)
+            flowFunctionsChapter0[scriptTransitionFunction.intFunctionNumbersNow]();
 
-        if (alanTransition != 0)
-            transitionAlanFunction[alanTransition]();
+        if (scriptTransitionFunction.intTransitionNumbersNow != 0)
+            flowTransitionChapter0[scriptTransitionFunction.intTransitionNumbersNow]();
     }
-
-    void Opening()
+    void InitialAddDialogue()
     {
-        alanFunc = 1;
-        alanTransition = 1;
+        alanBlackScreenScene = scriptDialogueChapter0.alanBlackScreenScene;
+        alanDialogueWithBoss = scriptDialogueChapter0.alanDialogueWithBoss;
+        thoughts1 = scriptDialogueChapter0.thoughts1;
+        thoughts2 = scriptDialogueChapter0.thoughts2;
+        alanDialogueOnBridge = scriptDialogueChapter0.alanDialogueOnBridge;
+        alanThoughtsBridge = scriptDialogueChapter0.alanThoughtsBridge;
+        
+        cindyThoughtBlackScene = scriptDialogueChapter0.cindyThoughtBlackScene;
+        cindyThoughtWalking = scriptDialogueChapter0.cindyThoughtWalking;
+        cindyDialogueBehindTree = scriptDialogueChapter0.cindyDialogueBehindTree;
     }
 
-    void TransitioncharacterText(Text textTarget)
-    {
-        delayTextTime -= Time.deltaTime;
-        if (delayTextTime < defaultDelayText / 2)
-        {
-            textTarget.color = new Color(255, 255, 255, textTarget.color.a - Time.deltaTime / fadeInText);
-            return;
-        }
-        textTarget.color = new Color(255, 255, 255, textTarget.color.a + Time.deltaTime / fadeOutText);
-    }
-
-    void DoNothing()
+    void NothingHappend()
     {
         return;
     }
 
-    void CharactersOPBlackScreen()
-    {   
-        if (delayTextTime > 0)
+    void AlanThougtsBlackScreen()
+    {
+        scriptTransitionFunction.characterThoughts = alanBlackScreenScene;
+        scriptTransitionFunction.thoughtText.text = scriptTransitionFunction.characterThoughts[scriptTransitionFunction.intCharacterText];
+        scriptTransitionFunction.isThought = true;
+        scriptTransitionFunction.middleText.gameObject.SetActive(true);
+
+        scriptTransitionFunction.intFunctionNumbersNow++;
+        scriptTransitionFunction.intTransitionNumbersNow = 1;
+    }
+
+    void GoToDialogueWithBoss()
+    {
+        if (scriptTransitionFunction.isThought)
             return;
 
-        delayTextTime = defaultDelayText;
-        intCharacterText++;
-        if (intCharacterText >= blackScreenScene.Length)
-        {
-            blackScreenText.text = "";
-            // openingGameplay.enabled = true;
-            
-            intCharacterText = 0;
-            alanTransition = 0;
-            if (!isCindyScene)
-            {            
-                alanFunc = 2;
-                dialogueGO.SetActive(true);
+        scriptTransitionFunction.characterDialogue = alanDialogueWithBoss;
+        scriptTransitionFunction.DefaultTriggerMechanism();
 
-                characterDialogue = alanDialogueWithBoss;
-                dialogueText.text = characterDialogue[intCharacterText];
-            }
-            else
-            {
-                alanFunc = 6;
-                alanTransition = 3;
+        scriptTransitionFunction.intFunctionNumbersNow++;
+        scriptTransitionFunction.intTransitionNumbersNow = 2;
+    }
 
-
-            }
-            // this.enabled = false; //disabled this scripts
+    void GoToFadeOutBlackScreen()
+    {
+        if (scriptTransitionFunction.isDialogue)
             return;
-        }
-        blackScreenText.text = blackScreenScene[intCharacterText];
-    }
-    
-    //if get clicked
-    public void Dialogue() // 2
-    {   
-        //menekan tombol panah kanan atau kiri untuk melanjutkan dialog
-        if (Input.GetKeyDown(KeyCode.X) )
-        {
-            if (intCharacterText < characterDialogue.Length - 1)
-            {
-                intCharacterText++;
-                dialogueText.text = characterDialogue[intCharacterText];
-            }
-            else
-            {
-                dialogueGO.SetActive(false);
-                
-                intCharacterText = 0;
-                if(isCindyScene)
-                {
-                    alanTransition = 2;
-                    alanFunc = 10;
-                    return;
-                }
 
-                // this.enabled = false;
-                if (isThougts2Done)
-                {
-                    IfIsThougts2Done();
-                }
-                else
-                {
-                    alanFunc++;
-                    openingGameplay.enabled = true;
-                }
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            if (intCharacterText > 0)
-            {
-                intCharacterText--;
-                dialogueText.text = characterDialogue[intCharacterText];
-            }
-        }
-
-        //skip dialog
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            dialogueGO.SetActive(false);
-            
-            intCharacterText = 0;
-
-            if(isCindyScene)
-            {
-                alanTransition = 2;
-                alanFunc = 10;
-                return;
-            }
-            // this.enabled = false;
-            if (isThougts2Done)
-            {
-                IfIsThougts2Done();
-            }
-            else
-            {
-                alanFunc++;
-                openingGameplay.enabled = true;
-            }
-        }
+        scriptTransitionFunction.intFunctionNumbersNow++;
+        scriptTransitionFunction.intTransitionNumbersNow = 4;
     }
 
-
-
-    void IfIsThougts2Done()
+    void FadeInTitleGameAndGuideAD()
     {
-        alanFunc = 4;
-        alanTransition = 1;
+        if (!scriptTransitionFunction.blackscreenFadeOut)
+            return;
+        scriptTransitionFunction.blackscreenFadeOut = false;
+        openingGameplay.enabled = true;
 
-        // bridge
-        // alanBridgeText.enabled = true;
-        // alanThoughtsText.enabled = false;
-        middleTextGO.SetActive(false);
-        rightTextGO.SetActive(true);
-        // alanThoughtsText = alanBridgeText;
-        // alanThoughtsText.transform.position = new Vector3(200, 0, 0);
-        
-        characterText = alanBridgeText;
-        targetTextForTransition = characterText;
-
-        characterThoughts = alanThoughtsBridge; //mengambil percakapan bridge ke alanThoughts
-        characterText.text = characterThoughts[intCharacterText];
-        
-        // fadeInText = fadeInTextBridge;
-        // fadeOutText = fadeOutTextBridge;
+        scriptTransitionFunction.intFunctionNumbersNow++;
+        scriptTransitionFunction.intTransitionNumbersNow = 0;
     }
-    void AutoWalk()
+
+    void AutoWalkAndThoughts()
     {
-        //jika posisi x player lebih dari melewati jarak 10f
-        if (playerTransform.position.x > playerPositionSpawn.x + maxDistanceThoughts)
+        if (playerGO.transform.position.x > playerPositionSpawn.x + maxDistanceThoughts)
         {
             scriptPlayerMovement.intAutoMovement = 1;
+            scriptTransitionFunction.characterThoughts = thoughts1;
+            scriptTransitionFunction.thoughtText.text = scriptTransitionFunction.characterThoughts[scriptTransitionFunction.intCharacterText];
+            scriptTransitionFunction.isThought = true;
 
-            alanFunc = 4;
-            
-
-            // alanThougtsGO.SetActive(true);
-            characterText = thoughtsText;
-            targetTextForTransition = characterText;
-
-            alanTransition = 1;
-            // if (!isCindyScene)
-            // {
-                characterThoughts = thoughts1;
-                characterText.text = characterThoughts[intCharacterText];
-            // }
-            // else
-            // {
-            //     characterThoughts = cindyThoughts;
-            //     characterText.text = characterThoughts[intCharacterText];
-            // }
-
-            fadeInText = fadeInTextThoughtScene;
-            fadeOutText = fadeOutTextThoughtScene;
-            delayTextTime = delayTextThoughtScene;
-            defaultDelayText = delayTextTime;
-            return;
+            scriptTransitionFunction.intFunctionNumbersNow++;
+            scriptTransitionFunction.intTransitionNumbersNow = 1;
         }
     }
 
-    void Thoughts() // 4
-    {        
-        if (delayTextTime > 0)
-        return;
-
-        delayTextTime = defaultDelayText;
-        intCharacterText++;
-        if (intCharacterText >= characterThoughts.Length)
-        {   
-            blackScreenGO.SetActive(true);
-            thoughtsText.text = "";
-            if (isCindyScene)
-            {
-                // alanTransition = 2;
-                alanFunc = 7;
-                return;
-            }
-
-            // openingGameplay.enabled = true;
-
-            if (isBridgeScene)
-            {
-                alanTransition = 0;
-                alanFunc = 5;
-
-                scriptGuide.transitionGuideNow = 3;
-                scriptGuide.guideJumpGO.SetActive(true);
-            }
-            else {
-                alanTransition++;
-                alanFunc = 0;
-                intCharacterText = 0;
-            }
-            
-            
-            // this.enabled = false; //disabled this scripts
-            return;
-        }
-        // alanThoughtsText.text = alanThoughts[intCharacterText];
-        characterText.text = characterThoughts[intCharacterText];
-    }
-
-    void FadeInBlackscreenTransition() //2
+    void FadeInBlackScreenAfterThought1()
     {
-        blackScreenImage.color = new Color(0, 0, 0, blackScreenImage.color.a + Time.deltaTime / fadeInBlackScreen);
-        if (blackScreenImage.color.a >= 1)
+        if (scriptTransitionFunction.isThought)
+            return;
+
+        scriptTransitionFunction.intFunctionNumbersNow++;
+        scriptTransitionFunction.intTransitionNumbersNow = 3;
+        scriptTransitionFunction.blackscreenImage.gameObject.SetActive(true);
+    }
+
+    void FadeOutBlackScreenGoToThought2()
+    {
+        if (!scriptTransitionFunction.blackscreenFadeIn)
+            return;
+
+        scriptTransitionFunction.blackscreenFadeIn = false;
+        scriptTransitionFunction.intFunctionNumbersNow++;
+        scriptTransitionFunction.intTransitionNumbersNow = 4;
+
+        //Back Position
+        playerGO.transform.position = playerPositionSpawn;
+    }
+
+    void GoToThought2()
+    {
+        if (scriptTransitionFunction.blackscreenFadeOut)
         {
-            blackScreenImage.color = new Color(0, 0, 0, 1);
-            blackScreenFadeIn = true;
-            
-            if (endOfChapter0)
-            {
-                EndGameplay();
-                return;
-            }
+            scriptTransitionFunction.blackscreenFadeOut = false;
+            scriptTransitionFunction.intFunctionNumbersNow++;
+            scriptTransitionFunction.intTransitionNumbersNow = 1;
 
-            if (isCindyScene)
-                return;
-            
-            alanFunc = 0;
-            intCharacterText = 0;
-            alanTransition = 0;
-
-            Invoke("TransitionToFadeOut", 1f);
-            
-            
-            if (isThougts2Done)
-            {
-                // scriptPlayerMovement.canMove = false;
-                scriptPlayerMovement.intAutoMovement = 0;
-                bridgeGO.SetActive(true);
-                playerTransform.position = bridgeSpawn.transform.position;
-                roadGO.SetActive(false);
-                return;
-            }
-            else
-            {
-                scriptPlayerMovement.intAutoMovement = 1;
-                playerTransform.position = playerPositionSpawn;
-            }
-
-            return;
+            scriptPlayerMovement.intAutoMovement = 1;
+            scriptTransitionFunction.characterThoughts = thoughts2;
+            scriptTransitionFunction.thoughtText.text = scriptTransitionFunction.characterThoughts[scriptTransitionFunction.intCharacterText];
+            scriptTransitionFunction.isThought = true;
         }
     }
 
-    void TransitionToFadeOut()
+    void FadeInBlackScreenAfterThought2()
     {
-        alanTransition = 3;
-    }
-
-    //Level 2 & Level 3
-    void FadeOutBlackscreenTransition() // 3
-    {
-        blackScreenImage.color = new Color(0, 0, 0, blackScreenImage.color.a - Time.deltaTime / fadeOutBlackScreen);
-        if (blackScreenImage.color.a <= 0.1)
-        {
-            blackScreenImage.color = new Color(0, 0, 0, 0);
-            blackScreenGO.SetActive(false);
-            blackScreenFadeOut = true;
-            
-            if (!isCindyScene)
-            {
-                if (!isThougts2Done)
-                {
-                    GoOutAlanThoughts2();
-                }
-                else
-                {
-                    GoOutAlanInBridge();
-                }
-            }
+        if (scriptTransitionFunction.isThought)
             return;
-        }
-        // else if (blackScreenImage.color.a <= 0.5)
-        // if (!scriptPlayerMovement.canMove)
-        //     scriptPlayerMovement.canMove = true;
-    }
-    void GoInAlanThoughts2()
-    {
 
-    }
-    void GoOutAlanThoughts2()
-    {
-        blackScreenFadeOut = false;
-        // scriptPlayerMovement.canMove = true;
-        alanTransition = 1; //TransitioncharacterText
-        characterThoughts = thoughts2;
-        alanFunc = 4; //alanThoughts
-        thoughtsText.text = characterThoughts[intCharacterText];
-        // scriptPlayerMovement.intAutoMovement = 1;
-        isThougts2Done = true;
+        scriptTransitionFunction.intFunctionNumbersNow++;
+        scriptTransitionFunction.intTransitionNumbersNow = 3;
+        scriptTransitionFunction.blackscreenImage.gameObject.SetActive(true);
     }
 
-    void GoOutAlanInBridge()
+    void FadeOutBlackScreenGoToBridge()
     {
-        blackScreenFadeOut = false;
+        if (!scriptTransitionFunction.blackscreenFadeIn)
+            return;
+
+        scriptTransitionFunction.blackscreenFadeIn = false;
+        scriptTransitionFunction.intFunctionNumbersNow++;
+        scriptTransitionFunction.intTransitionNumbersNow = 4;
+
+        //Teleport to Bridge
         scriptPlayerMovement.canMove = false;
-        dialogueGO.SetActive(true);
-        characterDialogue = alanDialogueOnBridge;
-        dialogueText.text = characterDialogue[intCharacterText];
-
-        alanTransition = 0;
-        alanFunc = 2; //AlanDialogue
-
-        isBridgeScene = true;
+        scriptPlayerMovement.intAutoMovement = 0;
+        scriptPlayerMovement.rb2D.velocity = Vector2.zero;
+        bridgeGO.SetActive(true);
+        playerGO.transform.position = bridgeSpawn.transform.position;
+        roadGO.SetActive(false);
     }
 
-    void JumpToRiver() // 5
+    void GoToDialogueOnBridge()
+    {
+        if (scriptTransitionFunction.blackscreenFadeOut)
+        {
+            scriptTransitionFunction.blackscreenFadeOut = false;
+            scriptTransitionFunction.intFunctionNumbersNow++;
+            scriptTransitionFunction.intTransitionNumbersNow = 2;
+
+            scriptTransitionFunction.characterDialogue = alanDialogueOnBridge;
+            scriptTransitionFunction.DefaultTriggerMechanism();
+
+            // scriptTransitionFunction.alanBridgeText.gameObject.SetActive(true);
+        }
+    }
+
+    void GoToFadeInJump()
+    {
+        if (scriptTransitionFunction.isDialogue)
+            return;
+
+        scriptGuide.transitionGuideNow = 3;
+        scriptGuide.guideJumpGO.SetActive(true);
+        scriptTransitionFunction.intFunctionNumbersNow++;
+        scriptTransitionFunction.intTransitionNumbersNow = 0;    
+    }
+
+    void FadeInGuideJump()
+    {
+        if (!scriptGuide.isFadeInGuideJump)
+            return;
+        scriptGuide.isFadeInGuideJump = false;
+        scriptTransitionFunction.intFunctionNumbersNow++;
+        scriptTransitionFunction.intTransitionNumbersNow = 0;
+    } 
+
+    void StartThoughtOnBridge()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            scriptTransitionFunction.characterThoughts = alanThoughtsBridge;
+            scriptTransitionFunction.thoughtText.text = scriptTransitionFunction.characterThoughts[scriptTransitionFunction.intCharacterText];
+            scriptTransitionFunction.isThought = true;
+
+            scriptTransitionFunction.intFunctionNumbersNow++;
+            scriptTransitionFunction.intTransitionNumbersNow = 1;
+
             scriptPlayerMovement.canMove = true;
             scriptPlayerMovement.intAutoMovement = 1;
-
-            isJump = true;
-        }
-        if (isJump)
-        {
-            blackScreenImage.color = new Color(0, 0, 0, blackScreenImage.color.a + Time.deltaTime / fadeInBlackScreen);
-            if (blackScreenImage.color.a >= 1)
-            {
-                blackScreenImage.color = new Color(0, 0, 0, 1);
-
-                alanFunc = 0;
-                alanTransition = 0;
-
-                bridgeGO.SetActive(false);
-                roadGO.SetActive(true);
-                playerTransform.position = playerPositionSpawn;
-                scriptPlayerMovement.canMove = false;
-
-                Invoke("CindyOpening", 1f);
-            }
+            scriptPlayerMovement.speedMovement = 0.5f;
         }
     }
 
-    void CindyOpening()
+    void EndThoughtToJump()
     {
-        intCharacterText = 0;
-        alanFunc = 1;
-        alanTransition = 1;
-        isJump = false;
-
-        middleTextGO.SetActive(true);
-        rightTextGO.SetActive(false);
-        targetTextForTransition = blackScreenText;
-        characterText = blackScreenText;
-        blackScreenScene = cindyBlackScene;
-        blackScreenText.text = cindyBlackScene[intCharacterText];
-
-        isCindyScene = true;
-
-        // bridgeGO.SetActive(false);
-        // roadGO.SetActive(true);
-        // playerTransform.position = playerPositionSpawn;
-        
-        scriptPlayerMovement.canMove = true;
-        scriptPlayerMovement.intAutoMovement = 0;
-    }
-
-    void CindyFadeOut() // 6
-    {
-        Debug.Log("CindyFadeOut");
-        if (blackScreenFadeOut)
-        {
-            Debug.Log("CindyFadeOut2");
-            blackScreenFadeOut = false;
-            alanFunc = 4;
-            alanTransition = 1;
-            scriptPlayerMovement.intAutoMovement = 1;
-
-
-            intCharacterText = 0;
-            characterThoughts = cindyThoughts;
-            characterText.text = characterThoughts[intCharacterText];
-        }
-    }
-
-    void CindyGoHiding() //7
-    {
-        if (can)
-        {
-            can = false;
-            scriptPlayerMovement.canMove = false;
-            scriptPlayerMovement.intAutoMovement = 0;
-            alanTransition = 2;
-            blackScreenFadeIn = false;
-        }
-
-        if (blackScreenFadeIn)
-        {
-            playerTransform.gameObject.SetActive(false);
-            blackScreenFadeIn = false;
-            alanFunc = 8;
-            alanTransition = 3;
-        }
-    }
-
-    void CindyIsHiding() // 8
-    {
-        if (blackScreenFadeOut)
-        {
-            alanFunc = 9; //
-            alanTransition = 0;
-            blackScreenFadeOut = false;
-
-            stalkerTransform.gameObject.SetActive(true);
-            scriptStalkerMovement.canMove = true;
-        }
-    }
-
-    void StalkerAppears() // 9
-    {
-        if (stalkerTransform.position.x < playerTransform.position.x + stalkerDistanceAway)
+        if (scriptTransitionFunction.isThought)
             return;
         
-        scriptStalkerMovement.canMove = false;
-        stalkerTransform.gameObject.SetActive(false);
-
-        dialogueGO.SetActive(true);
-        intCharacterText = 0;
-        characterDialogue = cindyDialogue;
-        dialogueText.text = characterDialogue[intCharacterText];
-
-        alanFunc = 2; //
-        alanTransition = 0;        
+        scriptTransitionFunction.intFunctionNumbersNow++;
+        scriptTransitionFunction.intTransitionNumbersNow = 3;
+        scriptTransitionFunction.blackscreenImage.gameObject.SetActive(true);
     }
 
-    void CindyRoaming() // 11
+    void CindyThoughtBlackScreen() // 16
     {
-        if (!blackScreenFadeOut)
+        if (!scriptTransitionFunction.blackscreenFadeIn)
+            return;
+        scriptTransitionFunction.blackscreenFadeIn = false;
+
+        scriptTransitionFunction.intFunctionNumbersNow = 0;
+        scriptTransitionFunction.intTransitionNumbersNow = 0;
+
+        Invoke("DelayGoToCindyScene", 1f);
+    }
+    void DelayGoToCindyScene()
+    {
+        scriptTransitionFunction.characterThoughts = cindyThoughtBlackScene;
+        scriptTransitionFunction.thoughtText.text = scriptTransitionFunction.characterThoughts[scriptTransitionFunction.intCharacterText];
+        scriptTransitionFunction.isThought = true;
+
+        scriptTransitionFunction.intFunctionNumbersNow = 17;
+        scriptTransitionFunction.intTransitionNumbersNow = 1;
+
+        cindyGO.SetActive(true);
+        cindyGO.GetComponent<PlayerMovement>().canMove = true;
+        cindyGO.GetComponent<PlayerMovement>().intAutoMovement = 1;
+        cindyGO.transform.position = playerPositionSpawn;
+
+        bridgeGO.SetActive(false);
+        roadGO.SetActive(true);
+        playerGO.SetActive(false);
+        // change target virtualCamera to cindy
+        virtualCamera.Follow = cindyGO.transform;
+    }
+
+    void FadeOutAfterCindyThoughtBlackScreen()
+    {
+        if (scriptTransitionFunction.isThought)
             return;
 
+        scriptTransitionFunction.intFunctionNumbersNow++;
+        scriptTransitionFunction.intTransitionNumbersNow = 4;
+    }
+
+
+    void GoToCindyThoughtWithRunning()
+    {
+        if (scriptTransitionFunction.blackscreenFadeOut)
+        {
+            scriptTransitionFunction.blackscreenFadeOut = false;
+            scriptTransitionFunction.intFunctionNumbersNow++;
+            scriptTransitionFunction.intTransitionNumbersNow = 1;
+            
+
+            scriptTransitionFunction.characterThoughts = cindyThoughtWalking;
+            scriptTransitionFunction.thoughtText.text = scriptTransitionFunction.characterThoughts[scriptTransitionFunction.intCharacterText];
+            scriptTransitionFunction.isThought = true;
+        }
+    }
+
+    void CindyThoughtWithRunning()
+    {
+        if (scriptTransitionFunction.isThought)
+            return;
+
+        scriptTransitionFunction.intFunctionNumbersNow++;
+        scriptTransitionFunction.intTransitionNumbersNow = 3;
+        scriptTransitionFunction.blackscreenImage.gameObject.SetActive(true);
+    }
+
+    void FadeInToHiddenBehindTree()
+    {
+        if (!scriptTransitionFunction.blackscreenFadeIn)
+            return;
+        scriptTransitionFunction.blackscreenFadeIn = false;
+        scriptTransitionFunction.intFunctionNumbersNow++;
+        scriptTransitionFunction.intTransitionNumbersNow = 4;
+
+        cindyGO.SetActive(false);
+        cindyGO.GetComponent<PlayerMovement>().canMove = false;
+        cindyGO.GetComponent<PlayerMovement>().intAutoMovement = 0;
+
+        stalkerGO.SetActive(true);
+        stalkerGO.GetComponent<PlayerMovement>().canMove = true;
+        stalkerGO.GetComponent<PlayerMovement>().intAutoMovement = 1;
+        stalkerGO.transform.position = cindyGO.transform.position + new Vector3(-stalkerDistanceAway, 0, 0);
+    }
+
+    void FadeOutToHiddenBehindTree()
+    {
+        if (!scriptTransitionFunction.blackscreenFadeOut)
+            return;
+
+        scriptTransitionFunction.blackscreenFadeOut = false;
+        scriptTransitionFunction.intFunctionNumbersNow++;
+        scriptTransitionFunction.intTransitionNumbersNow = 0;
+    }
+
+    void CindyDialogueAfterStalkerAway()
+    {
+        if (stalkerGO.transform.position.x > cindyGO.transform.position.x + stalkerDistanceAway)
+        {
+            scriptTransitionFunction.intFunctionNumbersNow++;
+            scriptTransitionFunction.intTransitionNumbersNow = 2;
+
+            scriptTransitionFunction.characterDialogue = cindyDialogueBehindTree;
+            scriptTransitionFunction.DefaultTriggerMechanism();
+        }
+    }
+
+    void StalkerWalkingGoToFadeIn()
+    {
+        if (scriptTransitionFunction.isDialogue)
+            return;
+
+        scriptTransitionFunction.intFunctionNumbersNow++;
+        scriptTransitionFunction.intTransitionNumbersNow = 3;
+        scriptTransitionFunction.blackscreenImage.gameObject.SetActive(true);
+
+        stalkerGO.SetActive(false);
+        stalkerGO.GetComponent<PlayerMovement>().canMove = false;
+        stalkerGO.GetComponent<PlayerMovement>().intAutoMovement = 0;
+    }
+
+    void GoToFadeOutAfterStalker()
+    {
+        if (!scriptTransitionFunction.blackscreenFadeIn)
+            return;
+
+        scriptTransitionFunction.blackscreenFadeIn = false;
+        scriptTransitionFunction.intFunctionNumbersNow++;
+        scriptTransitionFunction.intTransitionNumbersNow = 4;
+
+        cindyGO.SetActive(true);
+        cindyGO.GetComponent<PlayerMovement>().canMove = true;
+        cindyGO.GetComponent<PlayerMovement>().intAutoMovement = 0;
+    }
+
+    void FadeOutAfterStalker()
+    {
+        if (!scriptTransitionFunction.blackscreenFadeOut)
+            return;
+
+        scriptTransitionFunction.blackscreenFadeOut = false;
+        scriptTransitionFunction.intFunctionNumbersNow++;
+        scriptTransitionFunction.intTransitionNumbersNow = 0;
+    }
+
+    void CindyRoaming()
+    {
         if (!cindyMoved)
         {
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
@@ -694,62 +473,34 @@ public class Chapter0Scene : MonoBehaviour
         else
         {
             roamingTimeCindy -= Time.deltaTime;
-
             if (roamingTimeCindy < 0)
             {
-                blackScreenFadeOut = false;
-
-                alanFunc = 0;
-                alanTransition = 0;
-                Invoke("FadeOutEnding", 1f);
+                scriptTransitionFunction.intFunctionNumbersNow++;
+                scriptTransitionFunction.intTransitionNumbersNow = 3;
+                scriptTransitionFunction.blackscreenImage.gameObject.SetActive(true);
                 exclamationMark.gameObject.SetActive(true);
 
-                scriptPlayerMovement.canMove = false;
-                scriptPlayerMovement.intAutoMovement = 0;
-
-                blackScreenGO.SetActive(true);
-                endOfChapter0 = true;
+                cindyGO.GetComponent<PlayerMovement>().canMove = false;
                 return;
             }
         }
     }
 
-    void CindyOutOfHiding() //10
+    void EndGameplayChapter0()
     {
-        if (!blackScreenFadeIn)
+        if (!scriptTransitionFunction.blackscreenFadeIn)
             return;
-
-        playerTransform.gameObject.SetActive(true);
-
-        scriptPlayerMovement.canMove = true;
-        scriptPlayerMovement.intAutoMovement = 0;
-
-        alanFunc = 11;
-        alanTransition = 3;
-
-        blackScreenGO.SetActive(true);
-        blackScreenFadeIn = false;
-        return;
-    }
-
-    void FadeOutEnding()
-    {
-        alanTransition = 2;
-    }
-
-    void EndGameplay()
-    {
-        scriptPlayerMovement.canMove = false;
-        scriptPlayerMovement.intAutoMovement = 0;
-        exclamationMark.gameObject.SetActive(false);
-        alanFunc = 0;
-        alanTransition = 0;
-
-        Invoke("NextChapter", 1f);
+        scriptTransitionFunction.blackscreenFadeIn = false;
+        scriptTransitionFunction.intFunctionNumbersNow = 0;
+        scriptTransitionFunction.intTransitionNumbersNow = 0;
+    
+        cindyGO.SetActive(false);
+        Invoke("NextChapter", 3f);
     }
 
     void NextChapter()
     {
         SceneManager.LoadScene("Chapter1");
+        PlayerPrefs.SetString("ChapterNow", "Chapter1");
     }
 }
