@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour
     private bool textCanColored = false;
     [Header ("Default Color Text")]
     public Color defaultColor;
+    public Color targetColor;
 
     [Header ("Text in Menu")]
     public Button continueBtn;
@@ -20,9 +21,6 @@ public class MainMenu : MonoBehaviour
     public Text exitText;
 
     [Header ("Text in Settings")]
-    public Text musicText;
-    public Text SFXText;
-    public Text brightnessText;
     public Text backSettingsText;
     public Text backCreditsText;
     
@@ -30,28 +28,35 @@ public class MainMenu : MonoBehaviour
     public GameObject menuPanel;
     public GameObject settingsPanel;
     public GameObject creditsPanel;
+    public GameObject listChapterPanel;
 
-    [Header("Audio Settings")]
-    public Image FillAreaMusicSlider;
-    public Image FillAreaSFXSlider;
-    public Image FillBrightnessSFXSlider;
-    public Image HandleAreaMusicSlider;
-    public Image HandleAreaSFXSlider;
-    public Image HandleBrightnessSFXSlider;
+    [Header("Audio Gameplay Settings")]
+    public Text gameplayText;
+    public Image fillAreaGameplaySlider;
+    public Image handleAreaGameplaySlider;
+    public Slider gameplaySlider;
+    public AudioSource gameplaySource;  
+
+    [Header("Music Settings")]
+    public Text musicText;
+    public Image fillAreaMusicSlider;
+    public Image handleAreaMusicSlider;
     public Slider musicSlider;
-    public Slider SFXSlider;
-    public Slider brightnessSlider;
     public AudioSource musicSource;
-    public AudioSource SFXSource;
 
-    [Header("Brightness Settings")]
-    public static float brightnessValue = 1f;
+    [Header("Ambient Settings")]
+    public Text ambientText;
+    public Image fillAreaAmbientSlider;
+    public Image handleAreaAmbientSlider;
+    public Slider ambientSlider;
+    public AudioSource ambientSource;
 
-    // [Header ("Mouse Pointer")]
-    // public Texture2D cursorTexture;
-    // public CursorMode cursorMode = CursorMode.Auto;
-    // public Vector2 hotSpot = Vector2.zero;
-
+    [Header("UI Audio Settings")]
+    public Text UIText;
+    public Image fillAreaUISlider;
+    public Image handleAreaUISlider;
+    public Slider UISlider;
+    public AudioSource UISource;
     void Start()
     {
         if (PlayerPrefs.HasKey("ChapterNow"))
@@ -59,6 +64,18 @@ public class MainMenu : MonoBehaviour
             continueText.color = newGameText.color;
             continueBtn.interactable = true;
             textCanColored = true;
+        }
+
+
+        if (PlayerPrefs.HasKey("GameplayVolume"))
+        {
+            gameplaySlider.value = PlayerPrefs.GetFloat("GameplayVolume");
+            gameplaySource.volume = gameplaySlider.value;
+        }
+        else
+        {
+            gameplaySlider.value = 1;
+            gameplaySource.volume = gameplaySlider.value;
         }
 
         if (PlayerPrefs.HasKey("MusicVolume"))
@@ -72,25 +89,27 @@ public class MainMenu : MonoBehaviour
             musicSource.volume = musicSlider.value;
         }
 
-        if (PlayerPrefs.HasKey("SFXVolume"))
+        if (PlayerPrefs.HasKey("AmbientVolume"))
         {
-            SFXSlider.value = PlayerPrefs.GetFloat("SFXVolume");
-            SFXSource.volume = SFXSlider.value;
+            ambientSlider.value = PlayerPrefs.GetFloat("AmbientVolume");
+            ambientSource.volume = ambientSlider.value;
         }
         else
         {
-            SFXSlider.value = 1;
-            SFXSource.volume = SFXSlider.value;
+            ambientSlider.value = 1;
+            ambientSource.volume = ambientSlider.value;
         }
 
-        // if (PlayerPrefs.HasKey("Brightness"))
-        // {
-        //     brightnessSlider.value = PlayerPrefs.GetFloat("Brightness");
-        // }
-        // else
-        // {
-        //     brightnessSlider.value = 1;
-        // }
+        if (PlayerPrefs.HasKey("UIVolume"))
+        {
+            UISlider.value = PlayerPrefs.GetFloat("UIVolume");
+            UISource.volume = UISlider.value;
+        }
+        else
+        {
+            UISlider.value = 1;
+            UISource.volume = UISlider.value;
+        }
     }
 
     //Button Continue
@@ -120,9 +139,10 @@ public class MainMenu : MonoBehaviour
             settingsPanel.SetActive(false);
             menuPanel.SetActive(true);
 
+            PlayerPrefs.SetFloat("GameplayVolume", gameplaySlider.value);
             PlayerPrefs.SetFloat("MusicVolume", musicSlider.value);
-            PlayerPrefs.SetFloat("SFXVolume", SFXSlider.value);
-            // PlayerPrefs.SetFloat("Brightness", brightnessSlider.value);
+            PlayerPrefs.SetFloat("AmbientVolume", ambientSlider.value);
+            PlayerPrefs.SetFloat("UIVolume", UISlider.value);
         }
         else
         {
@@ -145,28 +165,64 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    public void OpenListChapters()
+    {
+        if (listChapterPanel.activeSelf)
+        {
+            listChapterPanel.SetActive(false);
+            menuPanel.SetActive(true);
+        }
+        else
+        {
+            listChapterPanel.SetActive(true);
+            menuPanel.SetActive(false);
+        }
+    }
+
+    public void GoToChapter0()
+    {
+        PlayerPrefs.DeleteKey("ChapterNow");
+        PlayerPrefs.SetString("ChapterNow", "Chapter0");
+        SceneManager.LoadScene("Chapter0");
+    }
+
+    public void GoToChapter1()
+    {
+        PlayerPrefs.DeleteKey("ChapterNow");
+        PlayerPrefs.SetString("ChapterNow", "Chapter1");
+        SceneManager.LoadScene("Chapter1");
+    }
+
+    public void GoToChapter2()
+    {
+        PlayerPrefs.DeleteKey("ChapterNow");
+        PlayerPrefs.SetString("ChapterNow", "Chapter2");
+        SceneManager.LoadScene("Chapter2");
+    }
+
+
+    public void AdjustGameplayVolume()
+    {
+        gameplaySource.volume = gameplaySlider.value;
+    }
     public void AdjustMusicVolume()
     {
         musicSource.volume = musicSlider.value;
     }
-    public void AdjustSFXVolume()
+    public void AdjustAmbientVolume()
     {
-        SFXSource.volume = SFXSlider.value;
+        ambientSource.volume = ambientSlider.value;
     }
-    public void AdjustBrightness()
+    public void AdjustUIVolume()
     {
-        brightnessValue = brightnessSlider.value;
-        RenderSettings.ambientLight = new Color(brightnessValue, brightnessValue, brightnessValue, 1);
+        UISource.volume = UISlider.value;
     }
-
     //Button Exit Game
     public void ExitGame()
     {
         Application.Quit();
     }
     
-
-
 
 
     //Merubah warna color text menu jika di hover
@@ -224,47 +280,57 @@ public class MainMenu : MonoBehaviour
         exitText.color = defaultColor;
     }
     
+
+    public void MouseEnterGameplayBtn()
+    {
+        // gameplayText.color = targetColor;
+        fillAreaGameplaySlider.color = targetColor;
+        handleAreaGameplaySlider.color = targetColor;
+    }
+    public void MouseExitGameplayBtn()
+    {
+        // gameplayText.color = defaultColor;
+        fillAreaGameplaySlider.color = defaultColor;
+        handleAreaGameplaySlider.color = defaultColor;
+    }
     public void MouseEnterMusicBtn()
     {
-        musicText.color = Color.yellow;
-        FillAreaMusicSlider.color = Color.yellow;
-        HandleAreaMusicSlider.color = Color.yellow;
+        // musicText.color = targetColor;
+        fillAreaMusicSlider.color = targetColor;
+        handleAreaMusicSlider.color = targetColor;
     }
 
     public void MouseExitMusicBtn()
     {
-        musicText.color = defaultColor;
-        FillAreaMusicSlider.color = defaultColor;
-        HandleAreaMusicSlider.color = defaultColor;
+        // musicText.color = defaultColor;
+        fillAreaMusicSlider.color = defaultColor;
+        handleAreaMusicSlider.color = defaultColor;
+    }
+    public void MouseEnterAmbientBtn()
+    {
+        // ambientText.color = targetColor;
+        fillAreaAmbientSlider.color = targetColor;
+        handleAreaAmbientSlider.color = targetColor;
+    }
+    public void MouseExitAmbientBtn()
+    {
+        // ambientText.color = defaultColor;
+        fillAreaAmbientSlider.color = defaultColor;
+        handleAreaAmbientSlider.color = defaultColor;
+    }
+    public void MouseEnterUIBtn()
+    {
+        // UIText.color = targetColor;
+        fillAreaUISlider.color = targetColor;
+        handleAreaUISlider.color = targetColor;
+    }
+    public void MouseExitUIBtn()
+    {
+        // UIText.color = defaultColor;
+        fillAreaUISlider.color = defaultColor;
+        handleAreaUISlider.color = defaultColor;
     }
 
-    public void MouseEnterSFXBtn()
-    {
-        SFXText.color = Color.yellow;
-        FillAreaSFXSlider.color = Color.yellow;
-        HandleAreaSFXSlider.color = Color.yellow;
-    }
-
-    public void MouseExitSFXBtn()
-    {
-        SFXText.color = defaultColor;
-        FillAreaSFXSlider.color = defaultColor;
-        HandleAreaSFXSlider.color = defaultColor;
-    }
-
-    public void MouseEnterBrightnessBtn()
-    {
-        brightnessText.color = Color.yellow;
-        FillBrightnessSFXSlider.color = Color.yellow;
-        HandleBrightnessSFXSlider.color = Color.yellow;
-    }
-
-    public void MouseExitBrightnessBtn()
-    {
-        brightnessText.color = defaultColor;
-        FillBrightnessSFXSlider.color = defaultColor;
-        HandleBrightnessSFXSlider.color = defaultColor;
-    }
     public void MouseEnterBackBtn()
     {
         if (creditsPanel.activeSelf)

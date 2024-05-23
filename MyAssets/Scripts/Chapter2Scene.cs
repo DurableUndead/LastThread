@@ -10,21 +10,29 @@ public class Chapter2Scene : MonoBehaviour
     [Header("Scripts")]
     public TransitionFunction scriptTransitionFunction;
     public DialogueChapter2 dialogueChapter2;
+    private PauseGameplay scriptPauseGameplay;
     [Header("GameObjects")]
     public GameObject fakeAlanGO;
     public GameObject playerGO;
-    public GameObject guideGO;
     public GameObject parentGO;
-    public Text newGuideText;
+    // public GameObject guideGO;
+    // public Text newGuideText;
 
     [Header("Limbo - Level 1")]
     private string[] dialogueLimbo1;
     private string[] dialogueLimbo2Her;
     private string[] dialogueLimbo3No;
     private string[] dialogueLimbo4Tomorrow;
+    public Image limboInteractImage;
+    public Sprite herSprite;
+    public Sprite noSprite;
+    public Sprite tomorrowSprite;
     public float maxDistanceToInteract = 5f;
 
     [Header("After Limbo - Level 2")]
+    bool canChangeImageScene = true;
+    bool canFadeInOutImageScene = true;
+    public Sprite wakeUpLikeChapter1;
     private string[] dialogueWakeUpAfterLimbo;
     public Sprite wakeUpAfterLimboSprite;
     private string[] dialogueBlackScreenAfterLimbo;
@@ -41,6 +49,8 @@ public class Chapter2Scene : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        scriptPauseGameplay = GetComponent<PauseGameplay>();
+
         flowTransitionChapter2.Add(NothingHappend); //0
         flowTransitionChapter2.Add(() => scriptTransitionFunction.TransitionCharacterText(scriptTransitionFunction.targetTextForTransition)); //1
         flowTransitionChapter2.Add(scriptTransitionFunction.Dialogue); //2
@@ -84,23 +94,24 @@ public class Chapter2Scene : MonoBehaviour
         flowFunctionsChapter2.Add(LastThoughts); // 25 // 25
         flowFunctionsChapter2.Add(CreditGame); // 26 // 26
 
-        scriptTransitionFunction.intFunctionNumbersNow = 1;
-        scriptTransitionFunction.intTransitionNumbersNow = 0;
-
         scriptTransitionFunction.isChapter1 = false;
-        guideGO.SetActive(false);
+        // guideGO.SetActive(false);
+
+        // OpeningGameplayChapter2();
+        InitialAddDialogue();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (scriptPauseGameplay.isPaused)
+            return;
+
         if(scriptTransitionFunction.intFunctionNumbersNow != 0)
             flowFunctionsChapter2[scriptTransitionFunction.intFunctionNumbersNow]();
 
         if(scriptTransitionFunction.intTransitionNumbersNow != 0)
             flowTransitionChapter2[scriptTransitionFunction.intTransitionNumbersNow]();
-
-        InitialAddDialogue();
     }
 
     void NothingHappend()
@@ -129,6 +140,32 @@ public class Chapter2Scene : MonoBehaviour
         alanLastThoughts = dialogueChapter2.alanLastThoughts;
     }
 
+
+    public void OpeningGameplayChapter2()
+    {
+        StartCoroutine(PlayerRotationZ());
+    }
+
+    IEnumerator PlayerRotationZ()
+    {
+        while (playerGO.transform.rotation.z > 0)
+        {
+            if (playerGO.transform.rotation.eulerAngles.z > 60)
+                playerGO.transform.rotation = Quaternion.Euler(0, 0, playerGO.transform.eulerAngles.z - 50f * Time.deltaTime);
+            else if (playerGO.transform.rotation.eulerAngles.z > 30)
+                playerGO.transform.rotation = Quaternion.Euler(0, 0, playerGO.transform.eulerAngles.z - 40f * Time.deltaTime);
+            else if (playerGO.transform.rotation.eulerAngles.z > 0)
+                playerGO.transform.rotation = Quaternion.Euler(0, 0, playerGO.transform.eulerAngles.z - 30f * Time.deltaTime);
+            yield return null;
+        }
+        playerGO.transform.rotation = Quaternion.Euler(0, 0, 0);
+        playerGO.GetComponent<PlayerMovement>().canMove = true;
+
+        scriptTransitionFunction.intFunctionNumbersNow = 1;
+        scriptTransitionFunction.intTransitionNumbersNow = 0;
+        scriptPauseGameplay.StartInvokeESC();
+    }
+
     void AlanApproachesFakeAlan() // 1
     {
         if (Vector3.Distance(playerGO.transform.position, fakeAlanGO.transform.position) <= maxDistanceToInteract)
@@ -146,17 +183,21 @@ public class Chapter2Scene : MonoBehaviour
     {
         if (scriptTransitionFunction.isDialogue)
             return;
-        guideGO.SetActive(true);
-        newGuideText.text = "Her";
+        // guideGO.SetActive(true);
+        // newGuideText.text = "Her";
+        limboInteractImage.gameObject.SetActive(true);
+        limboInteractImage.sprite = herSprite;
         scriptTransitionFunction.intFunctionNumbersNow++;
         scriptTransitionFunction.intTransitionNumbersNow = 0;
+
+        playerGO.GetComponent<PlayerMovement>().canMove = false;
     }
 
     void GoToDialogueLimbo2Her() // 3
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            guideGO.SetActive(false);
+            limboInteractImage.gameObject.SetActive(false);
             scriptTransitionFunction.characterDialogue = dialogueLimbo2Her;
             scriptTransitionFunction.DefaultTriggerMechanism();
             scriptTransitionFunction.intFunctionNumbersNow++;
@@ -167,19 +208,49 @@ public class Chapter2Scene : MonoBehaviour
     void DialogueLimbo2No() // 4
     {
         if (scriptTransitionFunction.isDialogue)
+        {
+            if(scriptTransitionFunction.intCharacterText == 2)
+            {
+                if (canChangeImageScene)
+                {
+                    canChangeImageScene = false;
+                    scriptTransitionFunction.intTransitionNumbersNow = 3;
+                    scriptTransitionFunction.blackscreenImage.color = new Color(0, 0, 0, 0);
+                    scriptTransitionFunction.blackscreenImage.gameObject.SetActive(true);
+                }
+                if (!canFadeInOutImageScene)
+                    return;
+                if (scriptTransitionFunction.blackscreenFadeIn)
+                {
+                    scriptTransitionFunction.blackscreenFadeIn = false;
+                    fakeAlanGO.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 1);
+                    scriptTransitionFunction.intTransitionNumbersNow = 4;
+                }
+                if (scriptTransitionFunction.blackscreenFadeOut)
+                {
+                    scriptTransitionFunction.intTransitionNumbersNow = 2;
+                    scriptTransitionFunction.blackscreenFadeOut = false;
+                    canFadeInOutImageScene = false;
+                }
+            }
             return;
+        }
+        canChangeImageScene = true;
+        canFadeInOutImageScene = true;
 
-        guideGO.SetActive(true);
-        newGuideText.text = "No";
-            scriptTransitionFunction.intFunctionNumbersNow++;
-            scriptTransitionFunction.intTransitionNumbersNow = 0;
+        limboInteractImage.gameObject.SetActive(true);
+        limboInteractImage.sprite = noSprite;
+        scriptTransitionFunction.intFunctionNumbersNow++;
+        scriptTransitionFunction.intTransitionNumbersNow = 0;
+
+        playerGO.GetComponent<PlayerMovement>().canMove = false;
     }
 
     void GoToDialogueLimbo3No() // 5
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            guideGO.SetActive(false);
+            limboInteractImage.gameObject.SetActive(false);
             scriptTransitionFunction.characterDialogue = dialogueLimbo3No;
             scriptTransitionFunction.DefaultTriggerMechanism();
             scriptTransitionFunction.intFunctionNumbersNow++;
@@ -193,17 +264,19 @@ public class Chapter2Scene : MonoBehaviour
         if (scriptTransitionFunction.isDialogue)
             return;
 
-        guideGO.SetActive(true);
-        newGuideText.text = "Tomorrow";
+        limboInteractImage.gameObject.SetActive(true);
+        limboInteractImage.sprite = tomorrowSprite;
         scriptTransitionFunction.intFunctionNumbersNow++;
         scriptTransitionFunction.intTransitionNumbersNow = 0;
+
+        playerGO.GetComponent<PlayerMovement>().canMove = false;
     }
 
     void GoToDialogueLimbo4Tomorrow() // 7
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            guideGO.SetActive(false);
+            limboInteractImage.gameObject.SetActive(false);
             scriptTransitionFunction.characterDialogue = dialogueLimbo4Tomorrow;
             scriptTransitionFunction.DefaultTriggerMechanism();
             scriptTransitionFunction.intFunctionNumbersNow++;
@@ -218,6 +291,8 @@ public class Chapter2Scene : MonoBehaviour
         scriptTransitionFunction.intFunctionNumbersNow++;
         scriptTransitionFunction.intTransitionNumbersNow = 7;
         scriptTransitionFunction.imageWhiteScreen.gameObject.SetActive(true);
+
+        playerGO.GetComponent<PlayerMovement>().canMove = false;
     }
 
     void FadeOutAfterDialogue() // 9
@@ -230,7 +305,7 @@ public class Chapter2Scene : MonoBehaviour
         scriptTransitionFunction.whiteScreenFadeIn = false;
 
         scriptTransitionFunction.imageScene.gameObject.SetActive(true);
-        scriptTransitionFunction.imageScene.sprite = wakeUpAfterLimboSprite;
+        scriptTransitionFunction.imageScene.sprite = wakeUpLikeChapter1;
         scriptTransitionFunction.imageScene.color = new Color(255, 255, 255, 1);
     }
 
@@ -248,12 +323,37 @@ public class Chapter2Scene : MonoBehaviour
 
     void DialogueAfterWakeUp() // 11
     {
+        if(scriptTransitionFunction.intCharacterText == 4)
+        {
+            if (canChangeImageScene)
+            {
+                canChangeImageScene = false;
+                scriptTransitionFunction.intTransitionNumbersNow = 3;
+                scriptTransitionFunction.blackscreenImage.color = new Color(0, 0, 0, 0);
+                scriptTransitionFunction.blackscreenImage.gameObject.SetActive(true);
+            }
+            if (!canFadeInOutImageScene)
+                return;
+            if (scriptTransitionFunction.blackscreenFadeIn)
+            {
+                scriptTransitionFunction.blackscreenFadeIn = false;
+                scriptTransitionFunction.imageScene.sprite = wakeUpAfterLimboSprite;
+                scriptTransitionFunction.intTransitionNumbersNow = 4;
+            }
+            if (scriptTransitionFunction.blackscreenFadeOut)
+            {
+                scriptTransitionFunction.intTransitionNumbersNow = 2;
+                scriptTransitionFunction.blackscreenFadeOut = false;
+                canFadeInOutImageScene = false;
+            }
+        }
         if(scriptTransitionFunction.isDialogue)
             return;
 
         scriptTransitionFunction.intFunctionNumbersNow++;
         scriptTransitionFunction.intTransitionNumbersNow = 3;
         scriptTransitionFunction.blackscreenImage.gameObject.SetActive(true); 
+        scriptTransitionFunction.blackscreenImage.color = new Color(0, 0, 0, 0);
     }
 
     void FadeInBlackScreenAfterDialogueWakeUp() // 12
@@ -284,6 +384,8 @@ public class Chapter2Scene : MonoBehaviour
 
         scriptTransitionFunction.imageWhiteScreen.gameObject.SetActive(true);
         scriptTransitionFunction.imageWhiteScreen.color = new Color(255, 255, 255, 1);
+
+        playerGO.GetComponent<PlayerMovement>().canMove = false;
     }
 
     void FadeOutBlackScreenToWhiteScreen() // 14
@@ -340,6 +442,7 @@ public class Chapter2Scene : MonoBehaviour
         scriptTransitionFunction.intTransitionNumbersNow = 7;
         scriptTransitionFunction.imageWhiteScreen.gameObject.SetActive(true); 
         // scriptTransitionFunction.blackscreenImage.gameObject.SetActive(true); 
+        playerGO.GetComponent<PlayerMovement>().canMove = false;
     }
 
     void FadeInWhiteAfterHug() // 18
@@ -402,6 +505,8 @@ public class Chapter2Scene : MonoBehaviour
         
         scriptTransitionFunction.intFunctionNumbersNow++;
         scriptTransitionFunction.intTransitionNumbersNow = 4;
+        playerGO.GetComponent<PlayerMovement>().canMove = false;
+        parentGO.SetActive(true);
     }
 
     void FadeOutCallMom()
@@ -412,6 +517,7 @@ public class Chapter2Scene : MonoBehaviour
         scriptTransitionFunction.intFunctionNumbersNow++;
         scriptTransitionFunction.intTransitionNumbersNow = 0;
         scriptTransitionFunction.blackscreenFadeOut = false;
+        playerGO.GetComponent<PlayerMovement>().canMove = true;
     }
 
     void GoToHome()

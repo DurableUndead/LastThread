@@ -9,8 +9,11 @@ public class TransitionFunction : MonoBehaviour
     public bool isChapter1 = false;
     [Header("Scripts")]
     public ExpressionCharacters scriptExpressionCharacters;
-    public PlayerMovement scriptPlayerMovement;
+    // public PlayerMovement scriptPlayerMovement;
     public Chapter1Scene scriptChapter1Scene;
+    [Header("Character GameObject")]
+    public GameObject playerGO;
+    public GameObject cindyGO;
     
     [Header("Character Text")]
     public TextMeshProUGUI textWithOutline;
@@ -34,6 +37,7 @@ public class TransitionFunction : MonoBehaviour
     [SerializeField] float maxWordLengthofText = 20f;
     public bool isDialogue = false;
     public GameObject dialogueGO;
+    public GameObject panelDialogueOnlyGO;
     public Text dialogueText;
     public string currentDialogue;
     public Text nameCharacterInDialogue;
@@ -43,6 +47,7 @@ public class TransitionFunction : MonoBehaviour
     public Image expressionCharacterImage;
     public GameObject nextIcon;
     public GameObject ObjectImageGO;
+    public GameObject bgObjectImageGO;
     public Image ObjectImageSprite;
     public Text textNameObject;
     public GameObject nextPreviousSkipDialogueGO;
@@ -71,8 +76,8 @@ public class TransitionFunction : MonoBehaviour
     public Text thoughtText;
     public string[] characterThoughts;
 
-    [Header("Expression Character")]
-    Dictionary<string, Sprite[]> characterExpressions = new Dictionary<string, Sprite[]>();
+    // [Header("Expression Character")]
+    // Dictionary<string, Sprite[]> characterExpressions = new Dictionary<string, Sprite[]>();
 
     [Header("Transition Scene")]
     public Image blackscreenImage;
@@ -96,6 +101,13 @@ public class TransitionFunction : MonoBehaviour
     public float fadeOutWhiteScreen = 1f;
     public float delayFadeInOutTextInWhiteScreen;
 
+    [Header("Audio Transition")]
+    public AudioSource UIAudioSource;
+    public AudioClip UIClipAudio;
+    public float durationFadeInAudio = 1f;
+    public float durationFadeOutAudio = 1f;
+
+
     void Start()
     {
         defaultPosYBottomBlackBackground = bottomBlackBackgroundGO.transform.position.y;
@@ -111,35 +123,35 @@ public class TransitionFunction : MonoBehaviour
         defaultDelayText = fadeInText + fadeOutText;
 
         defaultDelayText = delayTextTime;
-        AddExpressionCharacter();
+        // AddExpressionCharacter();
         InitialGame();
     }
 
     void InitialGame()
     {
         //inisialisasi game
-        blackscreenImage.gameObject.SetActive(true);
-        blackscreenImage.color = new Color(0, 0, 0, 1);
+        // blackscreenImage.gameObject.SetActive(true);
+        // blackscreenImage.color = new Color(0, 0, 0, 1);
 
         imageScene.gameObject.SetActive(false);
         imageScene.color = new Color(255, 255, 255, 0);
 
-        intTransitionNumbersNow = 4;
-        intFunctionNumbersNow = 1;
+        // intTransitionNumbersNow = 4;
+        // intFunctionNumbersNow = 1;
 
         thoughtText = middleText;
         targetTextForTransition = thoughtText;
     }
 
-    public void  AddExpressionCharacter()
-    {
-        characterExpressions.Add("Alan", scriptExpressionCharacters.alanExpressions);
-        characterExpressions.Add("Cindy", scriptExpressionCharacters.cindyExpressions);
-        characterExpressions.Add("???", scriptExpressionCharacters.cindyExpressions);
-        characterExpressions.Add("Alan's Dad", scriptExpressionCharacters.alanDadExpressions);
-        characterExpressions.Add("Alan's Mom", scriptExpressionCharacters.alanMomExpressions);
-        characterExpressions.Add("Alan's Boss", scriptExpressionCharacters.alanBossExpressions);
-    }
+    // public void AddExpressionCharacter()
+    // {
+    //     // characterExpressions.Add("Alan", scriptExpressionCharacters.alanExpressions);
+    //     // characterExpressions.Add("Cindy", scriptExpressionCharacters.cindyExpressions);
+    //     // characterExpressions.Add("???", scriptExpressionCharacters.cindyExpressions);
+    //     // characterExpressions.Add("Alan's Dad", scriptExpressionCharacters.alanDadExpressions);
+    //     // characterExpressions.Add("Alan's Mom", scriptExpressionCharacters.alanMomExpressions);
+    //     // characterExpressions.Add("Alan's Boss", scriptExpressionCharacters.alanBossExpressions);
+    // }
 
     public void TransitionCharacterText(Text textTarget) // 1
     {
@@ -188,6 +200,7 @@ public class TransitionFunction : MonoBehaviour
                 {
                     intCharacterText++;
                     // dialogueText.text = characterDialogue[intCharacterText];
+                    SplitNameExpressionDialogue();
                     StartCoroutine(ShowText());
                     CheckLengthWords();
                 }
@@ -198,11 +211,12 @@ public class TransitionFunction : MonoBehaviour
             }
         }
 
-        // if (!mouseEnter Input.GetKeyDown(KeyCode.X) && textAnimationFinished)
-        if (!mouseEnter && Input.GetMouseButtonDown(0) && textAnimationFinished)
+        // if (!mouseEnter Input.GetMouseButtonDown(0) ||  && textAnimationFinished)
+        if (!mouseEnter && Input.GetKeyDown(KeyCode.Space) && textAnimationFinished || !mouseEnter && Input.GetMouseButtonDown(0) && textAnimationFinished)
         {
             delayDialogue = 0;
             textAnimationFinished = false;
+            UIAudioSource.PlayOneShot(UIClipAudio);
             if (intCharacterText < characterDialogue.Length - 1)
             {
                 
@@ -297,18 +311,26 @@ public class TransitionFunction : MonoBehaviour
         else
             dialogueText.fontStyle = FontStyle.Normal;
     }
-    void ChangeExpressionCharacterDialogue(string name, string expression)
+    void ChangeExpressionCharacterDialogue(string characterName, string expressionName)
     {
-        if (characterExpressions.ContainsKey(name))
+        Debug.Log(characterName + " " + expressionName);
+        if (scriptExpressionCharacters.characterExpressions.ContainsKey(characterName))
         {
-            expressionCharacterImage.sprite = characterExpressions[name][0];
-            if (expression == "Flat")
-                expressionCharacterImage.sprite = characterExpressions[name][0];
-            else if (expression == "Smile")
-                expressionCharacterImage.sprite = characterExpressions[name][1];
-            else if (expression == "Sad")
-                expressionCharacterImage.sprite = characterExpressions[name][2];
+            expressionCharacterImage.sprite = scriptExpressionCharacters.characterExpressions[characterName][expressionName];
         }
+        else
+            expressionCharacterImage.sprite = null;
+
+        // if (characterExpressions.ContainsKey(name))
+        // {
+        //     expressionCharacterImage.sprite = characterExpressions[name][0];
+        //     if (expression == "Flat")
+        //         expressionCharacterImage.sprite = characterExpressions[name][0];
+        //     else if (expression == "Smile")
+        //         expressionCharacterImage.sprite = characterExpressions[name][1];
+        //     else if (expression == "Sad")
+        //         expressionCharacterImage.sprite = characterExpressions[name][2];
+        // }
         // if (name == "Alan")
         //     if (expression == "Flat")
         //         expressionCharacterImage.sprite = scriptExpressionCharacters.alanExpressions[0];
@@ -409,11 +431,49 @@ public class TransitionFunction : MonoBehaviour
         textWithOutline.text = characterThoughts[intCharacterText];
     }
 
+    public void TransitionsPerSentenceDialogue(Text textTarget) // 1
+    {
+        delayTextTime -= Time.deltaTime;
+        float alpha = textTarget.color.a;
+
+        if (delayTextTime > defaultDelayText * 2 / 3)
+            alpha = Mathf.Lerp(0, 1, (defaultDelayText - delayTextTime) / fadeInText * 1.5f);
+        else if (delayTextTime > defaultDelayText / 3)
+            alpha = 1;
+        else if (delayTextTime <= defaultDelayText / 3)
+            alpha = Mathf.Lerp(1, 0, (defaultDelayText / 3 - delayTextTime) / fadeOutText * 1.5f);
+        textTarget.color = new Color(valueWhiteOrBlack, valueWhiteOrBlack, valueBlackOrYellow, alpha);
+
+        if (delayTextTime >= 0)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.Space) && !textAnimationFinished)
+        {
+            delayTextTime = defaultDelayText;
+            if (intCharacterText < characterThoughts.Length - 1)
+            {
+                intCharacterText++;
+                textTarget.text = characterThoughts[intCharacterText];
+            }
+            else
+            {
+                intTransitionNumbersNow = 0;
+                intCharacterText = 0;
+                isThought = false;
+            }
+        }
+    }
+
     public void DefaultTriggerMechanism()
     {
+        playerGO.GetComponent<PlayerMovement>().animator.SetTrigger("Idle");
+        playerGO.GetComponent<PlayerMovement>().animator.ResetTrigger("Walk");
+        
         SplitNameExpressionDialogue();
-        scriptPlayerMovement.canMove = false;
-        scriptPlayerMovement.rb2D.velocity = Vector2.zero;
+        // scriptPlayerMovement.canMove = false;
+        // scriptPlayerMovement.rb2D.velocity = Vector2.zero;
+        playerGO.GetComponent<PlayerMovement>().canMove = false;
+        playerGO.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         intTransitionNumbersNow = 2;
         dialogueGO.SetActive(true);
         isDialogue = true;
@@ -423,7 +483,8 @@ public class TransitionFunction : MonoBehaviour
 
     void DefaultAfterDialogueTrigger()
     {
-        scriptPlayerMovement.canMove = true;
+        // scriptPlayerMovement.canMove = true;
+        playerGO.GetComponent<PlayerMovement>().canMove = true;
         isDialogue = false;
         dialogueGO.SetActive(false);
         intTransitionNumbersNow = 0;
@@ -438,6 +499,7 @@ public class TransitionFunction : MonoBehaviour
 
         if (ObjectImageGO.activeSelf)
         {
+            bgObjectImageGO.SetActive(false);
             ObjectImageGO.SetActive(false);
             textNameObject.text = "";
         }
@@ -455,13 +517,10 @@ public class TransitionFunction : MonoBehaviour
     IEnumerator EnableUIDialogue()
     {
         RectTransform rectTransform = topBlackBackgroundGO.GetComponent<RectTransform>();
-        
         if (isInteractObjectImage)
                 ObjectImageGO.SetActive(true);
         while (rectTransform.anchoredPosition.y >= -50)
         {
-
-
             isHidingUI = true;
 
             float newPosY = topBlackBackgroundGO.transform.position.y - speedHideUI * Time.deltaTime;
@@ -472,14 +531,15 @@ public class TransitionFunction : MonoBehaviour
             yield return null;
         }
 
-
         delayDialogue = 0;
         isHideUIEnable = false;
         isHidingUI = false;
-        transparantBtnEnableUI.SetActive(false);
+        // transparantBtnEnableUI.SetActive(false);
         nextPreviousSkipDialogueGO.SetActive(true);
         bottomBlackBackgroundGO.transform.position = new Vector2(bottomBlackBackgroundGO.transform.position.x, defaultPosYBottomBlackBackground);
         topBlackBackgroundGO.transform.position = new Vector2(topBlackBackgroundGO.transform.position.x, defaultPosYTopBlackBackground);
+        if (isInteractObjectImage)
+            bgObjectImageGO.SetActive(true);
     }
 
     IEnumerator DisableUIDialogue()
@@ -503,12 +563,16 @@ public class TransitionFunction : MonoBehaviour
         delayDialogue = 0;
         isHideUIEnable = true;
         isHidingUI = false;
+        panelDialogueOnlyGO.SetActive(false);
         nextPreviousSkipDialogueGO.SetActive(false);
         transparantBtnEnableUI.SetActive(true);
+        bgObjectImageGO.SetActive(false);
     }
 
     public void OpenDialogue()
     {
+        panelDialogueOnlyGO.SetActive(true);
+        transparantBtnEnableUI.SetActive(false);
         StartCoroutine(EnableUIDialogue());
     }
 
@@ -531,7 +595,7 @@ public class TransitionFunction : MonoBehaviour
             delayDialogue = 0;
             enableDelayDialogue = true;
             imageAutoDialogue.sprite = iconStopAutoDialogue;
-            textAutoDialogue.text = "Stop";
+            textAutoDialogue.text = "Playing";
         }
     }
 
@@ -562,5 +626,37 @@ public class TransitionFunction : MonoBehaviour
     public void MouseExitToAutoOrHide()
     {
         mouseEnter = false;
+    }
+
+    public IEnumerator FadeInAudio(AudioSource audioSource, AudioClip audioClip, float targetVolume)
+    {
+        audioSource.volume = 0;
+        audioSource.clip = audioClip;
+        audioSource.Play();
+        float currentTime = 0;
+        while (audioSource.volume < targetVolume)
+        {
+            currentTime += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(0, targetVolume, currentTime / durationFadeInAudio);
+            yield return null;
+        }
+        audioSource.volume = targetVolume;
+    }
+
+    public IEnumerator FadeOutAudio(AudioSource audioSource, float volumeNow, string status="Stop")
+    {
+        float currentTime = 0;
+        while (audioSource.volume > 0)
+        {
+            currentTime += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(volumeNow, 0, currentTime / durationFadeOutAudio);
+            yield return null;
+        }
+        audioSource.volume = 0;
+        if (status == "Stop")
+            audioSource.Stop();
+        else if (status == "Pause")
+            audioSource.Pause();
+        audioSource.volume = volumeNow;
     }
 }

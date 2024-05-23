@@ -13,6 +13,9 @@ public class Chapter1Scene : MonoBehaviour
     public ExpressionCharacters scriptExpressionCharacters;
     public DialogueChapter1 scriptDialogueChapter1;
     public TransitionFunction scriptTransitionFunction;
+    public ObjectInterect scriptObjectInterect;
+    private PauseGameplay scriptPauseGameplay;
+    private AudioManager scriptAudioManager;
     [Header("Camera")]
     public CinemachineVirtualCamera virtualCamera;
 
@@ -21,13 +24,14 @@ public class Chapter1Scene : MonoBehaviour
     public GameObject cindyGO;
     public GameObject homeAlanGO;
     public GameObject riverSideTreesGO;
-    public GameObject GuideGO;
+    // public GameObject GuideGO;
     public GameObject minigameTreeGO;
     public GameObject wallMinigameTreeGO;
     public GameObject round1TreeGO;
     public GameObject round2TreeGO;
     public GameObject parallaxBackgroundGO;
     public GameObject centerMiniGameGO;
+    public GameObject watchCindyGO;
 
     [Header("Sprites For Dialogue")]
     public Sprite spriteCertificate;
@@ -56,7 +60,7 @@ public class Chapter1Scene : MonoBehaviour
 
     [Header("Encounter Scene")]
     private string[] dialogueNoSwimming;
-    private string[] dialogueBeach;
+    private string[] dialogueBench;
     private string[] dialogueTrees;
     private string[] dialoguePickingUpWatch;
     private string[] dialogueBeforePickingUpWallet;
@@ -89,10 +93,17 @@ public class Chapter1Scene : MonoBehaviour
     [Header("Cindy Scene - Level 4")]
     private string[] dialogueAfterAlanDroppedWatch;
     public bool droppedWatch = false;
+    public bool spawnWatch = true;
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip audioClip;
+    public float volumeAudio;
 
     // Start is called before the first frame update
     void Start()
     {
+        scriptPauseGameplay = GetComponent<PauseGameplay>();
+        scriptAudioManager = GetComponent<AudioManager>();
 
         flowTransitionChapter1.Add(NothingHappend); //0
         flowTransitionChapter1.Add(() => scriptTransitionFunction.TransitionCharacterText(scriptTransitionFunction.targetTextForTransition)); //1
@@ -138,19 +149,29 @@ public class Chapter1Scene : MonoBehaviour
         flowFunctionsChapter1.Add(FadeOutBlackScreenOnTop); // 32
         flowFunctionsChapter1.Add(AlanDroppedWatch); // 33
         flowFunctionsChapter1.Add(DialogueAfterDroppedWatch); // 34
-        flowFunctionsChapter1.Add(FadeInOutBlackScreeTransition); // 35
-        flowFunctionsChapter1.Add(ChangeChapterToChapter2); // 36
+        flowFunctionsChapter1.Add(EndGameplayChapter1); // 35
 
         // InitialGame();
         // AddExpressionCharacter();
         InitialAddDialogue();
 
         scriptTransitionFunction.isChapter1 = true;
+        scriptTransitionFunction.blackscreenImage.color = new Color(0, 0, 0, 0);
+
+        scriptPauseGameplay.StartInvokeESC();
+
+        audioSource = scriptAudioManager.musicAudioSource;
+        audioClip = scriptAudioManager.musicClips[0];
+        volumeAudio = scriptAudioManager.volumeMusicNow;
+        StartCoroutine(scriptTransitionFunction.FadeInAudio(audioSource, audioClip, volumeAudio));
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (scriptPauseGameplay.isPaused)
+            return;
+
         if(scriptTransitionFunction.intFunctionNumbersNow != 0)
             flowFunctionsChapter1[scriptTransitionFunction.intFunctionNumbersNow]();
 
@@ -190,7 +211,7 @@ public class Chapter1Scene : MonoBehaviour
 
         dialogueWakeUp = scriptDialogueChapter1.dialogueWakeUp;
         dialogueNoSwimming = scriptDialogueChapter1.dialogueNoSwimming;
-        dialogueBeach = scriptDialogueChapter1.dialogueBeach;
+        dialogueBench = scriptDialogueChapter1.dialogueBench;
         dialogueTrees = scriptDialogueChapter1.dialogueTrees;
         dialoguePickingUpWatch = scriptDialogueChapter1.dialoguePickingUpWatch;
         dialogueBeforePickingUpWallet = scriptDialogueChapter1.dialogueBeforePickingUpWallet;
@@ -213,6 +234,7 @@ public class Chapter1Scene : MonoBehaviour
         scriptTransitionFunction.characterDialogue = familyPictureString;
         // dialogueText.text = scriptTransitionFunction.characterDialogue[scriptTransitionFunction.intCharacterText];
         scriptTransitionFunction.DefaultTriggerMechanism();
+        scriptTransitionFunction.bgObjectImageGO.SetActive(true);
         scriptTransitionFunction.ObjectImageGO.SetActive(true);
         scriptTransitionFunction.ObjectImageSprite.sprite = spriteFamilyPicture;
         scriptTransitionFunction.textNameObject.text = "Family Picture";
@@ -270,9 +292,9 @@ public class Chapter1Scene : MonoBehaviour
         scriptTransitionFunction.DefaultTriggerMechanism();
     }
 
-    public void TriggerObjectBeach()
+    public void TriggerObjectBench()
     {
-        scriptTransitionFunction.characterDialogue = dialogueBeach;
+        scriptTransitionFunction.characterDialogue = dialogueBench;
         // dialogueText.text = scriptTransitionFunction.characterDialogue[scriptTransitionFunction.intCharacterText];
         scriptTransitionFunction.DefaultTriggerMechanism();
     }
@@ -376,6 +398,7 @@ public class Chapter1Scene : MonoBehaviour
     {
         if (scriptTransitionFunction.blackscreenFadeIn)
         {
+            StartCoroutine(scriptTransitionFunction.FadeOutAudio(audioSource, volumeAudio));
             scriptTransitionFunction.characterDialogue = dialogueAfterOpenDoor;
             // dialogueText.text = scriptTransitionFunction.characterDialogue[scriptTransitionFunction.intCharacterText];
             scriptTransitionFunction.DefaultTriggerMechanism();
@@ -494,7 +517,7 @@ public class Chapter1Scene : MonoBehaviour
         scriptTransitionFunction.intTransitionNumbersNow = 4;
         
         loopingBackgroundGO.SetActive(true); // enable looping background
-        GuideGO.SetActive(false);
+        // GuideGO.SetActive(false);
 
         playerGO.transform.position = new Vector2(0, playerGO.transform.position.y);
         cindyGO.transform.position = new Vector2(5f, playerGO.transform.position.y);
@@ -528,7 +551,7 @@ public class Chapter1Scene : MonoBehaviour
         scriptPlayerMovement.canMove = false;
         cindyGO.GetComponent<PlayerMovement>().canMove = true;
         cindyGO.GetComponent<CapsuleCollider2D>().isTrigger = false;
-        cindyGO.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+        cindyGO.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
         // GuideGO.SetActive(true);
         scriptTransitionFunction.intFunctionNumbersNow++;
         scriptTransitionFunction.intTransitionNumbersNow = 0;
@@ -583,7 +606,7 @@ public class Chapter1Scene : MonoBehaviour
             scriptPlayerMovement.rb2D.velocity = Vector2.zero;
 
             scriptTransitionFunction.intFunctionNumbersNow++;
-            GuideGO.SetActive(true);
+            // GuideGO.SetActive(true);
 
             // riverSideTreesGO.SetActive(false);
             wallMinigameTreeGO.SetActive(true);
@@ -761,10 +784,19 @@ public class Chapter1Scene : MonoBehaviour
 
 
         cindyGO.SetActive(true);
-        GuideGO.SetActive(false);
+        // GuideGO.SetActive(false);
         
-        playerGO.transform.position = new Vector2(10, playerGO.transform.position.y);
-        cindyGO.transform.position = new Vector2(playerGO.transform.position.x + 2, cindyGO.transform.position.y);
+        playerGO.transform.position = new Vector2(15, playerGO.transform.position.y);
+        cindyGO.transform.position = new Vector2(playerGO.transform.position.x + 3f, cindyGO.transform.position.y);
+
+        scriptPlayerMovement.canMove = true;
+        scriptPlayerMovement.intAutoMovement = 2; // movet to left
+        cindyGO.GetComponent<PlayerMovement>().canMove = true;
+        cindyGO.GetComponent<PlayerMovement>().intAutoMovement = 2;
+        cindyGO.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+
+        scriptObjectInterect.enabled = false;
+        scriptObjectInterect.canDetectObject = false;
     }
 
     void FadeOutBlackScreenOnTop() // 32
@@ -775,12 +807,12 @@ public class Chapter1Scene : MonoBehaviour
             scriptTransitionFunction.intFunctionNumbersNow++;
             scriptTransitionFunction.intTransitionNumbersNow = 0;
 
-            scriptPlayerMovement.canMove = true;
-            scriptPlayerMovement.intAutoMovement = 2; // movet to left
-            cindyGO.SetActive(true);
-            cindyGO.GetComponent<PlayerMovement>().canMove = true;
-            cindyGO.GetComponent<PlayerMovement>().intAutoMovement = 2;
-            cindyGO.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            // scriptPlayerMovement.canMove = true;
+            // scriptPlayerMovement.intAutoMovement = 2; // movet to left
+            // cindyGO.SetActive(true);
+            // cindyGO.GetComponent<PlayerMovement>().canMove = true;
+            // cindyGO.GetComponent<PlayerMovement>().intAutoMovement = 2;
+            // cindyGO.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
         }
     }
 
@@ -791,6 +823,14 @@ public class Chapter1Scene : MonoBehaviour
         {
             if (playerGO.transform.position.x <= 0)
                 droppedWatch = true;
+            if (playerGO.transform.position.x <= 2)
+            {
+                if (!spawnWatch)
+                    return;
+                spawnWatch = false;
+                watchCindyGO.SetActive(true);
+                watchCindyGO.transform.position = new Vector2(playerGO.transform.position.x, watchCindyGO.transform.position.y);
+            }
         }
         else
         {
@@ -815,23 +855,28 @@ public class Chapter1Scene : MonoBehaviour
         if (scriptTransitionFunction.isDialogue)
             return;
 
-        scriptTransitionFunction.intFunctionNumbersNow = 0;
+        scriptTransitionFunction.intFunctionNumbersNow++;
         scriptTransitionFunction.intTransitionNumbersNow = 3;
         scriptPlayerMovement.canMove = false;
     }
 
-    void FadeInOutBlackScreeTransition()
+    void EndGameplayChapter1()
     {
         if (scriptTransitionFunction.blackscreenFadeIn)
         {
             scriptTransitionFunction.blackscreenFadeIn = false;
-            scriptTransitionFunction.intFunctionNumbersNow++;
+            scriptTransitionFunction.intFunctionNumbersNow = 0;
             scriptTransitionFunction.intTransitionNumbersNow = 0;
+
+            Invoke("NextChapterToChapter2", 3f);
+
+            Debug.Log("End of Chapter 1");
         }
     }
 
-    void ChangeChapterToChapter2()
+    void NextChapterToChapter2()
     {
+        Debug.Log("Next Chapter");
         SceneManager.LoadScene("Chapter2");
         PlayerPrefs.SetString("ChapterNow", "Chapter2");
     }

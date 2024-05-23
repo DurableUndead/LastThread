@@ -34,7 +34,7 @@ public class Parallax : MonoBehaviour
             float Distance = Position.x * layer.amountOfParallax;
             float Temp = Position.x * (1 - layer.amountOfParallax);
 
-            layer.transform.position = new Vector3(layer.startPosition + Distance, transform.position.y, transform.position.z);
+            layer.transform.position = new Vector3(layer.startPosition + Distance, layer.transform.position.y, transform.position.z);
 
             if (Temp > layer.startPosition + layer.lengthOfSprite)
             {

@@ -7,60 +7,37 @@ using UnityEngine.UI;
 public class OpeningGameplay : MonoBehaviour
 {
     private List<System.Action> functionList = new List<System.Action>();
-    // private List<System.Action> funcGuideList = new List<System.Action>();
     public int runFunc = 1;
-    // public int transitionGuideNow = 0;
+
     [Header("Scripts")]
     public PlayerMovement scriptPlayerMovement;
     public GuideScript scriptGuide;
-
-    [Header("Black Screen")]
-    public GameObject blackScreenGO;
-    public Image blackScreenImage;
-    [SerializeField] float fadeOutBlackScreen = 5f; //time to fade out blackscreen
-    // public bool canMove = false;
+    private Chapter0Scene scriptChapter0Scene;
+    private Chapter1Scene scriptChapter1Scene;
+    private Chapter2Scene scriptChapter2Scene;
+    public AnimRotationPlayer scriptAnimRotationPlayer;
 
     [Header("Title Game")]
-    public string[] titleChapter = 
-    {
-        "Chapter 1",
-        "Chapter 2",
-        "Chapter 3"
-    };
-    public string[] titleGame = 
-    {
-        "The Beginning",
-        "The Middle",
-        "The End"
-    };
-    public int chapterNowInt = 0;
-
-    [Header("Title Game Fade In Out")]
-    public GameObject titleGameGO;
-    public Text titleGameText;
-    public Text titleChapterText;
-    public Image iconTitleGame;
-    public float fadeInText = 3f;
-    public float fadeOutText = 3f;
+    public Image bgTitleGameImage;
+    public Image titleGameImage;
+    public float fadeInImage = 1.5f;
+    public float fadeOutImage = 3f;
 
     // Start is called before the first frame update
     void Start()
     {
-        blackScreenGO.SetActive(true);
-        titleGameGO.SetActive(true);
+        scriptChapter0Scene = GetComponent<Chapter0Scene>();
+        scriptChapter1Scene = GetComponent<Chapter1Scene>();
+        scriptChapter2Scene = GetComponent<Chapter2Scene>();
+
+        bgTitleGameImage.gameObject.SetActive(true);
 
         functionList.Add(NothingHappend);
-        functionList.Add(BlackScreenFadeOut);
-        functionList.Add(TitleGameFadeIn);
+        functionList.Add(TitleGameOnlyFadeIn);
         functionList.Add(TitleGameFadeOut);
         
-        titleChapterText.text = titleChapter[chapterNowInt];
-        titleGameText.text = titleGame[chapterNowInt];
-        
-        titleGameText.color = new Color(255, 255, 255, 0);
-        titleChapterText.color = new Color(255, 255, 255, 0);
-        iconTitleGame.color = new Color(255, 255, 255, 0);
-
+        bgTitleGameImage.color = new Color(0, 0, 0, 1);
+        titleGameImage.color = new Color(255, 255, 255, 0);
     }
 
     // Update is called once per frame
@@ -70,48 +47,50 @@ public class OpeningGameplay : MonoBehaviour
             functionList[runFunc]();
     }
 
-    void BlackScreenFadeOut()
+    void TitleGameOnlyFadeIn()
     {
-        blackScreenImage.color = new Color(0, 0, 0, blackScreenImage.color.a - Time.deltaTime / fadeOutBlackScreen);
-        
-        if (blackScreenImage.color.a < 0)
+        titleGameImage.color = new Color(255, 255, 255, titleGameImage.color.a + Time.deltaTime / fadeInImage);
+
+        if (titleGameImage.color.a >= 1)
         {
-            blackScreenImage.color = new Color(0, 0, 0, 0);
-            blackScreenGO.SetActive(false);
-            scriptPlayerMovement.canMove = true;
-            // transitionGuideNow = 1;
-            runFunc++;
-            // runFunc = 0;
-            scriptGuide.transitionGuideNow = 2;
+            titleGameImage.color = new Color(255, 255, 255, 1);
+            runFunc = 2;
         }
-    }
-
-    void TitleGameFadeIn()
-    {
-        titleGameText.color = new Color(255, 255, 255, titleGameText.color.a + Time.deltaTime / fadeInText);
-        titleChapterText.color = new Color(255, 255, 255, titleChapterText.color.a + Time.deltaTime / fadeInText);
-        iconTitleGame.color = new Color(255,255,255, iconTitleGame.color.a + Time.deltaTime / fadeInText);
-
-        if (titleGameText.color.a >= 1)
-            runFunc++;
     }
 
     void TitleGameFadeOut()
     {
-        titleGameText.color = new Color(255, 255, 255, titleGameText.color.a - Time.deltaTime / fadeOutText);
-        titleChapterText.color = new Color(255, 255, 255, titleChapterText.color.a - Time.deltaTime / fadeOutText);
-        iconTitleGame.color = new Color(255,255,255, iconTitleGame.color.a - Time.deltaTime / fadeOutText);
+        bgTitleGameImage.color = new Color(0, 0, 0, bgTitleGameImage.color.a - Time.deltaTime / fadeOutImage);
+        titleGameImage.color = new Color(255, 255, 255, titleGameImage.color.a - Time.deltaTime / fadeOutImage);
 
-        if (titleGameText.color.a <= 0)
+        if (bgTitleGameImage.color.a <= 0)
         {
+            bgTitleGameImage.color = new Color(0, 0, 0, 0);
+            titleGameImage.color = new Color(255, 255, 255, 0);
+            bgTitleGameImage.gameObject.SetActive(false);
+
+            scriptPlayerMovement.canMove = true;
+            scriptGuide.transitionGuideNow = 2;
+
+            if (scriptChapter0Scene != null)
+                scriptChapter0Scene.GoToOpeningAlanThoughts();
+            
+            // if (scriptChapter1Scene != null)
+                // scriptChapter1Scene.GoToOpeningAlanThoughts();
+                
+            if (scriptChapter2Scene != null)
+            {
+                scriptChapter2Scene.OpeningGameplayChapter2();
+                scriptAnimRotationPlayer.delayRotation();
+            }
+            
             runFunc = 0;
-            //disabled script
             this.enabled = false;
         }
     }
 
     void NothingHappend()
     {
-        //do nothing
+        return;
     }
 }

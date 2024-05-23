@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GuideScript : MonoBehaviour
 {
@@ -22,19 +23,17 @@ public class GuideScript : MonoBehaviour
 
     [Header("Guide Gameobjects")]
     public GameObject guideGO;
-    public Image guideImages;
-    public Text guideText;
-    public Image IconA;
-    public Image bgA;
-    public Image IconD;
-    public Image bgD;
+
+    [Header("Guide Movement [A/D]")]
+    public Image iconA;
+    public Image iconD;
+    
+    [Header("Guide Jump [Space]")]
     public GameObject guideJumpGO;
-    public Image guideImagesJump;
-    public Text guideTextJump;
-    public Image IconJump;
-    public Image bgJump;
+    public Image iconJumpImage;
 
     [Header("Guide Interaction [E]")]
+    public Text guideText;
     public Image guideInteractionImage;
     public Image iconE;
     public Image bgE;
@@ -47,20 +46,13 @@ public class GuideScript : MonoBehaviour
         functionList.Add(FadeInGuide);
         functionList.Add(FadeInGuideJump);
 
-        guideImages.color = new Color(255, 255, 255, 0);
-        guideText.color = new Color(0, 0, 0, 0);
-        IconA.color = new Color(255, 255, 255, 0);
-        IconD.color = new Color(255, 255, 255, 0);
-        bgA.color = new Color(255, 255, 255, 0);
-        bgD.color = new Color(255, 255, 255, 0);
+        iconA.color = new Color(255, 255, 255, 0);
+        iconD.color = new Color(255, 255, 255, 0);
 
 
-        if (!isChapter0)
+        if (SceneManager.GetActiveScene().name != "Chapter0")
             return;
-        guideImagesJump.color = new Color(255, 255, 255, 0);
-        guideTextJump.color = new Color(0, 0, 0, 0);
-        IconJump.color = new Color(255, 255, 255, 0);
-        bgJump.color = new Color(255, 255, 255, 0);
+        iconJumpImage.color = new Color(255, 255, 255, 0);
         guideJumpGO.SetActive(false);
     }
 
@@ -78,115 +70,91 @@ public class GuideScript : MonoBehaviour
 
     void FadeInGuide()
     {
-        //Guide Image transition
-        guideImages.color = new Color(255, 255, 255, guideImages.color.a + Time.deltaTime / fadeInGuide);
-        guideText.color = new Color(0, 0, 0, guideText.color.a + Time.deltaTime / fadeInGuide);
-        IconA.color = new Color(255, 255, 255, IconA.color.a + Time.deltaTime / fadeInGuide);
-        IconD.color = new Color(255, 255, 255, IconD.color.a + Time.deltaTime / fadeInGuide);
-        bgA.color = new Color(255, 255, 255, bgA.color.a + Time.deltaTime / fadeInGuide);
-        bgD.color = new Color(255, 255, 255, bgD.color.a + Time.deltaTime / fadeInGuide);
+        iconA.color = new Color(255, 255, 255, iconA.color.a + Time.deltaTime / fadeInGuide);
+        iconD.color = new Color(255, 255, 255, iconD.color.a + Time.deltaTime / fadeInGuide);
 
-        if (guideImages.color.a >= 1)
+        if (iconA.color.a >= 1)
+        {
             transitionGuideNow = 1;
+            iconA.color = new Color(255, 255, 255, 1);
+            iconD.color = new Color(255, 255, 255, 1);
+        }
     }
 
     void FadeOutGuide()
     {
         if (Input.GetKeyDown(KeyCode.A) && canFadeOutGuideL)
         {
-            enableTransitionLeft = true;
+            StartCoroutine(FadeOutGuideLeft());
             canFadeOutGuideL = false;
         }
         
         if (Input.GetKeyDown(KeyCode.D) && canFadeOutGuideR)
         {
-            enableTransitionRight = true;
+            StartCoroutine(FadeOutGuideRight());
             canFadeOutGuideR = false;
         }
 
-        if(enableTransitionRight)
-            FadeOutGuideRight();
-
-        if(enableTransitionLeft)
-            FadeOutGuideLeft();
-
         if (endTransitionR && endTransitionL)
-            FadeOutGuideTitle();
-    }
-
-    void FadeOutGuideTitle()
-    {
-        guideImages.color = new Color(255, 255, 255, guideImages.color.a - Time.deltaTime / fadeOutGuide);
-        guideText.color = new Color(0, 0, 0, guideText.color.a - Time.deltaTime / fadeOutGuide);
-        
-        if (guideImages.color.a <= 0)
-        {
             transitionGuideNow = 0;
-            // this.enabled = false;
-        }
     }
 
-    void FadeOutGuideRight()
+    IEnumerator FadeOutGuideRight()
     {
-        IconD.color = new Color(255, 255, 255, IconD.color.a - Time.deltaTime / fadeOutGuide);
-        bgD.color = new Color(255, 255, 255, bgD.color.a - Time.deltaTime / fadeOutGuide);
-
-        if (IconD.color.a <= 0)
+        while (iconD.color.a > 0)
         {
-            IconD.color = new Color(255, 255, 255, 0);
-            bgD.color = new Color(255, 255, 255, 0);
-            enableTransitionRight = false;
-            endTransitionR = true;
+            iconD.color = new Color(255, 255, 255, iconD.color.a - Time.deltaTime / fadeOutGuide);
+            yield return null;
         }
+        iconD.color = new Color(255, 255, 255, 0);
+        enableTransitionRight = false;
+        endTransitionR = true;
     }
 
-    void FadeOutGuideLeft()
+    IEnumerator FadeOutGuideLeft()
     {
-        IconA.color = new Color(255, 255, 255, IconA.color.a - Time.deltaTime / fadeOutGuide);
-        bgA.color = new Color(255, 255, 255, bgA.color.a - Time.deltaTime / fadeOutGuide);
-
-        if (IconA.color.a <= 0)
+        while (iconA.color.a > 0)
         {
-            IconA.color = new Color(255, 255, 255, 0);
-            bgA.color = new Color(255, 255, 255, 0);
-            enableTransitionLeft = false;
-            endTransitionL = true;
-            transparentWallGuide.SetActive(false);
+            iconA.color = new Color(255, 255, 255, iconA.color.a - Time.deltaTime / fadeOutGuide);
+            yield return null;
         }
+        iconA.color = new Color(255, 255, 255, 0);
+        enableTransitionLeft = false;
+        endTransitionL = true;
+        transparentWallGuide.SetActive(false);
     }
+
 
     void FadeInGuideJump()
     {
-        guideImagesJump.color = new Color(255, 255, 255, guideImagesJump.color.a + Time.deltaTime / fadeInGuide);
-        guideTextJump.color = new Color(0, 0, 0, guideTextJump.color.a + Time.deltaTime / fadeInGuide);
-        IconJump.color = new Color(255, 255, 255, IconJump.color.a + Time.deltaTime / fadeInGuide);
-        bgJump.color = new Color(255, 255, 255, bgJump.color.a + Time.deltaTime / fadeInGuide);
+        iconJumpImage.color = new Color(255, 255, 255, iconJumpImage.color.a + Time.deltaTime / fadeInGuide);
 
-        if (guideImagesJump.color.a >= 1)
+        if (iconJumpImage.color.a >= 1)
         {
             transitionGuideNow = 0;
             isFadeInGuideJump = true;
         }
-            // transitionGuideNow = 4;
     }
 
-    public void FadeInGuideInteraction()
+    public IEnumerator IEFadeInGuideJump()
     {
-        guideGO.SetActive(true);
-        guideImages.color = new Color(255, 255, 255, 1);
-        guideText.color = new Color(0, 0, 0, 1);
-        iconE.color = new Color(255, 255, 255, 1);
-        bgE.color = new Color(255, 255, 255, 1);
-        guideText.text = "Press [E] to interact";
+        isFadeInGuideJump = false;
+        while (iconJumpImage.color.a < 1)
+        {
+            iconJumpImage.color = new Color(255, 255, 255, iconJumpImage.color.a + Time.deltaTime / fadeInGuide);
+            yield return null;
+        }
+        isFadeInGuideJump = true;
     }
 
-    public void FadeOutGuideInteraction()
+    public IEnumerator IEFadeOutGuideJump()
     {
-        guideGO.SetActive(false);
-        guideImages.color = new Color(255, 255, 255, 0);
-        guideText.color = new Color(0, 0, 0, 0);
-        iconE.color = new Color(255, 255, 255, 0);
-        bgE.color = new Color(255, 255, 255, 0);
-        guideText.text = "Press [A/D] to Move";
+        isFadeInGuideJump = false;
+        while (iconJumpImage.color.a > 0)
+        {
+            iconJumpImage.color = new Color(255, 255, 255, iconJumpImage.color.a - Time.deltaTime / fadeOutGuide);
+            yield return null;
+        }
+        isFadeInGuideJump = true;
     }
 }

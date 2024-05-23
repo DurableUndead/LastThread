@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class AnimRotationPlayer : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        Invoke("delayRotation", 1f);
-    }
-    void delayRotation()
+    public void delayRotation()
     {
         StartCoroutine(PlayerRotationZ());
     }

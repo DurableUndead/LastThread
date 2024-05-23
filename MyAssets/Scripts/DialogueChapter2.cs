@@ -119,16 +119,16 @@ public class DialogueChapter2 : MonoBehaviour
     public string[] dialogueAlanCallMom =
     {
         "Alan:	slightly_smile	:Hi, Mom.:normal",
-        "Alan's_Mom:	silhouette	:Yes, my dear.:normal",
+        "Alan's Mom:	silhouette	:Yes, my dear.:normal",
         "Alan:	slightly_smile	:Can I stay at home for a while?:normal",
         "Alan:	slightly_smile	:I have a story to tell Dad about.:normal",
-        "Alan's_Mom:	silhouette	:Ara~ you're not telling me?:normal",
+        "Alan's Mom:	silhouette	:Ara~ you're not telling me?:normal",
         "Alan:	grinning_sweat	:You too, Mom. Hehe…:normal",
-        "Alan's_Mom:	silhouette	:Come son, we're waiting.:normal",
+        "Alan's Mom:	silhouette	:Come son, we're waiting.:normal",
         "Alan:	grinning_smile	:Alright, see you soon.:normal",
-        "Alan's_Mom:	silhouette	:Al, wait.:normal",
+        "Alan's Mom:	silhouette	:Al, wait.:normal",
         "Alan:	slightly_smile	:Yes? I'm still here.:normal",
-        "Alan's_Mom:	silhouette	:I love you.:normal",
+        "Alan's Mom:	silhouette	:I love you.:normal",
         "Alan:	grinning_sweat	:Hehe… I know that. Love you too,_Mom.:normal",
     };
 
@@ -136,19 +136,19 @@ public class DialogueChapter2 : MonoBehaviour
     public string[] dialogueAlanHome =
     {
         "Alan:	grinning_smile	:Hi… Mom, Dad.:normal",
-        "Alan's_Dad:	grinning_smile	:Son, where's your girlfriend? My wife tells me you have a love story to tell me.:normal",
-        "Alan's_Mom:	smile	:…:normal",
+        "Alan's Dad:	grinning_smile	:Son, where's your girlfriend? My wife tells me you have a love story to tell me.:normal",
+        "Alan's Mom:	smile	:…:normal",
         "Alan:	grinning_sweat	:Ehh…:normal",
-        "Alan's_Mom:	slightly_smile	:Anyway, welcome home, my dear.:normal",
-        "Alan's_Dad:	grinning_smile	:Yeah son, welcome home, boy.:normal",
-        "Alan's_Mom:	slightly_smile	:I'm gonna prepare your favorite snack.:normal",
-        "Alan's_Dad:	grinning	:And your handsome dad is gonna rest a bit. Your room is ready by the way.:normal",
-        "Alan's_Mom:	smile	:And a handsome husband.:normal",
+        "Alan's Mom:	slightly_smile	:Anyway, welcome home, my dear.:normal",
+        "Alan's Dad:	grinning_smile	:Yeah son, welcome home, boy.:normal",
+        "Alan's Mom:	slightly_smile	:I'm gonna prepare your favorite snack.:normal",
+        "Alan's Dad:	grinning	:And your handsome dad is gonna rest a bit. Your room is ready by the way.:normal",
+        "Alan's Mom:	smile	:And a handsome husband.:normal",
         "Alan:   relieved	:They know I'm standing in front of them… right?:italicbold",
         "Alan:	grinning	:Alright. go ahead. I'm coming.:normal",
-        "Alan's_Mom:	slightly_smile	:Okay… Don't spend too much time outside here.:normal",
-        "Alan's_Mom:	slightly_smile	:They said ghost spotted around here.:normal",
-        "Alan's_Mom:	slightly_smile	:You don't wanna get terrified by seeing them, don't you?:normal",
+        "Alan's Mom:	slightly_smile	:Okay… Don't spend too much time outside here.:normal",
+        "Alan's Mom:	slightly_smile	:They said ghost spotted around here.:normal",
+        "Alan's Mom:	slightly_smile	:You don't wanna get terrified by seeing them, don't you?:normal",
         "Alan:   relieved	:If I told you about Cindy, you're the one who gonna get terrified.:italicbold"
     };
 

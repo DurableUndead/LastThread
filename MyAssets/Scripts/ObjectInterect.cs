@@ -8,8 +8,9 @@ public class ObjectInterect : MonoBehaviour
     public TransitionFunction scriptTransitionFunction;
     public GuideScript scriptGuideScript;
     public bool canInteract = false;
+    public bool canDetectObject = true;
     public Collider2D currentCollider;
-    List<string> targetObjectTags = new List<string>{"Door", "Photo", "Certificate", "Parent", "NoSwimming", "Trees", "Beach", "Watch","Cindy"};
+    List<string> targetObjectTags = new List<string>{"Door", "Photo", "Certificate", "Parent", "NoSwimming", "Trees", "Bench", "Watch","Cindy"};
     public List<GameObject> tempTrees = new List<GameObject>();
     void Update()
     {
@@ -29,8 +30,8 @@ public class ObjectInterect : MonoBehaviour
                 scriptChapter1Scene.TriggerObjectNoSwimmingSign();
             else if (currentCollider.gameObject.tag == "Trees")
                 scriptChapter1Scene.TriggerObjectTrees(currentCollider.gameObject);
-            else if (currentCollider.gameObject.tag == "Beach")
-                scriptChapter1Scene.TriggerObjectBeach();
+            else if (currentCollider.gameObject.tag == "Bench")
+                scriptChapter1Scene.TriggerObjectBench();
             else if (currentCollider.gameObject.tag == "Watch")
                 scriptChapter1Scene.TriggerObjectWatch();
             else if (currentCollider.gameObject.tag == "Cindy")
@@ -40,10 +41,14 @@ public class ObjectInterect : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // if (other.gameObject.tag == "Door" || other.gameObject.tag == "Photo" || other.gameObject.tag == "Certificate" || other.gameObject.tag == "Parent")
+        if (!canDetectObject)
+            return;
+
         if (targetObjectTags.Contains(other.gameObject.tag))
         {
-            scriptGuideScript.FadeInGuideInteraction();
+            // scriptGuideScript.FadeInGuideInteraction();
+            // mengakses child pada other dan melakukan enable gameobject child
+            other.gameObject.transform.GetChild(0).gameObject.SetActive(true);
             canInteract = true;
             currentCollider = other;
         }
@@ -52,7 +57,8 @@ public class ObjectInterect : MonoBehaviour
     {
         if (targetObjectTags.Contains(other.gameObject.tag))
         {
-            scriptGuideScript.FadeOutGuideInteraction();
+            // scriptGuideScript.FadeOutGuideInteraction();
+            other.gameObject.transform.GetChild(0).gameObject.SetActive(false);
             canInteract = false;
             currentCollider = null;
         }
@@ -62,27 +68,10 @@ public class ObjectInterect : MonoBehaviour
     {
         if (other.tag == "Trees")
         {
-            scriptGuideScript.FadeOutGuideInteraction();
+            // scriptGuideScript.FadeOutGuideInteraction();
+            other.gameObject.transform.GetChild(0).gameObject.SetActive(false);
             canInteract = false;
             currentCollider = null;
         }
     }
-
-    // void OnTriggerStay2D(Collider2D other)
-    // {
-    //     //key input E
-    //     if (Input.GetKeyDown(KeyCode.E) && canInteract)
-    //     {
-    //         if (scriptChapter1Scene.isDialogue)
-    //             return;
-    //         if (other.gameObject.tag == "Photo")
-    //             scriptChapter1Scene.TriggerObjectPhoto();
-    //         else if (other.gameObject.tag == "Certificate")
-    //             scriptChapter1Scene.TriggerObjectCertificate();
-    //         else if (other.gameObject.tag == "Parent")
-    //             scriptChapter1Scene.TriggerObjectParent();
-    //         else if (other.gameObject.tag == "Door")
-    //             scriptChapter1Scene.TriggerObjectDoor();
-    //     }
-    // }
 }

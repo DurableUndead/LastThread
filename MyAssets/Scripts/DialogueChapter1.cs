@@ -7,111 +7,111 @@ public class DialogueChapter1 : MonoBehaviour
     [Header("Memories Scene")]
     public string[] familyPictureString = 
     {
-        "Alan: Smile : Me alongside the best parents in the world.:italic"
+        "Alan: smile :Me alongside the best parents in the world.:italicbold"
     };
     public string[] certificateString =
     {
-        "Alan: Smile : I feel like I can do anything after I got this.:italic"
+        "Alan: grinning_smile :I feel like I can do anything after I got this.:italicbold"
     };
     public string[] dialogueWithParents1 = 
     {
-        "Alan: Smile : I never imagined this day would come so soon :normal",
-        "Alan's Dad: Flat : Don't worry about your parents, we will do just fine here :normal",
-        "Alan's Mom: Smile : Not everyone could get this opportunity, so make sure you take advantage of this and enjoy :normal",
-        "Alan's Dad: Flat : I'll send pocket money, so make sure to get a girlfriend, my boy :normal",
-        "Alan: Sad : No, not interested :normal",
-        "Alan's Mom: Smile : Ara~ :normal",
-        "Alan's Mom: Sad : Your dad is just joking around Al, but I also do not prohibit you for having a girlfriend :normal",
-        "Alan: Flat : My parents just being a parents :normal",
-        "Alan: Smile : Hehe… :normal",
-        "Alan: Sad : Anyway, thank you, Mom, Dad :normal",
-        "Alan: Smile : Someday, I will do or bring something to make you guys proud of me :normal",
-        "Alan's Mom: Sad : Just so you know, we always love you whatever happens and wherever you are :normal",
-        "Alan's Dad: Flat : Yes boy, do whatever you think is right and achieve your dreams :normal",
-        "Alan's MoM: Flat : If anything goes south, our door is always open. Don't forget!. :normal",
+        "Alan: slightly_smile :I never imagined this day would come so soon.:normal",
+        "Alan's Dad: grinning_smile :Don't worry about your parents, we will do just fine here.:normal",
+        "Alan's Mom: slightly_smile :Not everyone could get this opportunity, so make sure you take advantage of this and enjoy.:normal",
+        "Alan's Dad: grinning_smile :I'll send pocket money, so make sure to get a girlfriend, my boy.:normal",
+        "Alan: grinning_sweat :No, not interested.:normal",
+        "Alan's Mom: smile :Ara~:normal",
+        "Alan's Mom: smile :Your dad is just joking around Al, but I also do not prohibit you for having a girlfriend.:normal",
+        "Alan:	relieved	:My parents just being a parents:italicbold",
+        "Alan:	grinning_sweat	:Hehe…:normal",
+        "Alan:	smile	:Anyway, thank you, Mom, Dad. :normal",
+        "Alan:	smile	:Anyway, thank you, Mom, Dad. :normal",
+        "Alan's Mom:	slightly_smile	:Just so you know, we always love you whatever happens and wherever you are.:normal",
+        "Alan's Dad:	grinning_smile	:Yes boy, do whatever you think is right and achieve your dreams.:normal",
+        "Alan's Mom:	smile	:If anything goes south, our door is always open. Don't forget.:normal"
     };
 
     public string[] dialogueWithParents2 = 
     {
-        "Alan: Smile :Goodbye, Mom. Goodbye, Dad.:normal",
-        "Alan's Mom: Smile :Goodbye, my sweet boy. Take care.:normal",
-        "Alan's Dad: Smile :Goodbye, son. We'll be waiting.:normal",
+        "Alan:	smile	:Goodbye, Mom. Goodbye, Dad.:normal",
+        "Alan's Mom:	smile	:Goodbye, my sweet boy. Take care.:normal",
+        "Alan's Dad:	grinning_smile :Goodbye, son. We'll be waiting.:normal"
     };
     //string jika player belum berinteraksi dengan objek foto, sertifikat, dan orang tua
     public string[] dialogueBeforeExitMemories = 
     {
-        "Alan: Flat : I think I must check everything before leaving.:italic"
+        "Alan: neutral : I think I must check everything before leaving.:italicbold"
     };
 
     public string[] dialogueAfterOpenDoor = 
     {
-        "???: Smile :Hello… :normal",
-        "???: Sad :Alan, are you still alive? :normal",
-        "Alan: Flat :Whose voice is that? :normal",
+        "???: silhouette :Hello… :normal",
+        "???: silhouette :Alan, are you still alive? :normal",
+        "Alan: neutral :Whose voice is that? :normal",
     };
 
     [Header("Wake Up Scane")]
     public string[] dialogueWakeUp = 
     {
-        "???: Flat :Looks like you're not dead, thankfully… :normal",
-        "Alan: Sad :Who? :normal",
-        "Cindy: Smile :Oh, I'm Cindy. Nice to meet you, if I'm not wrong, Alan? :normal",
-        "Alan: Flat :That's me, how do you know? :normal",
-        "Cindy: Sad :I took a glance of your ID Card. :normal",
-        "Cindy: Smile :Not on purpose though. It just dropped out of your wallet, for real. Peace… :normal",
-        "Cindy: Sad :By the way, if you're a 02 liner, then we're both 22. But I'm older, hehe… :normal",
-        "Cindy: Smile :Even though I'm an art student,",
-        "Cindy: Flat :I think we could get along with each other. :normal",
-        "Alan: Flat :I can't process everything she said. :normal",
-        "Alan: Sad :Oh, I don't… :normal",
-        "Alan: Smile :(Spouting water) :normal",
-        "Cindy: Smile :Wow, hold on there. Get up and throw your wet shirt, you could catch a cold. :normal",
-        "Cindy: Flat :This is not how a guy should talk to an older girl. :normal",
-        "Alan: Flat :Why is she acting like she's so close with me? :normal",
+        "???:	grinning_smile	:Looks like you're not dead, thankfully…:normal",
+        "Alan:	pensive	:Who?:normal",
+        "Cindy:	grinning_smile	:Oh, I'm Cindy. Nice to meet you, if I'm not wrong, Alan?:normal",
+        "Alan:	pensive	:That's me, how do you know?:normal",
+        "Cindy:	smile	:I took a glance of your ID Card.:normal",
+        "Cindy:	grinning_smile	:Not on purpose though. It just dropped out of your wallet, for real. Peace…:normal",
+        "Cindy:	grinning_smile	:By the way, if you're a 02 liner, then we're both 22. But I'm older, hehe…:normal",
+        "Cindy:	grinning :Even though I'm an art student,:normal",
+        "Cindy:	smile	:I think we could get along with each other.:normal",
+        "Alan:	neutral	:I can't process everything she said.:italicbold",
+        "Alan:	pensive	:Oh, I don't…:normal",
+        "Alan:	spitting	:(Spitting water):normal",
+        "Cindy:	pouting	:Wow, hold on there. Get up and throw your wet shirt, you could catch a cold.:normal",
+        "Cindy:	pouting	:This is not how a guy should talk to an older girl.:normal",
+        "Alan:	pensive	:Why is she acting like she's so close with me?:italicbold",
     };
 
     [Header("Encounter Scene")]
     public string[] dialogueNoSwimming = 
     {
-        "Alan: Sad :I don't swim to get here. I think I'm safe. :bold_italic"
+        "Alan: neutral :I don't swim to get here. I think I'm safe. :italicbold"
     };
-    public string[] dialogueBeach = 
+    public string[] dialogueBench = 
     {
-        "Alan: Smile :Even the thought of sitting feels like too much effort. :bold_italic"
+        "Alan: neutral :Even the thought of sitting feels like too much effort. :italicbold"
     };
     public string[] dialogueTrees =
     {
-        "Alan: Flat :Funny how even a solid wood standing feels more alive than I do. :bold_italic"
+        "Alan: neutral :Funny how even a solid wood standing feels more alive than I do. :italicbold"
     };
     public string[] dialoguePickingUpWatch =
     {
-        "Alan: Flat :Whose watch is this? It looks like it's been broken for years. :bold_italic",
-        "Alan: Flat :I think I'll just keep it for now. :bold_italic"
+        "Alan: neutral :Whose watch is this? It looks like it's been broken for years. :italicbold",
+        "Alan: neutral :I think I'll just keep it for now. :italicbold"
     };
     public string[] dialogueBeforePickingUpWallet =
     {
-        "Cindy: Smile :You might wanna get your wallet first before a ghost steal it. :normal"
+        "Cindy: grinning :You might wanna get your wallet first before a ghost steal it. :normal"
     };
 
     public string[] dialogueWithCindyAfterPickingUpWallet =
     {
-        "Alan: Smile :So, what a girl doing here alone in the middle of the night? :normal",
-        "Cindy: Flat :Why are you so nosy, huh? :normal",
-        "Alan: Sad :Said a girl who being overly familiar with a guy she just met. :normal",
-        "Cindy: Smile :Uh… you know what night is it today? :normal",
-        "Cindy: Flat :It's Thursday night. :normal",
-        "Alan: Sad :So? :normal",
-        "Cindy: Flat :Do you believe in ghost? Are you scared of ghost? :normal",
-        "Alan: Smile :No, haven't seen any. :normal",
-        "Cindy: Sad :Cool. A folk lore around here said that you can sight a ghost on Thursday night. :normal",
-        "Cindy: Smile :So help me hunt this ghost. I'm just very curious. :normal",
-        "Alan: Flat :I don't understand. Why me? :normal",
-        "Alan: Sad :Why are you so interested in this? :normal",
-        "Cindy: Flat :Just for fun. The thrill of hunting ghosts with somebody excites me. :normal",
-        "Cindy: Smile :And just so you know, I also easily get scared when I'm alone. :normal",
-        "Alan: Sad :She is totally weird. :normal",
-        "Alan: Smile :But she make me feels less lonely. :normal",
-        "Cindy: Flat :Let's go, I don't wanna waste any more time. I'm going home before midnight. :normal",
+        "Alan: neutral :So, what a girl doing here alone in the middle of the night?:normal",
+        "Cindy: pouting :Why are you so nosy, huh?:normal",
+        "Alan: neutral :Said a girl who being overly familiar with a guy she just met.:normal",
+        "Cindy: grinning_sweat :Uh… you know what night is it today?:normal",
+        "Cindy: grinning :It's Thursday night.:normal",
+        "Alan: neutral :So?:normal",
+        "Cindy: smirk :Do you believe in ghost? Are you scared of ghost?:normal",
+        "Alan: neutral :No, haven't seen any.:normal",
+        "Cindy: grinning_smile :Cool. A folk lore around here said that you can sight a ghost on Thursday night.:normal",
+        "Cindy: smile :So help me hunt this ghost. I'm just very curious.:normal",
+        "Alan: neutral :I don't understand. Why me?:italicbold",
+        "Alan: neutral :Why are you so interested in this?:normal",
+        "Cindy: grinning_smile :Just for fun. The thrill of hunting ghosts with somebody excites me.:normal",
+        "Cindy: grinning_sweat :And just so you know, I also easily get scared when I'm alone.:normal",
+        "Alan: neutral :She is totally weird.:italicbold",
+        "Alan: neutral :But she makes me feel less lonely.:italicbold",
+        "Cindy: grinning :Let's go, I don't wanna waste any more time.:normal"
     };
 
     public string[] afterFoundWatchAndTalkWithCindy = 
@@ -125,76 +125,76 @@ public class DialogueChapter1 : MonoBehaviour
     [Header("Happiness Scene")]
     public string[] dialogueAlanCindyWalkTogether =
     {
-        "Cindy: Flat :You know? Before we met, I was chased by a creep. That was very scary.: normal",
-        "Alan: Smile :Are you still scared?: normal",
-        "Cindy: Flat :Maybe…: normal",
-        "Alan: Sad :Why are you scared?: normal",
-        "Cindy: Smile :I don't know… More like, I just have a feeling that he has a bad intention.: normal",
-        "Cindy: Sad :Alan, do you want to know a story of me?: normal",
-        "Alan: Flat :Even if I said no, you would still tell me.: normal",
-        "Cindy: Smile :Hehe…  : normal",
-        "Cindy: Flat :Me and my parents… we don't have a strong bond.: normal",
-        "Cindy: Sad :We are not fighting, we are just not close.: normal",
-        "Cindy: Smile :I always try to be a daughter they can be proud of.: normal",
-        "Cindy: Flat :They give me everything I want and need materially, but… they were never paying their attention to me.: normal",
-        "Cindy: Smile :I don't know why I'm telling you this… You must be thinking I'm weird right now.: normal",
-        "Alan: Sad :Yes, you really are. This girl is very unpredictable, the first that I can't read.: normal",
-        "Alan: Flat :I…: normal"
+        "Cindy:	relieved	:You know? Before we met, I was chased by a creep. That was very scary.:normal",
+        "Alan:	neutral	:Are you still scared?:normal",
+        "Cindy:	relieved	:Maybe…:normal",
+        "Alan:	neutral	:Why are you scared?:normal",
+        "Cindy:	relieved	:I don't know… More like, I just have a feeling that he has a bad intention.:normal",
+        "Cindy:	slightly_smile	:Alan, do you want to know a story of me?:normal",
+        "Alan:	neutral	:Even if I said no, you would still tell me.:normal",
+        "Cindy:	grinning_sweat	:Hehe…:normal",
+        "Cindy:	neutral	:Me and my parents… we don't have a strong bond.:normal",
+        "Cindy:	neutral	:We are not fighting, we are just not close.:normal",
+        "Cindy:	neutral	:I always try to be a daughter they can be proud of.:normal",
+        "Cindy:	neutral	:They give me everything I want and need materially, but… they were never paying their attention to me.:normal",
+        "Cindy:	relieved	:I don't know why I'm telling you this… You must be thinking I'm weird right now.:normal",
+        "Alan:	neutral	:Yes, you really are. This girl is very unpredictable, the first that I can't read.:italicbold",
+        "Alan:	neutral	:I…:normal"
     };
 
     [Header("MiniGame Scene")]
     public string[] dialogueRound1MiniGameTree =
     {
-        "Cindy: Flat :Al, this hunt is getting boring.: normal",
-        "Cindy: Smile :How about we play something?: normal",
-        "Alan: Flat :Huh? Where are you?: normal",
-        "Cindy: Smile :Behind one of the trees.: normal",
-        "Cindy: Flat :Try to find me... That's the game.: normal",
-        "Cindy: Smile :Now go, don't keep a girl waiting.: normal",
-        "Alan: Flat :This girl… I don't know what she's up to.: bold_italic",
-        "Alan: Smile :I just want to follow her game.: bold_italic",
-        "Cindy: Flat :Eh, I'll reward you if you can find me quickly enough.: normal"
+        "Cindy:	silhouette	:Al, this hunt is getting boring.:normal",
+        "Cindy:	silhouette	:How about we play something?:normal",
+        "Alan:	neutral	:Huh? Where are you?:normal",
+        "Cindy:	silhouette	:Behind one of the trees.:normal",
+        "Cindy:	silhouette	:Try to find me... That's the game.:normal",
+        "Cindy:	silhouette	:Now go, don't keep a girl waiting.:normal",
+        "Alan:	neutral	:This girl… I don't know what she's up to.:italicbold",
+        "Alan:	neutral	:I just want to follow her game.:italicbold",
+        "Cindy:	silhouette	:Eh, I'll reward you if you can find me quickly enough.:normal"
     };
 
     public string[] dialogueWrongTree = 
     {
-        "Alan: Flat :She's not here…: normal"
+        "Alan: neutral :She's not here…: normal"
     };
 
     public string[] dialogueRound2MiniGameTree =
     {
-        "Cindy: Smile :Ahahahaha:normal",
-        "Cindy: Flat :Took you to long to find me.:normal",
-        "Cindy: Flat :But it's fun…:normal",
-        "Cindy: Smile :Let's do it one more time.:normal",
-        "Cindy: Smile :Close your eyes, Al. No cheating.:normal",
-        "Alan: Flat :This is so childish and silly…:normal",
-        "Alan: Smile :But it's not the fun I seek, I just wanna be with someone.:normal"
+        "Cindy:	laugh	:Ahahahaha:normal",
+        "Cindy:	laugh	:Took you to long to find me.:normal",
+        "Cindy:	grinning_smile	:But it's fun…:normal",
+        "Cindy:	grinning	:Let's do it one more time.:normal",
+        "Cindy:	smirk	:Close your eyes, Al. No cheating.:normal",
+        "Alan:	neutral	:This is so childish and silly…:italicbold",
+        "Alan:	slightly_smile	:But it's not the fun I seek, I just wanna be with someone.:italicbold"
     };
 
     public string[] dialogueFoundCindyRound2 =
     {
-        "Alan: Flat :Cindy? I know you're here.:normal",
-        "Alan: Flat :…:normal"
+        "Alan: neutral :Cindy? I know you're here.:normal",
+        "Alan: neutral :…:normal"
     };
 
     public string[] dialogueCindyOnTop = 
     {
-        "Cindy: Smile :AH!!!!:normal",
-        "Alan: Flat :Is this the reward?:normal",
-        "Cindy: Sad :No no no… you st- stupid. Perv-:normal",
-        "Alan: Smile :Ahahahahaha:normal",
-        "Alan: Flat :Cindy… Thanks…:normal",
-        "Cindy: Sad :Ff- for waht??:normal",
-        "Alan: Smile :I feel like I want to give it a try again after I know you…:normal",
-        "Cindy: Sad :Try again for what?:normal",
-        "Alan: Flat :To live:normal",
-        "Alan: Smile :I bounced back thanks to you…:normal",
-        "Alan: Flat :You told me your stories, now let me tell you mine.normal",
-        "Cindy: Sad :Oww… fair enough.:normal",
-        "Alan: Smile :But beforehand, could you please stand up?:normal",
-        "Cindy: Smile :!!!:normal",
-        "Alan: Sad :To be honest, I'd be lying if I don't like this moment.:normal",
+        "Cindy:	shocked	:AH!!!!:normal",
+        "Alan:	slightly_smile	:Is this the reward?:normal",
+        "Cindy:	confounded	:No no no… you st- stupid. Perv-:normal",
+        "Alan:	laugh	:Ahahahahaha:normal",
+        "Alan:	slightly_smile	:Cindy… Thanks…:normal",
+        "Cindy:	confounded	:Ff- for waht??:normal",
+        "Alan:	slightly_smile	:I feel like I want to give it a try again after I know you…:normal",
+        "Cindy:	confounded	:Try again for what?:normal",
+        "Alan:	relieved	:To live…:normal",
+        "Alan:	relieved	:I bounced back thanks to you…:normal",
+        "Alan:	slightly_smile	:You told me your stories, now let me tell you mine.:normal",
+        "Cindy:	grinning	:Oww… fair enough.:normal",
+        "Alan:	slightly_smile	:But beforehand, could you please stand up?:normal",
+        "Cindy:	flushed	:!!!:normal",
+        "Alan:	grinning_sweat	:To be honest, I'd be lying if I don't like this moment.:italicbold"
     };
 
     public string[] thoughtsAfterMiniGameTree =
@@ -203,7 +203,7 @@ public class DialogueChapter1 : MonoBehaviour
         "Everything I need to share with someone.",
         "I realized I only need somebody to lean on for now.",
         "I feel so stupid for what I did before.",
-        "And now, this night may come to an end.",
+        "And now, this night may come to an end."
     };
 
     [Header("Cindy Scene - Level 4")]
