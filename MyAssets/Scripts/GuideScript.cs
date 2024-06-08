@@ -8,6 +8,7 @@ public class GuideScript : MonoBehaviour
 {
     public bool isChapter0 = true;
     private List<System.Action> functionList = new List<System.Action>();
+    public PlayerMovement scriptPlayerMovement;
     [Header("Guide Config")]
     public int transitionGuideNow = 0;
     public float fadeInGuide = 1f;
@@ -19,7 +20,6 @@ public class GuideScript : MonoBehaviour
     public GameObject transparentWallGuide;
     public bool enableTransitionRight = false;
     public bool enableTransitionLeft = false;
-    public bool isFadeInGuideJump;
 
     [Header("Guide Gameobjects")]
     public GameObject guideGO;
@@ -31,6 +31,10 @@ public class GuideScript : MonoBehaviour
     [Header("Guide Jump [Space]")]
     public GameObject guideJumpGO;
     public Image iconJumpImage;
+    public bool isFadeInGuideJump;
+    public bool isFadeOutGuideJump;
+    public bool canFadeInGuideJump = true;
+    public bool canFadeOutGuideJump = true;
 
     [Header("Guide Interaction [E]")]
     public Text guideText;
@@ -38,22 +42,16 @@ public class GuideScript : MonoBehaviour
     public Image iconE;
     public Image bgE;
 
+    [Header("Guide Wake Up [Space]")]
+    public bool isFadeInWakeUp;
+    public bool isFadeOutWakeUp;
+    public SpriteRenderer iconStandOrWakeUp;
+
     // Start is called before the first frame update
     void Start()
     {
         functionList.Add(NothingHappend);
         functionList.Add(FadeOutGuide);
-        functionList.Add(FadeInGuide);
-        functionList.Add(FadeInGuideJump);
-
-        iconA.color = new Color(255, 255, 255, 0);
-        iconD.color = new Color(255, 255, 255, 0);
-
-
-        if (SceneManager.GetActiveScene().name != "Chapter0")
-            return;
-        iconJumpImage.color = new Color(255, 255, 255, 0);
-        guideJumpGO.SetActive(false);
     }
 
     // Update is called once per frame
@@ -68,17 +66,28 @@ public class GuideScript : MonoBehaviour
         // Nothing Happend
     }
 
-    void FadeInGuide()
+    public IEnumerator FadeInGuide()
     {
-        iconA.color = new Color(255, 255, 255, iconA.color.a + Time.deltaTime / fadeInGuide);
-        iconD.color = new Color(255, 255, 255, iconD.color.a + Time.deltaTime / fadeInGuide);
+        iconA.color = new Color(255, 255, 255, 0);
+        iconD.color = new Color(255, 255, 255, 0);
 
-        if (iconA.color.a >= 1)
+        float currentColorA = iconA.color.a;
+        float currentColorD = iconD.color.a;
+
+        iconA.gameObject.SetActive(true);
+        iconD.gameObject.SetActive(true);
+
+        while (iconA.color.a < 1)
         {
-            transitionGuideNow = 1;
-            iconA.color = new Color(255, 255, 255, 1);
-            iconD.color = new Color(255, 255, 255, 1);
+            currentColorA += Time.deltaTime / fadeInGuide;
+            currentColorD += Time.deltaTime / fadeInGuide;
+            iconA.color = new Color(255, 255, 255, currentColorA);
+            iconD.color = new Color(255, 255, 255, currentColorD);
+            yield return null;
         }
+
+        transitionGuideNow = 1;
+        scriptPlayerMovement.canMove = true;
     }
 
     void FadeOutGuide()
@@ -96,7 +105,24 @@ public class GuideScript : MonoBehaviour
         }
 
         if (endTransitionR && endTransitionL)
+        {
             transitionGuideNow = 0;
+            this.enabled = false;
+        }
+    }
+
+    public void IfPlayerDoesNotPressAD()
+    {
+        if (canFadeOutGuideL)
+        {
+            StartCoroutine(FadeOutGuideLeft());
+            canFadeOutGuideL = false;
+        }
+        if (canFadeOutGuideR)
+        {
+            StartCoroutine(FadeOutGuideRight());
+            canFadeOutGuideR = false;
+        }
     }
 
     IEnumerator FadeOutGuideRight()
@@ -124,37 +150,62 @@ public class GuideScript : MonoBehaviour
         transparentWallGuide.SetActive(false);
     }
 
-
-    void FadeInGuideJump()
-    {
-        iconJumpImage.color = new Color(255, 255, 255, iconJumpImage.color.a + Time.deltaTime / fadeInGuide);
-
-        if (iconJumpImage.color.a >= 1)
-        {
-            transitionGuideNow = 0;
-            isFadeInGuideJump = true;
-        }
-    }
-
     public IEnumerator IEFadeInGuideJump()
     {
-        isFadeInGuideJump = false;
+        iconJumpImage.color = new Color(255, 255, 255, 0);
+        guideJumpGO.SetActive(false);
+        isFadeInGuideJump = true;
         while (iconJumpImage.color.a < 1)
         {
             iconJumpImage.color = new Color(255, 255, 255, iconJumpImage.color.a + Time.deltaTime / fadeInGuide);
             yield return null;
         }
-        isFadeInGuideJump = true;
+        iconJumpImage.color = new Color(255, 255, 255, 1);
+        isFadeInGuideJump = false;
     }
 
     public IEnumerator IEFadeOutGuideJump()
     {
-        isFadeInGuideJump = false;
+        isFadeOutGuideJump = true;
+        iconJumpImage.color = new Color(255, 255, 255, 1);
         while (iconJumpImage.color.a > 0)
         {
             iconJumpImage.color = new Color(255, 255, 255, iconJumpImage.color.a - Time.deltaTime / fadeOutGuide);
             yield return null;
         }
-        isFadeInGuideJump = true;
+        iconJumpImage.color = new Color(255, 255, 255, 0);
+        isFadeOutGuideJump = true;
+    }
+
+    public IEnumerator IEFadeInGuideWakeUp()
+    {
+        iconStandOrWakeUp.gameObject.SetActive(true);
+        iconStandOrWakeUp.color = new Color(255, 255, 255, 0);
+        isFadeInWakeUp = false;
+        float currentColorA = iconStandOrWakeUp.color.a;
+
+        while (currentColorA < 1)
+        {
+            // iconStandOrWakeUp.color = new Color(255, 255, 255, currentColorA + Time.deltaTime / fadeInGuide);
+            currentColorA += Time.deltaTime / fadeInGuide;
+            iconStandOrWakeUp.color = new Color(255, 255, 255, currentColorA);
+            yield return null;
+        }
+        isFadeInWakeUp = true;
+    }
+
+    public IEnumerator IEFadeOutGuideWakeUp()
+    {
+        isFadeOutWakeUp = false;
+        float currentColorA = iconStandOrWakeUp.color.a;
+        while (currentColorA > 0)
+        {
+            // iconStandOrWakeUp.color = new Color(255, 255, 255, iconStandOrWakeUp.color.a - Time.deltaTime / fadeOutGuide);
+            currentColorA -= Time.deltaTime / fadeOutGuide;
+            iconStandOrWakeUp.color = new Color(255, 255, 255, currentColorA);
+            yield return null;
+        }
+        isFadeOutWakeUp = true;
+        iconStandOrWakeUp.gameObject.SetActive(false);
     }
 }

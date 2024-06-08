@@ -1,41 +1,50 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectInterect : MonoBehaviour
 {
+    [Header("Scripts")]
     public Chapter1Scene scriptChapter1Scene;
     public TransitionFunction scriptTransitionFunction;
     public GuideScript scriptGuideScript;
+    public AudioManager scriptAudioManager;
+    private PlayerMovement scriptPlayerMovement;
+
+    [Header("Interact")]
     public bool canInteract = false;
     public bool canDetectObject = true;
     public Collider2D currentCollider;
-    List<string> targetObjectTags = new List<string>{"Door", "Photo", "Certificate", "Parent", "NoSwimming", "Trees", "Bench", "Watch","Cindy"};
+    Dictionary<string, Action> triggerObjectList = new Dictionary<string, Action>();
+    List<string> targetObjectTags = new List<string>{"Door", "Photo", "Trophy", "Parent", "NoSwimming", "Trees", "Bench", "Watch","Cindy"};
     public List<GameObject> tempTrees = new List<GameObject>();
+
+    void Start()
+    {
+        scriptPlayerMovement = GetComponent<PlayerMovement>();
+        triggerObjectList.Add("Photo", scriptChapter1Scene.TriggerObjectPhoto);
+        triggerObjectList.Add("Trophy", scriptChapter1Scene.TriggerObjectTrophy);
+        triggerObjectList.Add("Parent", scriptChapter1Scene.TriggerObjectParent);
+        triggerObjectList.Add("Door", scriptChapter1Scene.TriggerObjectDoor);
+        triggerObjectList.Add("NoSwimming", scriptChapter1Scene.TriggerObjectNoSwimmingSign);
+        triggerObjectList.Add("Bench", scriptChapter1Scene.TriggerObjectBench);
+        triggerObjectList.Add("Watch", scriptChapter1Scene.TriggerObjectWatch);
+        triggerObjectList.Add("Cindy", scriptChapter1Scene.TriggerObjectCindy);
+    }
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E) && canInteract)
         {
             if (scriptTransitionFunction.isDialogue)
                 return;
-            if (currentCollider.gameObject.tag == "Photo")
-                scriptChapter1Scene.TriggerObjectPhoto();
-            else if (currentCollider.gameObject.tag == "Certificate")
-                scriptChapter1Scene.TriggerObjectCertificate();
-            else if (currentCollider.gameObject.tag == "Parent")
-                scriptChapter1Scene.TriggerObjectParent();
-            else if (currentCollider.gameObject.tag == "Door")
-                scriptChapter1Scene.TriggerObjectDoor();
-            else if (currentCollider.gameObject.tag == "NoSwimming")
-                scriptChapter1Scene.TriggerObjectNoSwimmingSign();
-            else if (currentCollider.gameObject.tag == "Trees")
+
+            scriptAudioManager.PlayTriggerOrNextSoundUI();
+            scriptPlayerMovement.StopWalkingOrRunning();
+            if (currentCollider.gameObject.tag == "Trees")
                 scriptChapter1Scene.TriggerObjectTrees(currentCollider.gameObject);
-            else if (currentCollider.gameObject.tag == "Bench")
-                scriptChapter1Scene.TriggerObjectBench();
-            else if (currentCollider.gameObject.tag == "Watch")
-                scriptChapter1Scene.TriggerObjectWatch();
-            else if (currentCollider.gameObject.tag == "Cindy")
-                scriptChapter1Scene.TriggerObjectCindy();
+            else
+                triggerObjectList[currentCollider.gameObject.tag]();
         }
     }
 
@@ -60,7 +69,7 @@ public class ObjectInterect : MonoBehaviour
             // scriptGuideScript.FadeOutGuideInteraction();
             other.gameObject.transform.GetChild(0).gameObject.SetActive(false);
             canInteract = false;
-            currentCollider = null;
+            // currentCollider = null;
         }
     }
 

@@ -9,11 +9,13 @@ public class TransitionFunction : MonoBehaviour
     public bool isChapter1 = false;
     [Header("Scripts")]
     public ExpressionCharacters scriptExpressionCharacters;
+    public AudioManager scriptAudioManager;
     // public PlayerMovement scriptPlayerMovement;
     public Chapter1Scene scriptChapter1Scene;
+    private PauseGameplay scriptPauseGameplay;
+    private GuideScript scriptGuide;
     [Header("Character GameObject")]
     public GameObject playerGO;
-    public GameObject cindyGO;
     
     [Header("Character Text")]
     public TextMeshProUGUI textWithOutline;
@@ -53,6 +55,7 @@ public class TransitionFunction : MonoBehaviour
     public GameObject nextPreviousSkipDialogueGO;
     public bool mouseEnter = false;
     public bool isInteractObjectImage = false;
+    public bool canMoveAfterDialogue = false;
 
     [Header("Hide UI")]
     public GameObject topBlackBackgroundGO;
@@ -63,6 +66,8 @@ public class TransitionFunction : MonoBehaviour
     public GameObject transparantBtnEnableUI;
     public float defaultPosYTopBlackBackground;
     public float defaultPosYBottomBlackBackground;
+    public Text hideUIText;
+    public Image imageHideUI;
 
     [Header("Auto Next Dialogue")]
     public Image imageAutoDialogue;
@@ -102,14 +107,34 @@ public class TransitionFunction : MonoBehaviour
     public float delayFadeInOutTextInWhiteScreen;
 
     [Header("Audio Transition")]
-    public AudioSource UIAudioSource;
-    public AudioClip UIClipAudio;
+    // public AudioSource UIAudioSource;
+    // public AudioClip UIClipAudio;
     public float durationFadeInAudio = 1f;
     public float durationFadeOutAudio = 1f;
-
-
+    public bool isFadeInAudio = false;
+    public bool isFadeOutAudio = false;
+    [Header("Cinematic Bars Transition")]
+    // public GameObject topBlackBarsGO;
+    // public GameObject bottomBlackBarsGO;
+    public RectTransform topBlackBarsRect;
+    public RectTransform bottomBlackBarsRect;
+    public GameObject cinematicBarsGO;
+    public bool cinematicBarsFadeIn = false;
+    public bool cinematicBarsFadeOut = false;
+    public bool isCinematicBars = false;
+    public float speedCinematicBars = 200f;
+    public float targetYRectTranform = 50f;
     void Start()
     {
+        scriptAudioManager = GetComponent<AudioManager>();
+        scriptPauseGameplay = GetComponent<PauseGameplay>();
+        scriptGuide = GetComponent<GuideScript>();
+
+        textAutoDialogue.color = scriptPauseGameplay.defaultColor;
+        hideUIText.color = scriptPauseGameplay.defaultColor;
+        imageAutoDialogue.color = scriptPauseGameplay.defaultColor;
+        imageHideUI.color = scriptPauseGameplay.defaultColor;
+
         defaultPosYBottomBlackBackground = bottomBlackBackgroundGO.transform.position.y;
         defaultPosYTopBlackBackground = topBlackBackgroundGO.transform.position.y;
 
@@ -156,10 +181,6 @@ public class TransitionFunction : MonoBehaviour
     public void TransitionCharacterText(Text textTarget) // 1
     {
         delayTextTime -= Time.deltaTime;
-        // if (delayTextTime < defaultDelayText / 2)
-        //     textTarget.color = new Color(valueWhiteOrBlack, valueWhiteOrBlack, valueBlackOrYellow, textTarget.color.a - Time.deltaTime / fadeInText);
-        // else
-        //     textTarget.color = new Color(valueWhiteOrBlack, valueWhiteOrBlack, valueBlackOrYellow, textTarget.color.a + Time.deltaTime / fadeOutText);
         float alpha = textTarget.color.a;
 
         if (delayTextTime > defaultDelayText * 2 / 3)
@@ -198,6 +219,7 @@ public class TransitionFunction : MonoBehaviour
                 delayDialogue = 0;
                 if (intCharacterText < characterDialogue.Length - 1)
                 {
+                    scriptAudioManager.PlayTriggerOrNextSoundUI();
                     intCharacterText++;
                     // dialogueText.text = characterDialogue[intCharacterText];
                     SplitNameExpressionDialogue();
@@ -212,14 +234,15 @@ public class TransitionFunction : MonoBehaviour
         }
 
         // if (!mouseEnter Input.GetMouseButtonDown(0) ||  && textAnimationFinished)
-        if (!mouseEnter && Input.GetKeyDown(KeyCode.Space) && textAnimationFinished || !mouseEnter && Input.GetMouseButtonDown(0) && textAnimationFinished)
+        //input spasi atau klik kiri atau enter
+        if (!mouseEnter && Input.GetKeyDown(KeyCode.Space) && textAnimationFinished || !mouseEnter && Input.GetMouseButtonDown(0) && textAnimationFinished || !mouseEnter && Input.GetKeyDown(KeyCode.Return) && textAnimationFinished)
         {
             delayDialogue = 0;
             textAnimationFinished = false;
-            UIAudioSource.PlayOneShot(UIClipAudio);
+            // UIAudioSource.PlayOneShot(UIClipAudio);
             if (intCharacterText < characterDialogue.Length - 1)
             {
-                
+                scriptAudioManager.PlayTriggerOrNextSoundUI();
                 nextIcon.SetActive(false);
                 intCharacterText++;
                 // dialogueText.text = characterDialogue[intCharacterText];
@@ -306,14 +329,14 @@ public class TransitionFunction : MonoBehaviour
             dialogueText.fontStyle = FontStyle.Italic;
         else if (fontStyle == "bold")
             dialogueText.fontStyle = FontStyle.Bold;
-        else if (fontStyle == "bold_italic")
+        else if (fontStyle == "italicbold")
             dialogueText.fontStyle = FontStyle.BoldAndItalic;
         else
             dialogueText.fontStyle = FontStyle.Normal;
     }
     void ChangeExpressionCharacterDialogue(string characterName, string expressionName)
     {
-        Debug.Log(characterName + " " + expressionName);
+        // Debug.Log(characterName + " " + expressionName);
         if (scriptExpressionCharacters.characterExpressions.ContainsKey(characterName))
         {
             expressionCharacterImage.sprite = scriptExpressionCharacters.characterExpressions[characterName][expressionName];
@@ -349,6 +372,20 @@ public class TransitionFunction : MonoBehaviour
             blackscreenImage.color = new Color(0, 0, 0, 1);
             blackscreenFadeIn = true;
         }
+    }
+
+    public IEnumerator IEFadeInBlackscreenTransition()
+    {
+        blackscreenImage.color = new Color(0, 0, 0, 0);
+        blackscreenImage.gameObject.SetActive(true);
+        blackscreenFadeIn = false;
+        while (blackscreenImage.color.a < 1)
+        {
+            blackscreenImage.color = new Color(0, 0, 0, blackscreenImage.color.a + Time.deltaTime / fadeInBlackscreen);
+            yield return null;
+        }
+        blackscreenImage.color = new Color(0, 0, 0, 1);
+        blackscreenFadeIn = true;
     }
 
     public void FadeOutBlackscreenTransition() //4
@@ -407,13 +444,22 @@ public class TransitionFunction : MonoBehaviour
     public void TransitionTMPCharacter() // 9
     {
         delayTextTime -= Time.deltaTime;
-        if (delayTextTime < defaultDelayText / 3)
-            textWithOutline.color = new Color(255, 255, 0, textWithOutline.color.a - Time.deltaTime / fadeInText * 1.5f);
-        else if (delayTextTime > defaultDelayText * 2 / 3)
-            textWithOutline.color = new Color(255, 255, 0, textWithOutline.color.a + Time.deltaTime / fadeOutText * 1.5f);
-        else
-            textWithOutline.color = new Color(255, 255, 0, textWithOutline.color.a); // No change
+        float alpha = textWithOutline.color.a;
 
+        if (delayTextTime > defaultDelayText * 2 / 3)
+            alpha = Mathf.Lerp(0, 1, (defaultDelayText - delayTextTime) / fadeInText * 1.5f);
+        else if (delayTextTime > defaultDelayText / 3)
+            alpha = 1;
+        else if (delayTextTime <= defaultDelayText / 3)
+            alpha = Mathf.Lerp(1, 0, (defaultDelayText / 3 - delayTextTime) / fadeOutText * 1.5f);
+        // textWithOutline.color = new Color(valueWhiteOrBlack, valueWhiteOrBlack, valueBlackOrYellow, alpha);
+        textWithOutline.color = new Color(textWithOutline.color.r, textWithOutline.color.g, textWithOutline.color.b, alpha);
+        // if (delayTextTime < defaultDelayText / 3)
+        //     textWithOutline.color = new Color(255, 255, 0, textWithOutline.color.a - Time.deltaTime / fadeInText * 1.5f);
+        // else if (delayTextTime > defaultDelayText * 2 / 3)
+        //     textWithOutline.color = new Color(255, 255, 0, textWithOutline.color.a + Time.deltaTime / fadeOutText * 1.5f);
+        // else
+        //     textWithOutline.color = new Color(255, 255, 0, textWithOutline.color.a); // No change
 
         if (delayTextTime > 0)
             return;
@@ -433,19 +479,20 @@ public class TransitionFunction : MonoBehaviour
 
     public void TransitionsPerSentenceDialogue(Text textTarget) // 1
     {
-        delayTextTime -= Time.deltaTime;
-        float alpha = textTarget.color.a;
-
-        if (delayTextTime > defaultDelayText * 2 / 3)
-            alpha = Mathf.Lerp(0, 1, (defaultDelayText - delayTextTime) / fadeInText * 1.5f);
-        else if (delayTextTime > defaultDelayText / 3)
-            alpha = 1;
-        else if (delayTextTime <= defaultDelayText / 3)
-            alpha = Mathf.Lerp(1, 0, (defaultDelayText / 3 - delayTextTime) / fadeOutText * 1.5f);
-        textTarget.color = new Color(valueWhiteOrBlack, valueWhiteOrBlack, valueBlackOrYellow, alpha);
-
         if (delayTextTime >= 0)
+        {
+            delayTextTime -= Time.deltaTime;
+            float alpha = textTarget.color.a;
+
+            if (delayTextTime > defaultDelayText * 2 / 3)
+                alpha = Mathf.Lerp(0, 1, (defaultDelayText - delayTextTime) / fadeInText * 1.5f);
+            else if (delayTextTime > defaultDelayText / 3)
+                alpha = 1;
+            else if (delayTextTime <= defaultDelayText / 3)
+                alpha = Mathf.Lerp(1, 0, (defaultDelayText / 3 - delayTextTime) / fadeOutText * 1.5f);
+            textTarget.color = new Color(valueWhiteOrBlack, valueWhiteOrBlack, valueBlackOrYellow, alpha);        
             return;
+        }
 
         if (Input.GetKeyDown(KeyCode.Space) && !textAnimationFinished)
         {
@@ -464,27 +511,36 @@ public class TransitionFunction : MonoBehaviour
         }
     }
 
-    public void DefaultTriggerMechanism()
+    public void DefaultTriggerMechanism(bool canMove = false)
     {
-        playerGO.GetComponent<PlayerMovement>().animator.SetTrigger("Idle");
-        playerGO.GetComponent<PlayerMovement>().animator.ResetTrigger("Walk");
-        
+        canMoveAfterDialogue = canMove;
         SplitNameExpressionDialogue();
         // scriptPlayerMovement.canMove = false;
         // scriptPlayerMovement.rb2D.velocity = Vector2.zero;
-        playerGO.GetComponent<PlayerMovement>().canMove = false;
-        playerGO.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        
+        // playerGO.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         intTransitionNumbersNow = 2;
         dialogueGO.SetActive(true);
         isDialogue = true;
         CheckLengthWords();
         StartCoroutine(ShowText());
+
+        if (isChapter1)
+            if (scriptChapter1Scene.isWalkTogether) return;
+        playerGO.GetComponent<PlayerMovement>().canMove = false;
+        // Debug.Log("StopWalkingOrRunning");
+        // playerGO.GetComponent<PlayerMovement>().StopWalkingOrRunning();
     }
 
-    void DefaultAfterDialogueTrigger()
+    public void DefaultAfterDialogueTrigger()
     {
+        if (canMoveAfterDialogue)
+        {
+            playerGO.GetComponent<PlayerMovement>().canMove = true;
+            canMoveAfterDialogue = false;
+        }
         // scriptPlayerMovement.canMove = true;
-        playerGO.GetComponent<PlayerMovement>().canMove = true;
+
         isDialogue = false;
         dialogueGO.SetActive(false);
         intTransitionNumbersNow = 0;
@@ -628,35 +684,140 @@ public class TransitionFunction : MonoBehaviour
         mouseEnter = false;
     }
 
-    public IEnumerator FadeInAudio(AudioSource audioSource, AudioClip audioClip, float targetVolume)
+    public void MouseEnterAuto()
+    {
+        scriptAudioManager.PlayButtonHoverSoundUI();
+        textAutoDialogue.color = Color.white;
+        imageAutoDialogue.color = Color.white;
+    }
+    
+    public void MouseExitAuto()
+    {
+        textAutoDialogue.color = scriptPauseGameplay.defaultColor;
+        imageAutoDialogue.color = scriptPauseGameplay.defaultColor;
+    }
+
+    public void MouseEnterHideUI()
+    {
+        scriptAudioManager.PlayButtonHoverSoundUI();
+        hideUIText.color = Color.white;
+        imageHideUI.color = Color.white;
+    }
+
+    public void MouseExitHideUI()
+    {
+        hideUIText.color = scriptPauseGameplay.defaultColor;
+        imageHideUI.color = scriptPauseGameplay.defaultColor;
+    }
+
+    public IEnumerator FadeInAudio(AudioSource audioSource, AudioClip audioClip, float targetVolume, string status="Play", string audioType="Music")
     {
         audioSource.volume = 0;
         audioSource.clip = audioClip;
-        audioSource.Play();
+        if (status == "Play")
+            audioSource.Play();
+        else if (status == "UnPause")
+            audioSource.UnPause();
+        isFadeInAudio = true;
         float currentTime = 0;
-        while (audioSource.volume < targetVolume)
+        // while (audioSource.volume < targetVolume)
+        while (currentTime < durationFadeInAudio)
         {
-            currentTime += Time.deltaTime;
+            currentTime += Time.unscaledDeltaTime;
             audioSource.volume = Mathf.Lerp(0, targetVolume, currentTime / durationFadeInAudio);
             yield return null;
         }
+        // audioSource.volume = targetVolume;
+        isFadeInAudio = false;
+        if (audioType == "Music")
+            if (targetVolume != scriptAudioManager.volumeMusicNow)
+            {
+                targetVolume = scriptAudioManager.volumeMusicNow;
+            }
         audioSource.volume = targetVolume;
     }
 
-    public IEnumerator FadeOutAudio(AudioSource audioSource, float volumeNow, string status="Stop")
+    public IEnumerator FadeOutAudio(AudioSource audioSource, float volumeNow, string status="Stop", string audioType="Music")
     {
         float currentTime = 0;
-        while (audioSource.volume > 0)
+        isFadeOutAudio = true;
+        // while (audioSource.volume > 0)
+        while (currentTime < durationFadeOutAudio)
         {
-            currentTime += Time.deltaTime;
+            currentTime += Time.unscaledDeltaTime;
             audioSource.volume = Mathf.Lerp(volumeNow, 0, currentTime / durationFadeOutAudio);
             yield return null;
         }
         audioSource.volume = 0;
         if (status == "Stop")
+        {
             audioSource.Stop();
+            audioSource.clip = null;
+        }
         else if (status == "Pause")
             audioSource.Pause();
+        
+        isFadeOutAudio = false;
+        if (audioType == "Music")
+            if (volumeNow != scriptAudioManager.volumeMusicNow)
+            {
+                volumeNow = scriptAudioManager.volumeMusicNow;
+            }
         audioSource.volume = volumeNow;
+    }
+
+    public void FadeInCinematicBarTransition()
+    {
+        if (cinematicBarsFadeIn || isCinematicBars)
+            return;
+
+        // cinematicBarsGO.SetActive(true);
+        cinematicBarsFadeIn = true;
+        StartCoroutine(FadeInCinematicBar());
+    }
+
+    public void FadeOutCinematicBarTransition()
+    {
+        if (cinematicBarsFadeOut || !isCinematicBars)
+            return;
+
+        cinematicBarsFadeOut = true;
+        StartCoroutine(FadeOutCinematicBar());
+    }
+
+    IEnumerator FadeInCinematicBar()
+    {
+        while (topBlackBarsRect.anchoredPosition.y >= -targetYRectTranform)
+        {
+            float newPosY = topBlackBarsRect.anchoredPosition.y - speedCinematicBars * 2.5f * Time.deltaTime;
+            float newPosY2 = bottomBlackBarsRect.anchoredPosition.y + speedCinematicBars * 2.5f * Time.deltaTime;
+            topBlackBarsRect.anchoredPosition = new Vector2(topBlackBarsRect.anchoredPosition.x, newPosY);
+            bottomBlackBarsRect.anchoredPosition = new Vector2(bottomBlackBarsRect.anchoredPosition.x, newPosY2);
+            yield return null;
+        }
+        topBlackBarsRect.anchoredPosition = new Vector2(topBlackBarsRect.anchoredPosition.x, -targetYRectTranform);
+        bottomBlackBarsRect.anchoredPosition = new Vector2(bottomBlackBarsRect.anchoredPosition.x, targetYRectTranform);
+
+        cinematicBarsFadeIn = false;
+        isCinematicBars = true;
+    }
+
+    IEnumerator FadeOutCinematicBar()
+    {
+        float newTargetYRectTranform = targetYRectTranform + 10f;
+        while (topBlackBarsRect.anchoredPosition.y <= newTargetYRectTranform)
+        {
+            float newPosY = topBlackBarsRect.anchoredPosition.y + speedCinematicBars * 2.5f * Time.deltaTime;
+            float newPosY2 = bottomBlackBarsRect.anchoredPosition.y - speedCinematicBars * 2.5f * Time.deltaTime;
+            topBlackBarsRect.anchoredPosition = new Vector2(topBlackBarsRect.anchoredPosition.x, newPosY);
+            bottomBlackBarsRect.anchoredPosition = new Vector2(bottomBlackBarsRect.anchoredPosition.x, newPosY2);
+            yield return null;
+        }
+        topBlackBarsRect.anchoredPosition = new Vector2(topBlackBarsRect.anchoredPosition.x, newTargetYRectTranform);
+        bottomBlackBarsRect.anchoredPosition = new Vector2(bottomBlackBarsRect.anchoredPosition.x, -newTargetYRectTranform);
+
+        // cinematicBarsGO.SetActive(false);
+        cinematicBarsFadeOut = false;
+        isCinematicBars = false;
     }
 }

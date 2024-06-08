@@ -9,7 +9,7 @@ public class DialogueChapter1 : MonoBehaviour
     {
         "Alan: smile :Me alongside the best parents in the world.:italicbold"
     };
-    public string[] certificateString =
+    public string[] trophyString =
     {
         "Alan: grinning_smile :I feel like I can do anything after I got this.:italicbold"
     };
@@ -45,9 +45,9 @@ public class DialogueChapter1 : MonoBehaviour
 
     public string[] dialogueAfterOpenDoor = 
     {
-        "???: silhouette :Hello… :normal",
-        "???: silhouette :Alan, are you still alive? :normal",
-        "Alan: neutral :Whose voice is that? :normal",
+        "???:	silhouette	:Hello…:normal",
+        "???:	silhouette	:Alan, are you still alive?:normal",
+        "Alan:	neutral	:Whose voice is that?:normal"
     };
 
     [Header("Wake Up Scane")]
@@ -62,12 +62,12 @@ public class DialogueChapter1 : MonoBehaviour
         "Cindy:	grinning_smile	:By the way, if you're a 02 liner, then we're both 22. But I'm older, hehe…:normal",
         "Cindy:	grinning :Even though I'm an art student,:normal",
         "Cindy:	smile	:I think we could get along with each other.:normal",
-        "Alan:	neutral	:I can't process everything she said.:italicbold",
+        "Alan:	pensive	:I can't process everything she said.:italicbold",
         "Alan:	pensive	:Oh, I don't…:normal",
         "Alan:	spitting	:(Spitting water):normal",
         "Cindy:	pouting	:Wow, hold on there. Get up and throw your wet shirt, you could catch a cold.:normal",
         "Cindy:	pouting	:This is not how a guy should talk to an older girl.:normal",
-        "Alan:	pensive	:Why is she acting like she's so close with me?:italicbold",
+        "Alan:	pensive	:Why is she acting like she's so close with me?:italicbold"
     };
 
     [Header("Encounter Scene")]
@@ -153,7 +153,7 @@ public class DialogueChapter1 : MonoBehaviour
         "Cindy:	silhouette	:Now go, don't keep a girl waiting.:normal",
         "Alan:	neutral	:This girl… I don't know what she's up to.:italicbold",
         "Alan:	neutral	:I just want to follow her game.:italicbold",
-        "Cindy:	silhouette	:Eh, I'll reward you if you can find me quickly enough.:normal"
+        "Cindy:	silhouette	:Eh, I'll reward you if you can find me quickly enough.:normal",
     };
 
     public string[] dialogueWrongTree = 
@@ -240,6 +240,6 @@ public class DialogueChapter1 : MonoBehaviour
         "Cindy:	cry	:I want it… but-:normal",
         "Alan:	neutral	:It's hurt to know the truth… but if she's not alive, It doesn't matter…:italicbold",
         "Alan:	relieved	:She helped me, after all… Now it's my turn to repay her the favor.:italicbold",
-        "Alan:	slightly_smile	:Cindy, I-:normal",
+        "Alan:	slightly_smile	:Cindy, I-:normal"
     };
 }

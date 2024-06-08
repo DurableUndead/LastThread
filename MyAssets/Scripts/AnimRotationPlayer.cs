@@ -4,22 +4,43 @@ using UnityEngine;
 
 public class AnimRotationPlayer : MonoBehaviour
 {
-    public void delayRotation()
+    PlayerMovement scriptPlayerMovement;
+    public GameObject sideWalkMirrorGO;
+    public GameObject idleMirrorGO;
+    public GameObject sideButFreezeGO;
+
+    public void Start()
+    {
+        scriptPlayerMovement = GetComponent<PlayerMovement>();
+    }
+    public void mirrorAlanRotation()
     {
         StartCoroutine(PlayerRotationZ());
     }
     IEnumerator PlayerRotationZ()
     {
-        while (transform.rotation.eulerAngles.z < 180)
+        float targetZRotation = -180f;
+        float currentZRotation = transform.rotation.eulerAngles.z;
+
+        // Menyesuaikan currentZRotation ke dalam rentang -180 hingga 180 derajat
+        if (currentZRotation > 180f)
+            currentZRotation -= 360f;
+
+        while (currentZRotation > targetZRotation)
         {
-            if (transform.rotation.eulerAngles.z < 120)
-                transform.rotation = Quaternion.Euler(0, 0, transform.eulerAngles.z + 50f * Time.deltaTime);
-            else if (transform.rotation.eulerAngles.z < 150)
-                transform.rotation = Quaternion.Euler(0, 0, transform.eulerAngles.z + 40f * Time.deltaTime);
-            else if (transform.rotation.eulerAngles.z < 180)
-                transform.rotation = Quaternion.Euler(0, 0, transform.eulerAngles.z + 30f * Time.deltaTime);
+            if (currentZRotation > -120f)
+                currentZRotation -= 50f * Time.deltaTime;
+            else if (currentZRotation > -150f)
+                currentZRotation -= 40f * Time.deltaTime;
+            else if (currentZRotation > targetZRotation)
+                currentZRotation -= 30f * Time.deltaTime;
+            transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, currentZRotation);
             yield return null;
         }
-        transform.rotation = Quaternion.Euler(0, 0, 180);
+        transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, targetZRotation);
+        sideWalkMirrorGO.SetActive(false);
+        idleMirrorGO.SetActive(true);
+        sideButFreezeGO.SetActive(false);
+        scriptPlayerMovement.canMove = true;
     }
 }

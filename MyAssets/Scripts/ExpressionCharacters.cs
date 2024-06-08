@@ -21,6 +21,8 @@ public class ExpressionCharacters : MonoBehaviour
     public List<ExpressionSprite> alanExpressionList;
     // Dictionary untuk menyimpan ekspresi dan sprite
     private Dictionary<string, Sprite> alanExpressionSprites;
+    [Header("Alan (Despair) Expressions")]
+    private Dictionary<string, Sprite> alanDespairExpressionSprites;
 
     [Header("Cindy Expressions")]
     public List<ExpressionSprite> cindyExpressionList;
@@ -46,6 +48,12 @@ public class ExpressionCharacters : MonoBehaviour
         foreach (ExpressionSprite alanExpression in alanExpressionList)
         {
             alanExpressionSprites.Add(alanExpression.expressionName, alanExpression.sprite);
+        }
+
+        alanDespairExpressionSprites = new Dictionary<string, Sprite>();
+        foreach (ExpressionSprite alanDespairExpression in alanExpressionList)
+        {
+            alanDespairExpressionSprites.Add(alanDespairExpression.expressionName, alanDespairExpression.sprite);
         }
 
         cindyExpressionSprites = new Dictionary<string, Sprite>();
@@ -74,7 +82,9 @@ public class ExpressionCharacters : MonoBehaviour
 
         // characterExpressions 
         characterExpressions.Add("Alan", alanExpressionSprites);
+        characterExpressions.Add("Alan (Despair)", alanDespairExpressionSprites);
         characterExpressions.Add("Cindy", cindyExpressionSprites);
+        characterExpressions.Add("???", cindyExpressionSprites);
         characterExpressions.Add("Alan's Mom", alanMomExpressionSprites);
         characterExpressions.Add("Alan's Dad", alanDadExpressionSprites);
         characterExpressions.Add("Alan's Boss", alanBossExpressionSprites);

@@ -4,16 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using Cinemachine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 public class Chapter1Scene : MonoBehaviour
 {
     private List<System.Action> flowFunctionsChapter1 = new List<System.Action>();
     private List<System.Action> flowTransitionChapter1 = new List<System.Action>();
     [Header("Scripts")]
     public PlayerMovement scriptPlayerMovement;
-    public ExpressionCharacters scriptExpressionCharacters;
-    public DialogueChapter1 scriptDialogueChapter1;
-    public TransitionFunction scriptTransitionFunction;
+    public CindyMovement scriptCindyMovement;
     public ObjectInterect scriptObjectInterect;
+    private DialogueChapter1 scriptDialogueChapter1;
+    private TransitionFunction scriptTransitionFunction;
     private PauseGameplay scriptPauseGameplay;
     private AudioManager scriptAudioManager;
     [Header("Camera")]
@@ -22,43 +23,34 @@ public class Chapter1Scene : MonoBehaviour
     [Header("GameObjects")]
     public GameObject playerGO;
     public GameObject cindyGO;
-    public GameObject homeAlanGO;
-    public GameObject riverSideTreesGO;
-    // public GameObject GuideGO;
-    public GameObject minigameTreeGO;
-    public GameObject wallMinigameTreeGO;
-    public GameObject round1TreeGO;
-    public GameObject round2TreeGO;
-    public GameObject parallaxBackgroundGO;
-    public GameObject centerMiniGameGO;
-    public GameObject watchCindyGO;
+    public GameObject shadingGO;
 
     [Header("Sprites For Dialogue")]
-    public Sprite spriteCertificate;
+    public Sprite spriteTrophy;
     public Sprite spriteFamilyPicture;
     public Sprite spriteCindyWatch;
 
-    // [Header("GameObject Image for Scene")]
-    // public Image imageScene;
-    // public Sprite spriteImageScene;
-
     [Header("Memories Scene")]
+    public GameObject puzzleJigsawGO;
+    public GameObject homeAlanGO;
     private string[] familyPictureString;
-    private string[] certificateString;
+    private string[] trophyString;
     private string[] dialogueWithParents1;
     private string[] dialogueWithParents2;
-    //string jika player belum berinteraksi dengan objek foto, sertifikat, dan orang tua
     private string[] dialogueBeforeExitMemories;
     private string[] dialogueAfterOpenDoor;
-
     public bool haveTalkedToParents = false;
-    public bool canOpenDoor = false;
+    public bool canOpenDoorAfterDialogue = false;
+    public bool canOpenDoorAfterPuzzle = false;
+    public bool puzzleJigsawSolved = false;
 
     [Header("Wake Up Scane")]
     private string[] dialogueWakeUp;
     public Sprite ImageWakeUpSprite;
 
     [Header("Encounter Scene")]
+    public GameObject riverBankGO;
+    public GameObject alanWalletGO;
     private string[] dialogueNoSwimming;
     private string[] dialogueBench;
     private string[] dialogueTrees;
@@ -67,16 +59,22 @@ public class Chapter1Scene : MonoBehaviour
     private string[] dialogueWithCindyAfterPickingUpWallet;
     private string[] afterFoundWatchAndTalkWithCindy;
     public bool foundWalletAndWatch = false;
-    public GameObject walletAndWatchGO;
     public bool isDialogueWithCindy = false;
 
     [Header("Happiness Scene")]
+    public GameObject exclamationMarkCindyGO;
+    public GameObject loopingRiverBankGO;
     private string[] dialogueAlanCindyWalkTogether;
-    public GameObject loopingBackgroundGO;
+    // public GameObject loopingBackgroundGO;
     public float distanceCindyAfterGoAway = 10f;
-    // public bool isWalkTogether = false;
+    public bool isWalkTogether = false;
 
     [Header("MiniGame Scene")]
+    public GameObject minigameTreeGO;
+    public GameObject wallMinigameTreeGO;
+    public GameObject round1TreeGO;
+    public GameObject round2TreeGO;
+    public GameObject centerMiniGameGO;
     private string[] dialogueRound1MiniGameTree;
     private string[] dialogueWrongTree;
     private string[] dialogueRound2MiniGameTree;
@@ -92,18 +90,21 @@ public class Chapter1Scene : MonoBehaviour
 
     [Header("Cindy Scene - Level 4")]
     private string[] dialogueAfterAlanDroppedWatch;
+    public GameObject cindyWatchGO;
     public bool droppedWatch = false;
     public bool spawnWatch = true;
     [Header("Audio")]
     public AudioSource audioSource;
     public AudioClip audioClip;
-    public float volumeAudio;
-
+    [Header("Video Outro Gameplay")]
+    public VideoClip videoClipOutro;
     // Start is called before the first frame update
     void Start()
     {
         scriptPauseGameplay = GetComponent<PauseGameplay>();
         scriptAudioManager = GetComponent<AudioManager>();
+        scriptDialogueChapter1 = GetComponent<DialogueChapter1>();
+        scriptTransitionFunction = GetComponent<TransitionFunction>();
 
         flowTransitionChapter1.Add(NothingHappend); //0
         flowTransitionChapter1.Add(() => scriptTransitionFunction.TransitionCharacterText(scriptTransitionFunction.targetTextForTransition)); //1
@@ -132,15 +133,15 @@ public class Chapter1Scene : MonoBehaviour
         flowFunctionsChapter1.Add(FadeInAfterCindyGoAway); // 15
         flowFunctionsChapter1.Add(FadeOutAfterCindyGoAway); // 16
         flowFunctionsChapter1.Add(FindCindyBehindTree); // 17
-        flowFunctionsChapter1.Add(DialogueMiniGameTree); // 18
-        flowFunctionsChapter1.Add(StartMiniGameTree); // 19
-        flowFunctionsChapter1.Add(AfterFoundCindyInRound1); // 20
-        flowFunctionsChapter1.Add(FadeInAfterRound1MiniGameTree); // 21
-        flowFunctionsChapter1.Add(FadeOutAfterRound1MiniGameTree); // 22
-        flowFunctionsChapter1.Add(DialogueAfterRound1MiniGameTree); // 23
-        flowFunctionsChapter1.Add(FadeInGoToRound2); // 24
-        flowFunctionsChapter1.Add(FadeOutGoToRound2); // 25
-        flowFunctionsChapter1.Add(FinalMiniGameTree); // 26
+        flowFunctionsChapter1.Add(StartMiniGameTree); // 18
+        flowFunctionsChapter1.Add(AfterFoundCindyInRound1); // 19
+        flowFunctionsChapter1.Add(FadeInAfterRound1MiniGameTree); // 20
+        flowFunctionsChapter1.Add(FadeOutAfterRound1MiniGameTree); // 21
+        flowFunctionsChapter1.Add(DialogueAfterRound1MiniGameTree); // 22
+        flowFunctionsChapter1.Add(FadeInGoToRound2); // 23
+        flowFunctionsChapter1.Add(FadeOutGoToRound2); // 24
+        flowFunctionsChapter1.Add(FinalMiniGameTree); // 25
+        flowFunctionsChapter1.Add(DialogueFinalMiniGame); // 26
         flowFunctionsChapter1.Add(FadeInBlackScreenCutScene); // 27
         flowFunctionsChapter1.Add(FadeInCutSceneOnTop); // 28
         flowFunctionsChapter1.Add(DialogueInCutsceneOnTop); // 29
@@ -162,8 +163,9 @@ public class Chapter1Scene : MonoBehaviour
 
         audioSource = scriptAudioManager.musicAudioSource;
         audioClip = scriptAudioManager.musicClips[0];
-        volumeAudio = scriptAudioManager.volumeMusicNow;
-        StartCoroutine(scriptTransitionFunction.FadeInAudio(audioSource, audioClip, volumeAudio));
+        StartCoroutine(scriptTransitionFunction.FadeInAudio(audioSource, audioClip, scriptAudioManager.volumeMusicNow));
+
+        scriptPlayerMovement.footstepSounds = scriptPlayerMovement.footstepWoodenFloor;
     }
 
     // Update is called once per frame
@@ -203,7 +205,7 @@ public class Chapter1Scene : MonoBehaviour
     void InitialAddDialogue()
     {
         familyPictureString = scriptDialogueChapter1.familyPictureString;
-        certificateString = scriptDialogueChapter1.certificateString;
+        trophyString = scriptDialogueChapter1.trophyString;
         dialogueWithParents1 = scriptDialogueChapter1.dialogueWithParents1;
         dialogueWithParents2 = scriptDialogueChapter1.dialogueWithParents2;
         dialogueBeforeExitMemories = scriptDialogueChapter1.dialogueBeforeExitMemories;
@@ -231,9 +233,19 @@ public class Chapter1Scene : MonoBehaviour
     }
     public void TriggerObjectPhoto()
     {
+        if (!puzzleJigsawSolved)
+        {
+            puzzleJigsawGO.SetActive(true);
+            scriptPlayerMovement.canMove = false;
+            scriptPlayerMovement.StopWalkingOrRunning();
+            scriptObjectInterect.enabled = false;
+            return;
+        }
+        
+        
         scriptTransitionFunction.characterDialogue = familyPictureString;
         // dialogueText.text = scriptTransitionFunction.characterDialogue[scriptTransitionFunction.intCharacterText];
-        scriptTransitionFunction.DefaultTriggerMechanism();
+        scriptTransitionFunction.DefaultTriggerMechanism(true);
         scriptTransitionFunction.bgObjectImageGO.SetActive(true);
         scriptTransitionFunction.ObjectImageGO.SetActive(true);
         scriptTransitionFunction.ObjectImageSprite.sprite = spriteFamilyPicture;
@@ -241,14 +253,27 @@ public class Chapter1Scene : MonoBehaviour
         scriptTransitionFunction.isInteractObjectImage = true;
     }
 
-    public void TriggerObjectCertificate()
+    public void ClosePuzzleJigsaw(bool puzzleWin=false)
     {
-        scriptTransitionFunction.characterDialogue = certificateString;
+        puzzleJigsawGO.SetActive(false);
+        scriptPlayerMovement.canMove = true;
+        scriptObjectInterect.enabled = true;
+
+        if (!puzzleWin)
+            return;
+        canOpenDoorAfterPuzzle = true;
+        puzzleJigsawSolved = true;
+        TriggerObjectPhoto();
+    }
+
+    public void TriggerObjectTrophy()
+    {
+        scriptTransitionFunction.characterDialogue = trophyString;
         // dialogueText.text = scriptTransitionFunction.characterDialogue[scriptTransitionFunction.intCharacterText];
-        scriptTransitionFunction.DefaultTriggerMechanism();
+        scriptTransitionFunction.DefaultTriggerMechanism(true);
         scriptTransitionFunction.ObjectImageGO.SetActive(true);
-        scriptTransitionFunction.ObjectImageSprite.sprite = spriteCertificate;
-        scriptTransitionFunction.textNameObject.text = "#1 Rank Certificate";
+        scriptTransitionFunction.ObjectImageSprite.sprite = spriteTrophy;
+        scriptTransitionFunction.textNameObject.text = "My Trophy";
         scriptTransitionFunction.isInteractObjectImage = true;
     }
 
@@ -259,44 +284,59 @@ public class Chapter1Scene : MonoBehaviour
         {
             scriptTransitionFunction.characterDialogue = dialogueWithParents1;
             haveTalkedToParents = true;
-            canOpenDoor = true;
+            canOpenDoorAfterDialogue = true;
         }
         else
             scriptTransitionFunction.characterDialogue = dialogueWithParents2;
         // dialogueText.text = scriptTransitionFunction.characterDialogue[scriptTransitionFunction.intCharacterText];
-        scriptTransitionFunction.DefaultTriggerMechanism();
+        scriptTransitionFunction.DefaultTriggerMechanism(true);
     }
 
     public void TriggerObjectDoor()
     {
-        if (canOpenDoor)
+        if (canOpenDoorAfterDialogue && canOpenDoorAfterPuzzle)
         {
+            scriptObjectInterect.canInteract = false;
+            scriptObjectInterect.currentCollider = null;
+
             scriptTransitionFunction.blackscreenImage.gameObject.SetActive(true);
             scriptPlayerMovement.canMove = false;
             scriptPlayerMovement.rb2D.velocity = Vector2.zero;
+            scriptPlayerMovement.StopWalkingOrRunning();
+            scriptTransitionFunction.intTransitionNumbersNow = 0;
+            // scriptTransitionFunction.intFunctionNumbersNow = 0;
+
+            // Audio for opening door
+            //play oneshoot
+            scriptAudioManager.gameplayAudioSource.PlayOneShot(scriptAudioManager.gameplayClips[0]);
             scriptTransitionFunction.intTransitionNumbersNow = 3;
             scriptTransitionFunction.intFunctionNumbersNow = 2;
+            // Invoke("IEGoToWakeUp", scriptAudioManager.gameplayClips[0].length);
+
+            // scriptAudioManager.gameplayAudioSource.clip = scriptAudioManager.gameplayClips[0];
+            // scriptAudioManager.gameplayAudioSource.Play();
+            
         }
         else
         {
             // scriptTransitionFunction.DefaultTriggerMechanism();
             scriptTransitionFunction.characterDialogue = dialogueBeforeExitMemories;
             // dialogueText.text = scriptTransitionFunction.characterDialogue[scriptTransitionFunction.intCharacterText];
-            scriptTransitionFunction.DefaultTriggerMechanism();
+            scriptTransitionFunction.DefaultTriggerMechanism(true);
         }
     }
 
     public void TriggerObjectNoSwimmingSign()
     {
         scriptTransitionFunction.characterDialogue = dialogueNoSwimming;
-        scriptTransitionFunction.DefaultTriggerMechanism();
+        scriptTransitionFunction.DefaultTriggerMechanism(true);
     }
 
     public void TriggerObjectBench()
     {
         scriptTransitionFunction.characterDialogue = dialogueBench;
         // dialogueText.text = scriptTransitionFunction.characterDialogue[scriptTransitionFunction.intCharacterText];
-        scriptTransitionFunction.DefaultTriggerMechanism();
+        scriptTransitionFunction.DefaultTriggerMechanism(true);
     }
 
     public void TriggerObjectTrees(GameObject treeGameObject)
@@ -304,7 +344,7 @@ public class Chapter1Scene : MonoBehaviour
         if (!isMiniGameTree)
         {
             scriptTransitionFunction.characterDialogue = dialogueTrees;
-            scriptTransitionFunction.DefaultTriggerMechanism();
+            scriptTransitionFunction.DefaultTriggerMechanism(true);
         }
         else
             TriggerObjectMiniGame(treeGameObject);
@@ -314,8 +354,8 @@ public class Chapter1Scene : MonoBehaviour
     {
         scriptTransitionFunction.characterDialogue = dialoguePickingUpWatch;
         foundWalletAndWatch = true;
-        walletAndWatchGO.SetActive(false);
-        scriptTransitionFunction.DefaultTriggerMechanism();
+        alanWalletGO.SetActive(false);
+        scriptTransitionFunction.DefaultTriggerMechanism(true);
         scriptTransitionFunction.ObjectImageGO.SetActive(true);
         scriptTransitionFunction.ObjectImageSprite.sprite = spriteCindyWatch;
         scriptTransitionFunction.textNameObject.text = "Broken Watch";
@@ -324,19 +364,23 @@ public class Chapter1Scene : MonoBehaviour
 
     public void TriggerObjectCindy()
     {
+        bool canMove = false;
         if (foundWalletAndWatch)
             scriptTransitionFunction.characterDialogue = dialogueWithCindyAfterPickingUpWallet;
         else
+        {
             scriptTransitionFunction.characterDialogue = dialogueBeforePickingUpWallet;
+            canMove = true;
+        }
         isDialogueWithCindy = true;
 
-        scriptTransitionFunction.DefaultTriggerMechanism();
+        scriptTransitionFunction.DefaultTriggerMechanism(canMove);
     }
 
     public void TriggerObjectMiniGame(GameObject treeGameObject)
     {
         playerGO.GetComponent<ObjectInterect>().ManualTriggerExit2DTree(treeGameObject);
-
+        bool canMove = false;
         if (isRound1)
         {
             if (isFirstTree)
@@ -346,11 +390,12 @@ public class Chapter1Scene : MonoBehaviour
                 // temp.tag = "Untagged";
                 playerGO.GetComponent<ObjectInterect>().tempTrees.Add(treeGameObject);
                 treeGameObject.tag = "Untagged";
+                canMove = true;
             }
             else
             {
                 isRound1 = false;
-                scriptTransitionFunction.characterDialogue = dialogueRound2MiniGameTree;
+                // scriptTransitionFunction.characterDialogue = dialogueRound2MiniGameTree;
                 intTreeRandomizer = Random.Range(2, 10);
                 // isFirstTree = true;
                 // temp.tag = "Trees";
@@ -359,6 +404,8 @@ public class Chapter1Scene : MonoBehaviour
                 foreach (GameObject tree in playerGO.GetComponent<ObjectInterect>().tempTrees)
                     tree.tag = "Trees";
                 playerGO.GetComponent<ObjectInterect>().tempTrees.Clear();
+                scriptPlayerMovement.canMove = false;
+                return;
             }
         }
         else
@@ -371,6 +418,8 @@ public class Chapter1Scene : MonoBehaviour
                     tree.tag = "Trees";
                 playerGO.GetComponent<ObjectInterect>().tempTrees.Clear();
                 scriptTransitionFunction.DefaultTriggerMechanism();
+                scriptObjectInterect.enabled = false;
+                scriptObjectInterect.canDetectObject = false;
                 return;
             }
             else
@@ -378,10 +427,11 @@ public class Chapter1Scene : MonoBehaviour
                 scriptTransitionFunction.characterDialogue = dialogueWrongTree;
                 playerGO.GetComponent<ObjectInterect>().tempTrees.Add(treeGameObject);
                 treeGameObject.tag = "Untagged";
+                canMove = true;
             }
             intCheckTree++;
         }
-        scriptTransitionFunction.DefaultTriggerMechanism();
+        scriptTransitionFunction.DefaultTriggerMechanism(canMove);
     }
 
     void OpeningAfterFadeOutBlackScreen()
@@ -398,14 +448,21 @@ public class Chapter1Scene : MonoBehaviour
     {
         if (scriptTransitionFunction.blackscreenFadeIn)
         {
-            StartCoroutine(scriptTransitionFunction.FadeOutAudio(audioSource, volumeAudio));
-            scriptTransitionFunction.characterDialogue = dialogueAfterOpenDoor;
-            // dialogueText.text = scriptTransitionFunction.characterDialogue[scriptTransitionFunction.intCharacterText];
-            scriptTransitionFunction.DefaultTriggerMechanism();
-            scriptTransitionFunction.intFunctionNumbersNow++;
+            StartCoroutine(scriptTransitionFunction.FadeOutAudio(audioSource, scriptAudioManager.volumeMusicNow));
+            Invoke("DelayGoToDialogue", scriptAudioManager.gameplayClips[0].length - scriptTransitionFunction.fadeInBlackscreen);
             scriptTransitionFunction.blackscreenFadeIn = false;
-            scriptPlayerMovement.canMove = false;
+            // scriptPlayerMovement.canMove = false;
+            scriptTransitionFunction.intFunctionNumbersNow = 0;
+            scriptTransitionFunction.intTransitionNumbersNow = 0;
         }
+    }
+
+    void DelayGoToDialogue()
+    {
+        scriptTransitionFunction.characterDialogue = dialogueAfterOpenDoor;
+        scriptTransitionFunction.DefaultTriggerMechanism();
+        scriptTransitionFunction.intFunctionNumbersNow = 3;
+        scriptTransitionFunction.intTransitionNumbersNow = 2;
     }
 
     void GoWakeUp() // 3 = Scene after dialogue with cindya in black screen
@@ -420,7 +477,7 @@ public class Chapter1Scene : MonoBehaviour
         
         scriptTransitionFunction.intTransitionNumbersNow = 5;
         scriptTransitionFunction.intFunctionNumbersNow++;
-        scriptPlayerMovement.canMove = false;
+        // scriptPlayerMovement.canMove = false;
     }
 
     void LookAtandFirstConversationWithCindy() // 4 = Scene after wake up
@@ -432,6 +489,9 @@ public class Chapter1Scene : MonoBehaviour
             scriptTransitionFunction.DefaultTriggerMechanism();
             scriptTransitionFunction.intFunctionNumbersNow++;
             scriptTransitionFunction.imageSceneFadeIn = false;
+
+            audioClip = scriptAudioManager.musicClips[1];
+            StartCoroutine(scriptTransitionFunction.FadeInAudio(audioSource, audioClip, scriptAudioManager.volumeMusicNow));
         }
     }
 
@@ -441,23 +501,39 @@ public class Chapter1Scene : MonoBehaviour
             return;
         scriptTransitionFunction.intTransitionNumbersNow = 6;
         scriptTransitionFunction.intFunctionNumbersNow++;
-        scriptPlayerMovement.canMove = false;
+        // scriptPlayerMovement.canMove = false;
+
+        StartCoroutine(scriptTransitionFunction.FadeOutAudio(audioSource, scriptAudioManager.volumeMusicNow));
     }
 
     void StandUpAfterConversationWithCindy() // 6 = Scene after finished first conversation with cindy
     {
         if (scriptTransitionFunction.imageSceneFadeOut)
         {
-            scriptTransitionFunction.intTransitionNumbersNow = 4; //fade out blackscreen
-            scriptTransitionFunction.intFunctionNumbersNow++;
+            Invoke("DelayGoToTeleportRiverSideTrees", 0.5f);
+            scriptTransitionFunction.intTransitionNumbersNow = 0; // 4; //fade out blackscreen
+            scriptTransitionFunction.intFunctionNumbersNow = 0;
             scriptTransitionFunction.imageSceneFadeOut = false;
 
             homeAlanGO.SetActive(false);
-            riverSideTreesGO.SetActive(true);
+            riverBankGO.SetActive(true);
 
             cindyGO.SetActive(true);
+            playerGO.transform.position = new Vector2(17f, playerGO.transform.position.y);
             cindyGO.transform.position = new Vector2(playerGO.transform.position.x + 2, cindyGO.transform.position.y);
+            scriptCindyMovement.StopMovement();
+
+            scriptPlayerMovement.footstepSounds = scriptPlayerMovement.footstepOnGrass;
+            shadingGO.SetActive(true);
         }
+    }
+
+    void DelayGoToTeleportRiverSideTrees()
+    {
+        scriptTransitionFunction.intTransitionNumbersNow = 4; //fade out blackscreen
+        scriptTransitionFunction.intFunctionNumbersNow = 7;
+
+        scriptCindyMovement.cindyLookAtTransform = playerGO.transform;
     }
 
     void TeleportRiverSideTrees() // 7 = Scene after stand up after conversation with cindy
@@ -468,6 +544,10 @@ public class Chapter1Scene : MonoBehaviour
             scriptTransitionFunction.intTransitionNumbersNow = 0;
             scriptTransitionFunction.intFunctionNumbersNow++;
             scriptPlayerMovement.canMove = true;
+
+            //midnight ambient jika tidak ada music yang sedang dimainkan
+            scriptAudioManager.ambientAudioSource.clip = scriptAudioManager.ambientClips[0];
+            scriptAudioManager.ambientAudioSource.Play();
         }
     }
 
@@ -479,7 +559,14 @@ public class Chapter1Scene : MonoBehaviour
         if (!isDialogueWithCindy)
             return;
 
+        scriptCindyMovement.cindyLookAtTransform = null;
         scriptTransitionFunction.intFunctionNumbersNow++;
+
+        scriptAudioManager.ambientAudioSource.Stop();
+        audioClip = scriptAudioManager.musicClips[2];
+        StartCoroutine(scriptTransitionFunction.FadeInAudio(audioSource, audioClip, scriptAudioManager.volumeMusicNow));
+
+        scriptObjectInterect.canInteract = false;
     }
 
     void FinishedTalkWithCindy()
@@ -490,7 +577,9 @@ public class Chapter1Scene : MonoBehaviour
         scriptTransitionFunction.intFunctionNumbersNow++;
         scriptTransitionFunction.intTransitionNumbersNow = 3;
         scriptTransitionFunction.blackscreenImage.gameObject.SetActive(true);
-        scriptPlayerMovement.canMove = false;
+        // scriptPlayerMovement.canMove = false;
+
+        StartCoroutine(scriptTransitionFunction.FadeOutAudio(audioSource, scriptAudioManager.volumeMusicNow));
     }
 
     void AlanThoughtAfterFoundWatch() // 10 = Scene after fade in to after talk
@@ -516,14 +605,21 @@ public class Chapter1Scene : MonoBehaviour
         scriptTransitionFunction.intFunctionNumbersNow++;
         scriptTransitionFunction.intTransitionNumbersNow = 4;
         
-        loopingBackgroundGO.SetActive(true); // enable looping background
-        // GuideGO.SetActive(false);
+        riverBankGO.SetActive(false);
+        loopingRiverBankGO.SetActive(true);
 
         playerGO.transform.position = new Vector2(0, playerGO.transform.position.y);
         cindyGO.transform.position = new Vector2(5f, playerGO.transform.position.y);
 
-        riverSideTreesGO.SetActive(false);
-        // scriptPlayerMovement.canMove = false;
+        audioClip = scriptAudioManager.musicClips[3];
+        StartCoroutine(scriptTransitionFunction.FadeInAudio(audioSource, audioClip, scriptAudioManager.volumeMusicNow));
+        scriptPlayerMovement.WalkInPlace("Right");
+        scriptCindyMovement.ChangeMovementType(directionMove: "Right", walkInPlace: true);
+        scriptCindyMovement.animatorCindy.speed = 1f;
+        scriptPlayerMovement.animator.speed = 0.7f;
+
+        isWalkTogether = true;
+        scriptObjectInterect.canDetectObject = false;
     }
 
     // Level: LC1_03 (Happiness)
@@ -536,9 +632,6 @@ public class Chapter1Scene : MonoBehaviour
 
             scriptTransitionFunction.characterDialogue = dialogueAlanCindyWalkTogether;
             scriptTransitionFunction.DefaultTriggerMechanism();
-            // scriptPlayerMovement.canMove = false;
-
-            // isWalkTogether = true;
         }
     }
 
@@ -546,10 +639,16 @@ public class Chapter1Scene : MonoBehaviour
     {
         if (scriptTransitionFunction.isDialogue)
             return;
+
+        // cindyGO.transform.GetChild(1).gameObject.SetActive(true); // enable exclamation mark
+        exclamationMarkCindyGO.SetActive(true);
         
         // loopingBackgroundGO.SetActive(false);
-        scriptPlayerMovement.canMove = false;
-        cindyGO.GetComponent<PlayerMovement>().canMove = true;
+        // scriptPlayerMovement.canMove = false;
+        // scriptCindyMovement.intAutoMovement = 1;
+        scriptCindyMovement.canMove = true;
+        scriptCindyMovement.animatorCindy.speed = 1.5f;
+        scriptCindyMovement.ChangeMovementType("Right", true);
         cindyGO.GetComponent<CapsuleCollider2D>().isTrigger = false;
         cindyGO.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
         // GuideGO.SetActive(true);
@@ -561,14 +660,18 @@ public class Chapter1Scene : MonoBehaviour
     {
         if (cindyGO.transform.position.x > distanceCindyAfterGoAway)
         {
-            cindyGO.GetComponent<PlayerMovement>().canMove = false;
+            scriptCindyMovement.canMove = false;
             cindyGO.GetComponent<CapsuleCollider2D>().isTrigger = false;
             cindyGO.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+            // cindyGO.transform.GetChild(1).gameObject.SetActive(false);
+            exclamationMarkCindyGO.SetActive(false);
             cindyGO.SetActive(false);
             scriptTransitionFunction.intFunctionNumbersNow++;
             scriptTransitionFunction.intTransitionNumbersNow = 3;
             // GuideGO.SetActive(true);
             scriptTransitionFunction.blackscreenImage.gameObject.SetActive(true);
+            isWalkTogether = false;
+            scriptCindyMovement.animatorCindy.speed = 1f;
         } 
     }
 
@@ -577,12 +680,21 @@ public class Chapter1Scene : MonoBehaviour
         if (scriptTransitionFunction.blackscreenFadeIn)
         {
             scriptTransitionFunction.blackscreenFadeIn = false;
-            loopingBackgroundGO.SetActive(false);
-            parallaxBackgroundGO.SetActive(true);
+            loopingRiverBankGO.SetActive(false);
+            // parallaxBackgroundGO.SetActive(true);
             minigameTreeGO.SetActive(true);
             round1TreeGO.SetActive(true);
             scriptTransitionFunction.intFunctionNumbersNow++;
             scriptTransitionFunction.intTransitionNumbersNow = 4;
+
+            scriptPlayerMovement.StopWalkingOrRunning();
+            scriptPlayerMovement.animator.SetTrigger("Idle");
+            scriptPlayerMovement.animator.ResetTrigger("Walk");
+            StartCoroutine(scriptTransitionFunction.FadeOutAudio(audioSource, scriptAudioManager.volumeMusicNow));
+            //midnight ambient jika tidak ada music yang sedang dimainkan
+            scriptAudioManager.ambientAudioSource.clip = scriptAudioManager.ambientClips[0];
+            scriptAudioManager.ambientAudioSource.Play();
+            scriptPlayerMovement.animator.speed = 1f;
         }
     }
 
@@ -594,6 +706,7 @@ public class Chapter1Scene : MonoBehaviour
             scriptPlayerMovement.canMove = true;
             scriptTransitionFunction.intFunctionNumbersNow++;
             scriptTransitionFunction.intTransitionNumbersNow = 0;
+            scriptObjectInterect.canDetectObject = true;
         }
     }
 
@@ -603,28 +716,38 @@ public class Chapter1Scene : MonoBehaviour
         //jika alan berada di posisi minigameTreeGO
         if (playerGO.transform.position.x >= centerMiniGameGO.transform.position.x)
         {
-            scriptPlayerMovement.rb2D.velocity = Vector2.zero;
+            // scriptPlayerMovement.rb2D.velocity = Vector2.zero;
+            scriptPlayerMovement.StopWalkingOrRunning();
 
             scriptTransitionFunction.intFunctionNumbersNow++;
             // GuideGO.SetActive(true);
 
-            // riverSideTreesGO.SetActive(false);
+            // riverBankGO.SetActive(false);
             wallMinigameTreeGO.SetActive(true);
             //change follow target
             virtualCamera.m_Follow = centerMiniGameGO.transform;
             // scriptTransitionFunction.intTransitionNumbersNow = 5;
+
+            audioClip = scriptAudioManager.musicClips[4];
+            StartCoroutine(scriptTransitionFunction.FadeInAudio(audioSource, audioClip, scriptAudioManager.volumeMusicNow));
+            //stop ambient
+            scriptAudioManager.ambientAudioSource.Stop();
+            scriptTransitionFunction.characterDialogue = dialogueRound1MiniGameTree;
+            scriptTransitionFunction.DefaultTriggerMechanism(true);
         }
     }
 
-    void DialogueMiniGameTree() // 18
-    {
-        scriptTransitionFunction.characterDialogue = dialogueRound1MiniGameTree;
-        scriptTransitionFunction.DefaultTriggerMechanism();
+    // // void DialogueMiniGameTree() // 18
+    // {
+    //     scriptTransitionFunction.characterDialogue = dialogueRound1MiniGameTree;
+    //     scriptTransitionFunction.DefaultTriggerMechanism(true);
 
-        scriptTransitionFunction.intFunctionNumbersNow++;
-    }
+    //     // scriptTransitionFunction.intFunctionNumbersNow++;
 
-    void StartMiniGameTree() // 19
+    //     // // audioClip = scriptAudioManager.musicClips[3];
+    // }
+
+    void StartMiniGameTree() // 18
     {
         if (scriptTransitionFunction.isDialogue)
             return;
@@ -632,16 +755,20 @@ public class Chapter1Scene : MonoBehaviour
         isMiniGameTree = true;
     }
 
-    void AfterFoundCindyInRound1() // 20
+    void AfterFoundCindyInRound1() // 19
     {
         if (isRound1)
             return;
         scriptTransitionFunction.intFunctionNumbersNow++;
         scriptTransitionFunction.intTransitionNumbersNow = 3;
         scriptTransitionFunction.blackscreenImage.gameObject.SetActive(true);
+        scriptObjectInterect.canDetectObject = false;
+        // scriptPlayerMovement.canMove = false;
+
+
     }
 
-    void FadeInAfterRound1MiniGameTree() // 21
+    void FadeInAfterRound1MiniGameTree() // 20
     {
         if (scriptTransitionFunction.blackscreenFadeIn)
         {
@@ -651,34 +778,40 @@ public class Chapter1Scene : MonoBehaviour
 
             cindyGO.SetActive(true);
             cindyGO.transform.position = new Vector2(playerGO.transform.position.x + 2, cindyGO.transform.position.y);
+            scriptCindyMovement.CindyLookAtTarget(playerGO.transform);
+            scriptPlayerMovement.LookAtTarget(cindyGO.transform);
         }
     }
 
-    void FadeOutAfterRound1MiniGameTree() // 22
+    void FadeOutAfterRound1MiniGameTree() // 21
     {
         if (scriptTransitionFunction.blackscreenFadeOut)
         {
             scriptTransitionFunction.blackscreenFadeOut = false;
             scriptTransitionFunction.intFunctionNumbersNow++;
             scriptTransitionFunction.intTransitionNumbersNow = 2;
-            scriptPlayerMovement.canMove = true;
+
+            scriptTransitionFunction.characterDialogue = dialogueRound2MiniGameTree;
+            scriptTransitionFunction.DefaultTriggerMechanism();
         }
     }
 
-    void DialogueAfterRound1MiniGameTree() // 23
+    void DialogueAfterRound1MiniGameTree() // 22
     {
         if (scriptTransitionFunction.isDialogue)
             return;
         scriptTransitionFunction.intFunctionNumbersNow++;
         scriptTransitionFunction.intTransitionNumbersNow = 3;
+        scriptTransitionFunction.blackscreenImage.color = new Color(0, 0, 0, 0);
         scriptTransitionFunction.blackscreenImage.gameObject.SetActive(true);
-        scriptPlayerMovement.canMove = false;
+        // scriptPlayerMovement.canMove = false;
     }
 
-    void FadeInGoToRound2() // 24
+    void FadeInGoToRound2() // 23
     {
       if (scriptTransitionFunction.blackscreenFadeIn)
         {
+            scriptTransitionFunction.blackscreenImage.color = new Color(0, 0, 0, 1);
             scriptTransitionFunction.blackscreenFadeIn = false;
             scriptTransitionFunction.intFunctionNumbersNow++;
             scriptTransitionFunction.intTransitionNumbersNow = 4;
@@ -691,7 +824,7 @@ public class Chapter1Scene : MonoBehaviour
         }
     }
 
-    void FadeOutGoToRound2() // 25
+    void FadeOutGoToRound2() // 24
     {
         if (scriptTransitionFunction.blackscreenFadeOut)
         {
@@ -699,21 +832,50 @@ public class Chapter1Scene : MonoBehaviour
             scriptTransitionFunction.intFunctionNumbersNow++;
             scriptTransitionFunction.intTransitionNumbersNow=0;
             scriptPlayerMovement.canMove = true;
+            scriptObjectInterect.canDetectObject = true;
         }
     }
 
-    void FinalMiniGameTree() // 26
+    void FinalMiniGameTree() // 25
     {
         if (isMiniGameTree)
             return;
+        scriptTransitionFunction.intFunctionNumbersNow++;
+
+        // if (scriptTransitionFunction.isDialogue)
+        //     return;
+
         
+        // scriptTransitionFunction.intTransitionNumbersNow = 3;
+        // scriptTransitionFunction.blackscreenImage.gameObject.SetActive(true);
+        // scriptPlayerMovement.canMove = false;
+
+        // StartCoroutine(scriptTransitionFunction.FadeOutAudio(audioSource, scriptAudioManager.volumeMusicNow));
+    }
+
+    void DialogueFinalMiniGame() // 26
+    {
         if (scriptTransitionFunction.isDialogue)
             return;
-
-        scriptTransitionFunction.intFunctionNumbersNow++;
-        scriptTransitionFunction.intTransitionNumbersNow = 3;
+        scriptTransitionFunction.intFunctionNumbersNow = 0; //++;
+        scriptTransitionFunction.intTransitionNumbersNow = 0; // 3;
+        // scriptTransitionFunction.blackscreenImage.gameObject.SetActive(true);
+        // scriptTransitionFunction.blackscreenImage.color = new Color(0, 0, 0, 0);
         scriptTransitionFunction.blackscreenImage.gameObject.SetActive(true);
-        scriptPlayerMovement.canMove = false;
+        scriptTransitionFunction.blackscreenImage.color = new Color(0, 0, 0, 1);
+        scriptTransitionFunction.blackscreenFadeIn = true;
+
+        // StartCoroutine(scriptTransitionFunction.FadeOutAudio(audioSource, scriptAudioManager.volumeMusicNow));
+        audioSource.Stop();
+        audioClip = null;
+        audioSource.clip = null;
+        Invoke("GoToFadeInBlackScreenCutScene", 0.5f);
+    }
+
+    void GoToFadeInBlackScreenCutScene()
+    {
+        scriptTransitionFunction.intFunctionNumbersNow = 27;
+        scriptTransitionFunction.intTransitionNumbersNow = 3;
     }
 
     void FadeInBlackScreenCutScene() // 27
@@ -721,16 +883,37 @@ public class Chapter1Scene : MonoBehaviour
         if (scriptTransitionFunction.blackscreenFadeIn)
         {
             scriptTransitionFunction.blackscreenFadeIn = false;
-            scriptTransitionFunction.intFunctionNumbersNow++;
-            scriptTransitionFunction.intTransitionNumbersNow = 5;
+            scriptTransitionFunction.intFunctionNumbersNow = 0; //++;
+            scriptTransitionFunction.intTransitionNumbersNow = 0; //5;
 
-            scriptTransitionFunction.imageScene.gameObject.SetActive(true);
+            // scriptAudioManager.gameplayAudioSource.PlayOneShot(scriptAudioManager.gameplayClips[1]);
+            scriptAudioManager.gameplayAudioSource.clip = scriptAudioManager.gameplayClips[1];
+            scriptAudioManager.gameplayAudioSource.Play();
+            StartCoroutine(GoToFadeInCutSceneOnTop());
+
             // spriteImageScene = ImageCindyOnTopSprite;
             scriptTransitionFunction.imageScene.sprite = ImageCindyOnTopSprite;
 
-            riverSideTreesGO.SetActive(true);
+            riverBankGO.SetActive(true);
             minigameTreeGO.SetActive(false);
+
+
         }
+    }
+
+    IEnumerator GoToFadeInCutSceneOnTop()
+    {
+        while (scriptAudioManager.gameplayAudioSource.isPlaying)
+        {
+            yield return null;
+        }
+
+        scriptTransitionFunction.intFunctionNumbersNow = 28;
+        scriptTransitionFunction.intTransitionNumbersNow = 5;
+        scriptTransitionFunction.imageScene.gameObject.SetActive(true);
+
+        audioClip = scriptAudioManager.musicClips[5];
+        StartCoroutine(scriptTransitionFunction.FadeInAudio(audioSource, audioClip, scriptAudioManager.volumeMusicNow));
     }
 
     void FadeInCutSceneOnTop() // 28
@@ -753,7 +936,7 @@ public class Chapter1Scene : MonoBehaviour
 
         scriptTransitionFunction.intFunctionNumbersNow++;
         scriptTransitionFunction.intTransitionNumbersNow = 6;
-        scriptPlayerMovement.canMove = false;
+        // scriptPlayerMovement.canMove = false;
     }
 
     void FadeOutCutSceneOnTop() // 30
@@ -770,6 +953,8 @@ public class Chapter1Scene : MonoBehaviour
             scriptTransitionFunction.middleText.gameObject.SetActive(true);
 
             playerGO.transform.position = new Vector2(0, playerGO.transform.position.y);
+
+            StartCoroutine(scriptTransitionFunction.FadeOutAudio(audioSource, scriptAudioManager.volumeMusicNow));
         }
     }
 
@@ -791,12 +976,21 @@ public class Chapter1Scene : MonoBehaviour
 
         scriptPlayerMovement.canMove = true;
         scriptPlayerMovement.intAutoMovement = 2; // movet to left
-        cindyGO.GetComponent<PlayerMovement>().canMove = true;
-        cindyGO.GetComponent<PlayerMovement>().intAutoMovement = 2;
+        scriptPlayerMovement.animator.speed = 0.7f;
+        scriptCindyMovement.canMove = true;
+        // scriptCindyMovement.intAutoMovement = 2;
+        scriptCindyMovement.ChangeMovementType("Left", true);
+        scriptCindyMovement.speedMovement = 3f;
         cindyGO.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
 
         scriptObjectInterect.enabled = false;
         scriptObjectInterect.canDetectObject = false;
+
+        // scriptPlayerMovement.animator.SetTrigger("Walk");
+        // scriptPlayerMovement.animator.ResetTrigger("Idle");
+        // scriptPlayerMovement.characterBodyTransform.localScale = scriptPlayerMovement.facingLeft;
+        // scriptPlayerMovement.WalkInPlace();
+        scriptTransitionFunction.FadeInCinematicBarTransition();
     }
 
     void FadeOutBlackScreenOnTop() // 32
@@ -810,8 +1004,8 @@ public class Chapter1Scene : MonoBehaviour
             // scriptPlayerMovement.canMove = true;
             // scriptPlayerMovement.intAutoMovement = 2; // movet to left
             // cindyGO.SetActive(true);
-            // cindyGO.GetComponent<PlayerMovement>().canMove = true;
-            // cindyGO.GetComponent<PlayerMovement>().intAutoMovement = 2;
+            // scriptCindyMovement.canMove = true;
+            // // scriptCindyMovement.intAutoMovement = 2;
             // cindyGO.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
         }
     }
@@ -822,31 +1016,45 @@ public class Chapter1Scene : MonoBehaviour
         if (!droppedWatch)
         {
             if (playerGO.transform.position.x <= 0)
+            {
                 droppedWatch = true;
+                scriptTransitionFunction.FadeOutCinematicBarTransition();
+                return;
+            }
             if (playerGO.transform.position.x <= 2)
             {
                 if (!spawnWatch)
                     return;
                 spawnWatch = false;
-                watchCindyGO.SetActive(true);
-                watchCindyGO.transform.position = new Vector2(playerGO.transform.position.x, watchCindyGO.transform.position.y);
+                cindyWatchGO.SetActive(true);
+                cindyWatchGO.transform.position = new Vector2(playerGO.transform.position.x, cindyWatchGO.transform.position.y);
+                scriptAudioManager.PlayTriggerOrNextSoundUI(); //sound dropped watch
+
+                audioClip = scriptAudioManager.musicClips[6];
+                StartCoroutine(scriptTransitionFunction.FadeInAudio(audioSource, audioClip, scriptAudioManager.volumeMusicNow));
             }
         }
         else
         {
+            // scriptPlayerMovement.StopWalkingOrRunning(true, "right");
             scriptTransitionFunction.characterDialogue = dialogueAfterAlanDroppedWatch;
             scriptTransitionFunction.DefaultTriggerMechanism();
             scriptTransitionFunction.intFunctionNumbersNow++;
             scriptTransitionFunction.intTransitionNumbersNow = 2;
     
-            cindyGO.GetComponent<PlayerMovement>().canMove = false;
-            cindyGO.GetComponent<PlayerMovement>().intAutoMovement = 0;
-            cindyGO.GetComponent<PlayerMovement>().rb2D.velocity = Vector2.zero;
+            scriptCindyMovement.canMove = false;
+            // // scriptCindyMovement.intAutoMovement = 0;
+            scriptCindyMovement.rb2D.velocity = Vector2.zero;
 
-            scriptPlayerMovement.canMove = false;
+            // scriptPlayerMovement.canMove = false;
             scriptPlayerMovement.intAutoMovement = 0;
 
             scriptTransitionFunction.blackscreenImage.gameObject.SetActive(true);
+
+            scriptAudioManager.ambientAudioSource.clip = scriptAudioManager.ambientClips[1];
+            scriptAudioManager.ambientAudioSource.Play();
+            scriptPlayerMovement.StopWalkingOrRunning(mirrorDirection: true);
+            scriptCindyMovement.StopMovement();
         }
     }
 
@@ -855,29 +1063,75 @@ public class Chapter1Scene : MonoBehaviour
         if (scriptTransitionFunction.isDialogue)
             return;
 
-        scriptTransitionFunction.intFunctionNumbersNow++;
+        scriptTransitionFunction.intFunctionNumbersNow++; //35;
         scriptTransitionFunction.intTransitionNumbersNow = 3;
-        scriptPlayerMovement.canMove = false;
+        // scriptPlayerMovement.canMove = false;
+
+        StartCoroutine(scriptTransitionFunction.FadeOutAudio(audioSource, scriptAudioManager.volumeMusicNow));
+
+        // sound tense flat line
+        scriptAudioManager.gameplayAudioSource.clip = scriptAudioManager.gameplayClips[2];
+        scriptAudioManager.gameplayAudioSource.Play();
+        scriptTransitionFunction.fadeInBlackscreen = scriptAudioManager.gameplayAudioSource.clip.length - scriptTransitionFunction.fadeInBlackscreen;
+    }
+
+    void SoundPlayBodyDrop()
+    {
+        //sound body drop
+        scriptAudioManager.gameplayAudioSource.PlayOneShot(scriptAudioManager.gameplayClips[3]);
     }
 
     void EndGameplayChapter1()
     {
         if (scriptTransitionFunction.blackscreenFadeIn)
         {
+            // Stop All Audio
+            scriptAudioManager.musicAudioSource.Stop();
+            scriptAudioManager.ambientAudioSource.Stop();
+
+            scriptTransitionFunction.fadeInBlackscreen = scriptTransitionFunction.fadeOutBlackscreen;
+            Invoke("SoundPlayBodyDrop", scriptTransitionFunction.fadeInBlackscreen);
             scriptTransitionFunction.blackscreenFadeIn = false;
             scriptTransitionFunction.intFunctionNumbersNow = 0;
             scriptTransitionFunction.intTransitionNumbersNow = 0;
 
-            Invoke("NextChapterToChapter2", 3f);
-
-            Debug.Log("End of Chapter 1");
+            // Invoke("NextChapterToChapter2", 3f);
+            // Debug.Log("End of Chapter 1");
+            // videoPlayer.gameObject.SetActive(true);
+            Invoke("GoToOutroVideoChapter1", 1f);
         }
     }
 
-    void NextChapterToChapter2()
+    void GoToOutroVideoChapter1()
     {
-        Debug.Log("Next Chapter");
-        SceneManager.LoadScene("Chapter2");
-        PlayerPrefs.SetString("ChapterNow", "Chapter2");
+        scriptPauseGameplay.SetVideoClip(videoClipOutro);
     }
+
+
+    // void GoToOutroVideoChapter1()
+    // {
+    //     videoPlayer.clip = videoClipOutro;
+    //     videoPlayer.Play();
+    //     Invoke("CheckIsPlayingOutro", 1f);
+    // }
+
+    // void CheckIsPlayingOutro()
+    // {
+    //     StartCoroutine(GoToNextChapterToChapter2());
+    // }
+
+    // IEnumerator GoToNextChapterToChapter2()
+    // {
+    //     while (videoPlayer.isPlaying)
+    //     {
+    //         yield return null;
+    //     }
+    //     Invoke("NextChapterToChapter2", 3f);
+    // }
+
+    // void NextChapterToChapter2()
+    // {
+    //     SceneManager.LoadScene("Chapter2");
+    //     PlayerPrefs.SetString("ChapterNow", "Chapter2");
+    // }
 }

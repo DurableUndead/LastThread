@@ -57,6 +57,11 @@ public class MainMenu : MonoBehaviour
     public Image handleAreaUISlider;
     public Slider UISlider;
     public AudioSource UISource;
+    [Header("UI Audio Clips")]
+    public AudioClip[] UIClips;
+    public AudioSource UIAudioSource;
+    [Header("Play BGM")]
+    public AudioClip[] musicClips;
     void Start()
     {
         if (PlayerPrefs.HasKey("ChapterNow"))
@@ -110,13 +115,16 @@ public class MainMenu : MonoBehaviour
             UISlider.value = 1;
             UISource.volume = UISlider.value;
         }
+        musicSource.clip = musicClips[0];
+        musicSource.Play();
     }
 
-    //Button Continue
+    #region Button MainMenu & Settings
     public void ContinueGame()
     {
         //Load Scene
         //nanti disini akan menggunakan save data yang telah di load
+        PlayButtonPressedUI();
         string chapterNow = PlayerPrefs.GetString("ChapterNow");
         SceneManager.LoadScene(chapterNow);
     }
@@ -125,7 +133,7 @@ public class MainMenu : MonoBehaviour
     public void StartNewGame()
     {
         //Load Scene Gameplay
-        
+        PlayButtonPressedUI();
         PlayerPrefs.DeleteKey("ChapterNow");
         PlayerPrefs.SetString("ChapterNow", "Chapter0");
         SceneManager.LoadScene("Chapter0");
@@ -134,6 +142,7 @@ public class MainMenu : MonoBehaviour
 
     public void OpenCloseSettings()
     {
+        PlayButtonPressedUI();
         if (settingsPanel.activeSelf)
         {
             settingsPanel.SetActive(false);
@@ -153,6 +162,7 @@ public class MainMenu : MonoBehaviour
 
     public void OpenCloseCredits()
     {
+        PlayButtonPressedUI();
         if (creditsPanel.activeSelf)
         {
             creditsPanel.SetActive(false);
@@ -167,6 +177,7 @@ public class MainMenu : MonoBehaviour
 
     public void OpenListChapters()
     {
+        PlayButtonPressedUI();
         if (listChapterPanel.activeSelf)
         {
             listChapterPanel.SetActive(false);
@@ -181,6 +192,7 @@ public class MainMenu : MonoBehaviour
 
     public void GoToChapter0()
     {
+        PlayButtonPressedUI();
         PlayerPrefs.DeleteKey("ChapterNow");
         PlayerPrefs.SetString("ChapterNow", "Chapter0");
         SceneManager.LoadScene("Chapter0");
@@ -188,6 +200,7 @@ public class MainMenu : MonoBehaviour
 
     public void GoToChapter1()
     {
+        PlayButtonPressedUI();
         PlayerPrefs.DeleteKey("ChapterNow");
         PlayerPrefs.SetString("ChapterNow", "Chapter1");
         SceneManager.LoadScene("Chapter1");
@@ -195,12 +208,14 @@ public class MainMenu : MonoBehaviour
 
     public void GoToChapter2()
     {
+        PlayButtonPressedUI();
         PlayerPrefs.DeleteKey("ChapterNow");
         PlayerPrefs.SetString("ChapterNow", "Chapter2");
         SceneManager.LoadScene("Chapter2");
     }
+    #endregion
 
-
+    #region Slider Volume
     public void AdjustGameplayVolume()
     {
         gameplaySource.volume = gameplaySlider.value;
@@ -222,13 +237,25 @@ public class MainMenu : MonoBehaviour
     {
         Application.Quit();
     }
+    #endregion
     
 
+    void PlayButtonPressedUI()
+    {
+        UIAudioSource.PlayOneShot(UIClips[0]);
+    }
 
-    //Merubah warna color text menu jika di hover
+    void PlayButtonHoverSoundUI()
+    {
+        UIAudioSource.PlayOneShot(UIClips[1]);
+    }
+
+
+    #region Hover Button
     public void MouseEnterContinueBtn()
     {   
         // Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
+        PlayButtonHoverSoundUI();
         if (textCanColored)
             continueText.color = Color.white;
     }
@@ -242,6 +269,7 @@ public class MainMenu : MonoBehaviour
 
     public void MouseEnterNewGameBtn()
     {
+        PlayButtonHoverSoundUI();
         newGameText.color = Color.white;
     }
 
@@ -252,6 +280,7 @@ public class MainMenu : MonoBehaviour
 
     public void MouseEnterSettingsBtn()
     {
+        PlayButtonHoverSoundUI();
         settingsText.color = Color.white;
     }
 
@@ -262,6 +291,7 @@ public class MainMenu : MonoBehaviour
 
     public void MouseEnterCreditsBtn()
     {
+        PlayButtonHoverSoundUI();
         creditsText.color = Color.white;
     }
 
@@ -272,6 +302,7 @@ public class MainMenu : MonoBehaviour
 
     public void MouseEnterExitBtn()
     {
+        PlayButtonHoverSoundUI();
         exitText.color = Color.white;
     }
 
@@ -283,6 +314,7 @@ public class MainMenu : MonoBehaviour
 
     public void MouseEnterGameplayBtn()
     {
+        PlayButtonHoverSoundUI();
         // gameplayText.color = targetColor;
         fillAreaGameplaySlider.color = targetColor;
         handleAreaGameplaySlider.color = targetColor;
@@ -295,6 +327,7 @@ public class MainMenu : MonoBehaviour
     }
     public void MouseEnterMusicBtn()
     {
+        PlayButtonHoverSoundUI();
         // musicText.color = targetColor;
         fillAreaMusicSlider.color = targetColor;
         handleAreaMusicSlider.color = targetColor;
@@ -308,6 +341,7 @@ public class MainMenu : MonoBehaviour
     }
     public void MouseEnterAmbientBtn()
     {
+        PlayButtonHoverSoundUI();
         // ambientText.color = targetColor;
         fillAreaAmbientSlider.color = targetColor;
         handleAreaAmbientSlider.color = targetColor;
@@ -320,6 +354,7 @@ public class MainMenu : MonoBehaviour
     }
     public void MouseEnterUIBtn()
     {
+        PlayButtonHoverSoundUI();
         // UIText.color = targetColor;
         fillAreaUISlider.color = targetColor;
         handleAreaUISlider.color = targetColor;
@@ -333,6 +368,7 @@ public class MainMenu : MonoBehaviour
 
     public void MouseEnterBackBtn()
     {
+        PlayButtonHoverSoundUI();
         if (creditsPanel.activeSelf)
         {
             backCreditsText.color = Color.white;
@@ -345,6 +381,7 @@ public class MainMenu : MonoBehaviour
 
     public void MouseExitBackBtn()
     {
+        PlayButtonHoverSoundUI();
         if (creditsPanel.activeSelf)
         {
             backCreditsText.color = defaultColor;
@@ -354,4 +391,5 @@ public class MainMenu : MonoBehaviour
             backSettingsText.color = defaultColor;
         }
     }
+    #endregion
 }

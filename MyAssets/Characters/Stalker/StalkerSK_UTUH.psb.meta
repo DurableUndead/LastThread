@@ -1,0 +1,627 @@
+fileFormatVersion: 2
+guid: 2cec71974da2ed844a050a6b8a40ac81
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: b2a9591990af98743ba3ff7cf1000886, type: 3}
+  textureImporterSettings:
+    alphaSource: 1
+    mipMapMode: 0
+    enableMipMap: 1
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+    convertToNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+    swizzle: 50462976
+    isReadable: 0
+    streamingMipmaps: 1
+    streamingMipmapsPriority: 0
+    vTOnly: 0
+    ignoreMipmapLimit: 0
+    nPOTScale: 1
+    sRGBTexture: 1
+    spriteMode: 2
+    spriteExtrude: 1
+    spriteMeshType: 1
+    alignment: 0
+    spritePivot: {x: 0.5, y: 0.5}
+    spritePixelsToUnits: 100
+    spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+    spriteGenerateFallbackPhysicsShape: 0
+    generateCubemap: 6
+    cubemapConvolution: 0
+    seamlessCubemap: 0
+    alphaIsTransparency: 1
+    spriteTessellationDetail: -1
+    textureType: 8
+    textureShape: 1
+    singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
+    ignorePngGamma: 0
+    cookieMode: 0
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
+    normalMap: 0
+    textureFormat: 0
+    maxTextureSize: 0
+    lightmap: 0
+    compressionQuality: 0
+    linearTexture: 0
+    grayScaleToAlpha: 0
+    rGBM: 0
+    cubemapConvolutionSteps: 0
+    cubemapConvolutionExponent: 0
+    maxTextureSizeSet: 0
+    compressionQualitySet: 0
+    textureFormatSet: 0
+    applyGammaDecoding: 0
+  spriteImportData:
+  - name: 
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    spriteID: 
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
+  mosaicSpriteImportData: []
+  rigSpriteImportData:
+  - name: Brightness/Contrast 1 Copy
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 839
+      width: 185
+      height: 79
+    spriteID: a7b0fc63f8f918148bc49e1250fa5806
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 839}
+    spritePosition: {x: 331, y: 605}
+  - name: Brightness/Contrast 1 Copy 2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 203
+      y: 904
+      width: 111
+      height: 49
+    spriteID: 93384d340f994c740b07efb8df107b0b
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 203, y: 904}
+    spritePosition: {x: 611, y: 590}
+  - name: Brightness/Contrast 1 Copy 3
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 350
+      y: 84
+      width: 158
+      height: 46
+    spriteID: db132bf341de71443b5d5524b7766d41
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 350, y: 84}
+    spritePosition: {x: 482, y: 598}
+  - name: Brightness/Contrast 1 Copy 4
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 276
+      width: 134
+      height: 298
+    spriteID: 6d58833a4a39e5943b4b327e87d63c37
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 276}
+    spritePosition: {x: 315, y: 395}
+  - name: Brightness/Contrast 1 Copy 5
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 203
+      y: 448
+      width: 135
+      height: 182
+    spriteID: 1c02854e2f790b74ead1324a217036f5
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 203, y: 448}
+    spritePosition: {x: 309, y: 658}
+  - name: Brightness/Contrast 1 Copy 6
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 203
+      y: 758
+      width: 136
+      height: 78
+    spriteID: f7f20ef41184fc84fb426f6cb981218c
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 203, y: 758}
+    spritePosition: {x: 446, y: 9}
+  - name: Brightness/Contrast 1 Copy 7
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 203
+      y: 224
+      width: 122
+      height: 216
+    spriteID: dd0274e348a5de04187f80f6c4b80a4f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 203, y: 224}
+    spritePosition: {x: 392, y: 63}
+  - name: Brightness/Contrast 1 Copy 8
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 582
+      width: 145
+      height: 249
+    spriteID: e4cb4d18ba02b674caa400530293964a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 582}
+    spritePosition: {x: 325, y: 192}
+  - name: Brightness/Contrast 1 Copy 9
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 203
+      y: 638
+      width: 130
+      height: 112
+    spriteID: 5606f4847c63c17488d7ef702276fe88
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 203, y: 638}
+    spritePosition: {x: 181, y: 8}
+  - name: Brightness/Contrast 1 Copy 10
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 203
+      y: 4
+      width: 139
+      height: 212
+    spriteID: b5880df85cc25b444946df8c079ef513
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 203, y: 4}
+    spritePosition: {x: 212, y: 84}
+  - name: Brightness/Contrast 1 Copy 11
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 191
+      height: 264
+    spriteID: 53e1dd7b38c4654489dac54e3d8c4439
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 4}
+    spritePosition: {x: 261, y: 200}
+  - name: Brightness/Contrast 1 Copy 12
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 926
+      width: 185
+      height: 79
+    spriteID: 038f3b0cbe9d4f64c9f782474946f506
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 926}
+    spritePosition: {x: 195, y: 611}
+  - name: Brightness/Contrast 1 Copy 13
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 203
+      y: 844
+      width: 107
+      height: 52
+    spriteID: a112aa515bc7be442a3cbec6547cb2f7
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 203, y: 844}
+    spritePosition: {x: 0, y: 559}
+  - name: Brightness/Contrast 1 Copy 14
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 350
+      y: 4
+      width: 145
+      height: 72
+    spriteID: b6403baeeb214b140a59d58a5d947229
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 350, y: 4}
+    spritePosition: {x: 77, y: 578}
+  characterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
+  sharedRigSpriteImportData: []
+  sharedRigCharacterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
+  platformSettings: []
+  mosaicLayers: 1
+  characterMode: 1
+  documentPivot: {x: 0, y: 0}
+  documentAlignment: 7
+  importHiddenLayers: 0
+  layerMappingOption: 2
+  generatePhysicsShape: 0
+  paperDollMode: 0
+  keepDupilcateSpriteName: 1
+  skeletonAssetReferenceID: 
+  pipeline: {instanceID: 0}
+  pipelineVersion: 
+  padding: 4
+  spriteSizeExpand: 0
+  spriteCategoryList:
+    categories: []
+  spritePackingTag: 
+  resliceFromLayer: 0
+  mosaicPSDLayers: []
+  rigPSDLayers:
+  - name: AlanShirt - Side Copy
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: dd8b1a165b19532488ba8497ed807863
+    layerID: 0
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: F HAND
+    spriteName: 
+    isGroup: 1
+    parentIndex: 0
+    spriteID: d2e95ed1131095a44821e77fb0612fba
+    layerID: -67728315
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: Brightness/Contrast 1 Copy
+    spriteName: Brightness/Contrast 1 Copy
+    isGroup: 0
+    parentIndex: 1
+    spriteID: a7b0fc63f8f918148bc49e1250fa5806
+    layerID: 1479320704
+    mosaicPosition: {x: 4, y: 839}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Brightness/Contrast 1 Copy 2
+    spriteName: Brightness/Contrast 1 Copy 2
+    isGroup: 0
+    parentIndex: 1
+    spriteID: 93384d340f994c740b07efb8df107b0b
+    layerID: 1122604250
+    mosaicPosition: {x: 203, y: 904}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Brightness/Contrast 1 Copy 3
+    spriteName: Brightness/Contrast 1 Copy 3
+    isGroup: 0
+    parentIndex: 1
+    spriteID: db132bf341de71443b5d5524b7766d41
+    layerID: -1606279105
+    mosaicPosition: {x: 350, y: 84}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Brightness/Contrast 1 Copy 4
+    spriteName: Brightness/Contrast 1 Copy 4
+    isGroup: 0
+    parentIndex: 0
+    spriteID: 6d58833a4a39e5943b4b327e87d63c37
+    layerID: -40195164
+    mosaicPosition: {x: 4, y: 276}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Brightness/Contrast 1 Copy 5
+    spriteName: Brightness/Contrast 1 Copy 5
+    isGroup: 0
+    parentIndex: 0
+    spriteID: 1c02854e2f790b74ead1324a217036f5
+    layerID: 1525888777
+    mosaicPosition: {x: 203, y: 448}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: F LEG
+    spriteName: 
+    isGroup: 1
+    parentIndex: 0
+    spriteID: eb88381ed7dc8664c926ef9db8a21e60
+    layerID: -899467384
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: Brightness/Contrast 1 Copy 6
+    spriteName: Brightness/Contrast 1 Copy 6
+    isGroup: 0
+    parentIndex: 7
+    spriteID: f7f20ef41184fc84fb426f6cb981218c
+    layerID: -1202994578
+    mosaicPosition: {x: 203, y: 758}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Brightness/Contrast 1 Copy 7
+    spriteName: Brightness/Contrast 1 Copy 7
+    isGroup: 0
+    parentIndex: 7
+    spriteID: dd0274e348a5de04187f80f6c4b80a4f
+    layerID: 363089363
+    mosaicPosition: {x: 203, y: 224}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Brightness/Contrast 1 Copy 8
+    spriteName: Brightness/Contrast 1 Copy 8
+    isGroup: 0
+    parentIndex: 7
+    spriteID: e4cb4d18ba02b674caa400530293964a
+    layerID: -1653333272
+    mosaicPosition: {x: 4, y: 582}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: B LEG
+    spriteName: 
+    isGroup: 1
+    parentIndex: 0
+    spriteID: 11998360d34433948be5f182f2585c3a
+    layerID: -899463284
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: Brightness/Contrast 1 Copy 9
+    spriteName: Brightness/Contrast 1 Copy 9
+    isGroup: 0
+    parentIndex: 11
+    spriteID: 5606f4847c63c17488d7ef702276fe88
+    layerID: -87249331
+    mosaicPosition: {x: 203, y: 638}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Brightness/Contrast 1 Copy 10
+    spriteName: Brightness/Contrast 1 Copy 10
+    isGroup: 0
+    parentIndex: 11
+    spriteID: b5880df85cc25b444946df8c079ef513
+    layerID: 802753669
+    mosaicPosition: {x: 203, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Brightness/Contrast 1 Copy 11
+    spriteName: Brightness/Contrast 1 Copy 11
+    isGroup: 0
+    parentIndex: 11
+    spriteID: 53e1dd7b38c4654489dac54e3d8c4439
+    layerID: 802753670
+    mosaicPosition: {x: 4, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: B HAND
+    spriteName: 
+    isGroup: 1
+    parentIndex: 0
+    spriteID: ff6c65ef0a4535b42bdb35351f5b4c00
+    layerID: -67723967
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: Brightness/Contrast 1 Copy 12
+    spriteName: Brightness/Contrast 1 Copy 12
+    isGroup: 0
+    parentIndex: 15
+    spriteID: 038f3b0cbe9d4f64c9f782474946f506
+    layerID: 802753671
+    mosaicPosition: {x: 4, y: 926}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Brightness/Contrast 1 Copy 13
+    spriteName: Brightness/Contrast 1 Copy 13
+    isGroup: 0
+    parentIndex: 15
+    spriteID: a112aa515bc7be442a3cbec6547cb2f7
+    layerID: 802753672
+    mosaicPosition: {x: 203, y: 844}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Brightness/Contrast 1 Copy 14
+    spriteName: Brightness/Contrast 1 Copy 14
+    isGroup: 0
+    parentIndex: 15
+    spriteID: b6403baeeb214b140a59d58a5d947229
+    layerID: 802753673
+    mosaicPosition: {x: 350, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  sharedRigPSDLayers: []
+  pSDLayerImportSetting: []
+  importFileNodeState: 1
+  platformSettingsDirtyTick: 0
+  spriteSizeExpandChanged: 0
+  generateGOHierarchy: 0
+  textureAssetName: 
+  prefabAssetName: 
+  spriteLibAssetName: 
+  skeletonAssetName: 
+  secondarySpriteTextures: []

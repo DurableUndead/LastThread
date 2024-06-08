@@ -69,19 +69,22 @@ public class OpeningGameplay : MonoBehaviour
             titleGameImage.color = new Color(255, 255, 255, 0);
             bgTitleGameImage.gameObject.SetActive(false);
 
-            scriptPlayerMovement.canMove = true;
-            scriptGuide.transitionGuideNow = 2;
+            // scriptPlayerMovement.canMove = true;
+            // scriptGuide.transitionGuideNow = 2;
 
             if (scriptChapter0Scene != null)
+            {
                 scriptChapter0Scene.GoToOpeningAlanThoughts();
+                // scriptGuide.transitionGuideNow = 2;
+            }
             
-            // if (scriptChapter1Scene != null)
+            if (scriptChapter1Scene != null)
+                scriptPlayerMovement.canMove = true;
                 // scriptChapter1Scene.GoToOpeningAlanThoughts();
                 
             if (scriptChapter2Scene != null)
             {
                 scriptChapter2Scene.OpeningGameplayChapter2();
-                scriptAnimRotationPlayer.delayRotation();
             }
             
             runFunc = 0;

@@ -17,6 +17,7 @@ public class DialogueChapter2 : MonoBehaviour
         "Cindy:	neutral	:Just say the word, and we'll leave this world.:normal",
         "Alan:	neutral	:I can't. I don't want to.:normal",
         "Cindy:	neutral	:Why?:normal"
+
     };
 
     public string[] dialogueLimbo2Her = 
@@ -52,9 +53,9 @@ public class DialogueChapter2 : MonoBehaviour
     public string[] dialogueWakeUpAfterLimbo =
     {
         "Cindy:	grinning_smile	:Looks like you're not dead, thankfully…:normal",
-        "Alan:	pensive	:Who?:normal",
+        "Alan:	neutral	:Who?:normal",
         "Cindy:	grinning_smile	:Oh, I'm Cindy. Nice to meet you, if I'm not wrong, Alan?:normal",
-        "Alan:	pensive	:That's me, how do you know?:normal",
+        "Alan:	neutral	:That's me, how do you know?:normal",
         "Cindy:	laugh	:Of course I know you, silly. We spent a night together.:normal",
         "Alan:	laugh	:Ahahahahaha:normal",
         "Cindy:	laugh	:Ahahahahaha:normal",
@@ -68,31 +69,31 @@ public class DialogueChapter2 : MonoBehaviour
         "Cindy:	tears_smile	:And I…:normal",
         "Cindy:	tears_smile	:I need you to live.:normal",
         "Cindy:	tears_smile	:Sorry… for being selfish.:normal",
-        "Alan:	smile	:Yes… Thanks… Once again…:normal",
+        "Alan:	smile	:Yes… Thanks… Once again…:normal"
     };
 
     public string[] dialogueBlackScreenAfterLimbo =
     {
         "Cindy:	neutral	:…:normal",
         "Cindy:	grinning_sweat	:But if I'm still alive, you would ask for my contact tonight, right?:normal",
-        "Cindy:	grinning_sweat	:But if I'm still alive, you would ask for my contact tonight, right?:normal",
+        "Alan:	neutral	:Uh… for real, where's that come from?:normal",
         "Cindy:	slightly_smile	:I just imagine a universe where we can meet with none of this happened.:normal",
         "Cindy:	grinning_smile	:It's funny… a ghost being delusional.:normal",
         "Alan:	relieved	:I would…:normal",
         "Cindy:	flushed	:…:normal",
-        "Cindy:	smile	:…:normal",
+        "Cindy:	smile	:…:normal"
     };
 
     public string[] thoughtsAfterWakeUp =
     {
         "That night was very cold…",
-        "But her existence warms me...",
-        "I will treasure our fateful meeting...",
+        "But her existence warms me…",
+        "I will treasure our fateful meeting…",
         "An another stories cut short,",
         "I helped her find her body,",
         "I met her parents,",
-        "I do everything I could to help her...",
-        "Until our interaction comes to an end..."
+        "I do everything I could to help her…",
+        "Until our interaction comes to an end…"
     };
 
     public string[] dialogueCindyHuggingAlan = 
@@ -102,7 +103,7 @@ public class DialogueChapter2 : MonoBehaviour
         "Cindy:	grinning_smile	:But I'm very happy.:normal",
         "Cindy:	relieved :Spending my last fond memories with you…:normal",
         "Cindy:	slightly_smile	:Al…:normal",
-        "Cindy:	slightly_smile	:don't jump again.",
+        "Cindy:	slightly_smile	:don't jump again.:normal",
         "Alan:	slightly_smile	:I won't.:normal",
         "Cindy:	smile	:If I were still alive….:italicbold",
         "Cindy:	smile	:I'd capture your eternal presence in my canvas.:italicbold",
@@ -113,7 +114,7 @@ public class DialogueChapter2 : MonoBehaviour
     {
         "You must live…",
         "I really wish I were still alive…",
-        "To draw him on my canvas…",
+        "To draw him on my canvas…"
     };
 
     public string[] dialogueAlanCallMom =
@@ -129,7 +130,7 @@ public class DialogueChapter2 : MonoBehaviour
         "Alan's Mom:	silhouette	:Al, wait.:normal",
         "Alan:	slightly_smile	:Yes? I'm still here.:normal",
         "Alan's Mom:	silhouette	:I love you.:normal",
-        "Alan:	grinning_sweat	:Hehe… I know that. Love you too,_Mom.:normal",
+        "Alan:	grinning_sweat	:Hehe… I know that. Love you too,_Mom.:normal"
     };
 
     [Header("Home - Level 3")]
@@ -142,10 +143,10 @@ public class DialogueChapter2 : MonoBehaviour
         "Alan's Mom:	slightly_smile	:Anyway, welcome home, my dear.:normal",
         "Alan's Dad:	grinning_smile	:Yeah son, welcome home, boy.:normal",
         "Alan's Mom:	slightly_smile	:I'm gonna prepare your favorite snack.:normal",
-        "Alan's Dad:	grinning	:And your handsome dad is gonna rest a bit. Your room is ready by the way.:normal",
+        "Alan's Dad:	grinning_smile	:And your handsome dad is gonna rest a bit. Your room is ready by the way.:normal",
         "Alan's Mom:	smile	:And a handsome husband.:normal",
         "Alan:   relieved	:They know I'm standing in front of them… right?:italicbold",
-        "Alan:	grinning	:Alright. go ahead. I'm coming.:normal",
+        "Alan:	grinning_smile	:Alright. go ahead. I'm coming.:normal",
         "Alan's Mom:	slightly_smile	:Okay… Don't spend too much time outside here.:normal",
         "Alan's Mom:	slightly_smile	:They said ghost spotted around here.:normal",
         "Alan's Mom:	slightly_smile	:You don't wanna get terrified by seeing them, don't you?:normal",
