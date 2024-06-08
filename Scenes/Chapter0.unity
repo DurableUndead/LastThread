@@ -2555,7 +2555,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &155645621
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7739,7 +7739,7 @@ Transform:
   m_GameObject: {fileID: 473156240}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.55, y: 5.2, z: 0}
+  m_LocalPosition: {x: 0.5, y: 5.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9061,7 +9061,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -50.000122}
+  m_AnchoredPosition: {x: 0, y: -50.00006}
   m_SizeDelta: {x: 0, y: -100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &536259943
@@ -17698,7 +17698,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: -60}
+  m_AnchoredPosition: {x: 0, y: -60.00006}
   m_SizeDelta: {x: 0, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1044259910
@@ -20404,6 +20404,7 @@ RectTransform:
   - {fileID: 1009247939}
   - {fileID: 1101622783}
   - {fileID: 622333135}
+  - {fileID: 1919013028}
   - {fileID: 876485632}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -20430,8 +20431,8 @@ MonoBehaviour:
   scriptAnimRotationPlayer: {fileID: 0}
   bgTitleGameImage: {fileID: 1009247940}
   titleGameImage: {fileID: 479510954}
-  fadeInImage: 0.5
-  fadeOutImage: 0.5
+  fadeInImage: 1.5
+  fadeOutImage: 1.5
 --- !u!114 &1194059568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20452,6 +20453,7 @@ MonoBehaviour:
   targetColor: {r: 0, g: 0, b: 0, a: 0}
   isPaused: 0
   timerDisableESC: 10
+  timerDisableSpace: 5
   scriptAudioManager: {fileID: 1194059576}
   scriptTransitionFunction: {fileID: 0}
   scriptPuzzleManager: {fileID: 0}
@@ -20459,6 +20461,7 @@ MonoBehaviour:
   menuPanel: {fileID: 1084904868}
   settingsPanel: {fileID: 1359265177}
   iconPauseESC: {fileID: 1159462684}
+  iconSkipSpace: {fileID: 1919013027}
   continueText: {fileID: 824165463}
   restartChapterText: {fileID: 564237564}
   settingsText: {fileID: 689908578}
@@ -20576,6 +20579,7 @@ MonoBehaviour:
   scriptChapter1Scene: {fileID: 0}
   playerGO: {fileID: 1226483573}
   textWithOutline: {fileID: 2072960106}
+  defaultDelayText: 0
   delayTextTime: 0
   fadeInText: 1.5
   fadeOutText: 1.5
@@ -20609,6 +20613,8 @@ MonoBehaviour:
   mouseEnter: 0
   isInteractObjectImage: 0
   canMoveAfterDialogue: 0
+  previewObjectGO: {fileID: 0}
+  previewObjectImage: {fileID: 0}
   topBlackBackgroundGO: {fileID: 1160284673}
   bottomBlackBackgroundGO: {fileID: 40736595}
   isHideUIEnable: 0
@@ -20629,8 +20635,8 @@ MonoBehaviour:
   characterThoughts: []
   blackscreenImage: {fileID: 451032948}
   blackscreenImage2: {fileID: 0}
-  fadeInBlackscreen: 0.5
-  fadeOutBlackscreen: 0.5
+  fadeInBlackscreen: 1.5
+  fadeOutBlackscreen: 1.5
   blackscreenFadeIn: 0
   blackscreenFadeOut: 0
   imageScene: {fileID: 573270557}
@@ -20639,11 +20645,11 @@ MonoBehaviour:
   whiteScreenFadeIn: 0
   whiteScreenFadeOut: 0
   imageWhiteScreen: {fileID: 0}
-  fadeInWhiteScreen: 0.5
-  fadeOutWhiteScreen: 0.5
+  fadeInWhiteScreen: 1.5
+  fadeOutWhiteScreen: 1.5
   delayFadeInOutTextInWhiteScreen: 0
-  durationFadeInAudio: 0.5
-  durationFadeOutAudio: 0.5
+  durationFadeInAudio: 1.5
+  durationFadeOutAudio: 1.5
   isFadeInAudio: 0
   isFadeOutAudio: 0
   topBlackBarsRect: {fileID: 1980102709}
@@ -26746,7 +26752,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Build Version 0.4.2
+  m_Text: Build Version 0.4.3
 --- !u!222 &1480857420
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -32968,6 +32974,81 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1919013027
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1919013028}
+  - component: {fileID: 1919013030}
+  - component: {fileID: 1919013029}
+  m_Layer: 5
+  m_Name: SkipIcon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1919013028
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919013027}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1194059566}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -150, y: 100}
+  m_SizeDelta: {x: 200, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1919013029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919013027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: cb08587d59ce11a4d84fc8bddded2249, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1919013030
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919013027}
+  m_CullTransparentMesh: 1
 --- !u!1 &1919539267
 GameObject:
   m_ObjectHideFlags: 0
@@ -33950,7 +34031,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 60}
+  m_AnchoredPosition: {x: 0, y: 60.00006}
   m_SizeDelta: {x: 0, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1980102710

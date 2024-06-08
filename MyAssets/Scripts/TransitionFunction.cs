@@ -19,7 +19,7 @@ public class TransitionFunction : MonoBehaviour
     
     [Header("Character Text")]
     public TextMeshProUGUI textWithOutline;
-    private float defaultDelayText;
+    public float defaultDelayText;
     public float delayTextTime;
     public float fadeInText = 1.5f;
     public float fadeOutText = 1.5f;
@@ -56,6 +56,9 @@ public class TransitionFunction : MonoBehaviour
     public bool mouseEnter = false;
     public bool isInteractObjectImage = false;
     public bool canMoveAfterDialogue = false;
+    [Header("Preview GameObject")]
+    public GameObject previewObjectGO;
+    public Image previewObjectImage;
 
     [Header("Hide UI")]
     public GameObject topBlackBackgroundGO;
@@ -684,6 +687,20 @@ public class TransitionFunction : MonoBehaviour
         mouseEnter = false;
     }
 
+    public void OpenPreviewObject()
+    {
+        dialogueGO.SetActive(false);
+        previewObjectGO.SetActive(true);
+        previewObjectImage.sprite = ObjectImageSprite.sprite;
+    }
+
+    public void ClosePreviewObject()
+    {
+        dialogueGO.SetActive(true);
+        previewObjectGO.SetActive(false);
+        mouseEnter = false;
+    }
+
     public void MouseEnterAuto()
     {
         scriptAudioManager.PlayButtonHoverSoundUI();
@@ -771,7 +788,7 @@ public class TransitionFunction : MonoBehaviour
         if (cinematicBarsFadeIn || isCinematicBars)
             return;
 
-        // cinematicBarsGO.SetActive(true);
+        cinematicBarsGO.SetActive(true);
         cinematicBarsFadeIn = true;
         StartCoroutine(FadeInCinematicBar());
     }
@@ -816,7 +833,7 @@ public class TransitionFunction : MonoBehaviour
         topBlackBarsRect.anchoredPosition = new Vector2(topBlackBarsRect.anchoredPosition.x, newTargetYRectTranform);
         bottomBlackBarsRect.anchoredPosition = new Vector2(bottomBlackBarsRect.anchoredPosition.x, -newTargetYRectTranform);
 
-        // cinematicBarsGO.SetActive(false);
+        cinematicBarsGO.SetActive(false);
         cinematicBarsFadeOut = false;
         isCinematicBars = false;
     }

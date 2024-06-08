@@ -351,6 +351,11 @@ public class Chapter0Scene : MonoBehaviour
     {
         if (!scriptTransitionFunction.blackscreenFadeIn)
             return;
+        scriptTransitionFunction.fadeInText = 1f;
+        scriptTransitionFunction.fadeOutText = 1f;
+        scriptTransitionFunction.delayTextTime = 2f;
+        scriptTransitionFunction.defaultDelayText = 2f;
+
         scriptAudioManager.ambientAudioSource.clip = scriptAudioManager.ambientClips[2];
         scriptAudioManager.ambientAudioSource.Play();
 

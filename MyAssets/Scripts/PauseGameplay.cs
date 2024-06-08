@@ -18,6 +18,7 @@ public class PauseGameplay : MonoBehaviour
     public Color targetColor;
     public bool isPaused = false;
     public float timerDisableESC = 10f;
+    public float timerDisableSpace = 5f;
     [Header("Scripts")]
     public AudioManager scriptAudioManager;
     public TransitionFunction scriptTransitionFunction;
@@ -27,6 +28,7 @@ public class PauseGameplay : MonoBehaviour
     public GameObject menuPanel;
     public GameObject settingsPanel;
     public GameObject iconPauseESC;
+    public GameObject iconSkipSpace;
     
     [Header ("Menu Panel")]
     public Text continueText;
@@ -91,8 +93,28 @@ public class PauseGameplay : MonoBehaviour
     void Update()
     {
         if (!isPaused && videoPlayer.isPlaying)
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
-                SkipOrStopVideo(videoPlayer);
+        {
+            if (!iconSkipSpace.activeSelf)
+            {
+                // if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0))
+                    // StartInvokeSkipSpace();
+                if (Input.anyKeyDown)
+                {
+                    if (!Input.GetKeyDown(KeyCode.Escape))
+                        StartInvokeSkipSpace();
+                }
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+                {
+                    CancelInvoke("DisabledSkipSpaceIcon");
+                    DisabledSkipSpaceIcon();
+                    SkipOrStopVideo(videoPlayer);
+                }
+            }
+        }
+
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -144,6 +166,7 @@ public class PauseGameplay : MonoBehaviour
             }
             else if (getSceneName == "Chapter2")
             {
+                PlayerPrefs.DeleteKey("ChapterNow");
                 SceneManager.LoadScene("MainMenu");
                 PlayerPrefs.DeleteKey("ChapterNow");
             }
@@ -154,6 +177,18 @@ public class PauseGameplay : MonoBehaviour
     {
         Time.timeScale = 2f;
         ResumeGame(speed: true);
+    }
+
+    public void StartInvokeSkipSpace()
+    {
+        iconSkipSpace.SetActive(true);
+        Invoke("DisabledSkipSpaceIcon", timerDisableSpace);
+    }
+
+    void DisabledSkipSpaceIcon()
+    {
+        iconSkipSpace.SetActive(false);
+        timerDisableESC = 0;
     }
 
     public void StartInvokeESC()

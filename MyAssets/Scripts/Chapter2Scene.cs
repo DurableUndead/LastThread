@@ -217,6 +217,7 @@ public class Chapter2Scene : MonoBehaviour
         scriptPlayerMovement.canMove = true;
         alanHasWokenUp = true;
         scriptPlayerMovement.sideWalkCoreGO.SetActive(false);
+        scriptPlayerMovement.idleSprite.SetActive(true);
     }
 
     // IEnumerator AudioWakeUpDone()
@@ -751,6 +752,7 @@ public class Chapter2Scene : MonoBehaviour
         scriptTransitionFunction.whiteScreenFadeIn = false;
         scriptTransitionFunction.imageWhiteScreen.color = new Color(255, 255, 255, 0);
         shadingVillageGO.SetActive(false);
+        StartCoroutine(scriptTransitionFunction.FadeOutAudio(audioSource, scriptAudioManager.volumeMusicNow));
     }
 
     void LastThoughts()
@@ -768,7 +770,7 @@ public class Chapter2Scene : MonoBehaviour
         scriptTransitionFunction.isThought = true;
         scriptTransitionFunction.middleText.gameObject.SetActive(true);
         scriptTransitionFunction.valueWhiteOrBlack = 0; // 0 is white
-        scriptTransitionFunction.valueBlackOrYellow = 0;
+        scriptTransitionFunction.valueBlackOrYellow = 0;        
     }
 
     void CreditGame() // 27
@@ -780,7 +782,7 @@ public class Chapter2Scene : MonoBehaviour
         StartCoroutine(scriptTransitionFunction.IEFadeInBlackscreenTransition());
         // Invoke("EnableCredit", scriptTransitionFunction.fadeInBlackscreen);
 
-        PlayerPrefs.DeleteKey("ChapterNow");
+        // PlayerPrefs.DeleteKey("ChapterNow");
 
         scriptTransitionFunction.intFunctionNumbersNow = 0;
         scriptTransitionFunction.intTransitionNumbersNow = 0;
