@@ -237,9 +237,9 @@ public class TransitionFunction : MonoBehaviour
         }
 
         // if (!mouseEnter Input.GetMouseButtonDown(0) ||  && textAnimationFinished)
-        //input spasi atau klik kiri atau enter
+        // input spasi atau klik kiri atau enter
         // if (!mouseEnter && Input.GetKeyDown(KeyCode.Space) && textAnimationFinished || !mouseEnter && Input.GetMouseButtonDown(0) && textAnimationFinished || !mouseEnter && Input.GetKeyDown(KeyCode.Return) && textAnimationFinished)
-        if (!mouseEnter && Input.GetMouseButtonDown(0) && textAnimationFinished || !mouseEnter && Input.GetKeyDown(KeyCode.Return) && textAnimationFinished)
+        if (!mouseEnter && Input.GetKeyDown(KeyCode.Space) && textAnimationFinished || !mouseEnter && Input.GetMouseButtonDown(0) && textAnimationFinished || !mouseEnter && Input.GetKeyDown(KeyCode.Return) && textAnimationFinished)
         {
             delayDialogue = 0;
             textAnimationFinished = false;
