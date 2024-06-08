@@ -238,7 +238,8 @@ public class TransitionFunction : MonoBehaviour
 
         // if (!mouseEnter Input.GetMouseButtonDown(0) ||  && textAnimationFinished)
         //input spasi atau klik kiri atau enter
-        if (!mouseEnter && Input.GetKeyDown(KeyCode.Space) && textAnimationFinished || !mouseEnter && Input.GetMouseButtonDown(0) && textAnimationFinished || !mouseEnter && Input.GetKeyDown(KeyCode.Return) && textAnimationFinished)
+        // if (!mouseEnter && Input.GetKeyDown(KeyCode.Space) && textAnimationFinished || !mouseEnter && Input.GetMouseButtonDown(0) && textAnimationFinished || !mouseEnter && Input.GetKeyDown(KeyCode.Return) && textAnimationFinished)
+        if (!mouseEnter && Input.GetMouseButtonDown(0) && textAnimationFinished || !mouseEnter && Input.GetKeyDown(KeyCode.Return) && textAnimationFinished)
         {
             delayDialogue = 0;
             textAnimationFinished = false;
@@ -261,36 +262,36 @@ public class TransitionFunction : MonoBehaviour
             }
         }
 
-        // if (!mouseEnter && Input.GetKeyDown(KeyCode.Z) && textAnimationFinished)
-        if (!mouseEnter && Input.GetMouseButtonDown(1) && textAnimationFinished)
-        {
-            if (intCharacterText > 0)
-            {
-                mouseEnter = false;
-                textAnimationFinished = false;
-                nextIcon.SetActive(false);
-                delayDialogue = 0;
-                intCharacterText--;
-                // dialogueText.text = characterDialogue[intCharacterText];
-                SplitNameExpressionDialogue();
-                StartCoroutine(ShowText());
-                CheckLengthWords();
-            }
-        }
+        // // if (!mouseEnter && Input.GetKeyDown(KeyCode.Z) && textAnimationFinished)
+        // if (!mouseEnter && Input.GetMouseButtonDown(1) && textAnimationFinished)
+        // {
+        //     if (intCharacterText > 0)
+        //     {
+        //         mouseEnter = false;
+        //         textAnimationFinished = false;
+        //         nextIcon.SetActive(false);
+        //         delayDialogue = 0;
+        //         intCharacterText--;
+        //         // dialogueText.text = characterDialogue[intCharacterText];
+        //         SplitNameExpressionDialogue();
+        //         StartCoroutine(ShowText());
+        //         CheckLengthWords();
+        //     }
+        // }
 
-        // if (!mouseEnter Input.GetKeyDown(KeyCode.C) && textAnimationFinished)
-        if (!mouseEnter && Input.GetMouseButtonDown(2) && textAnimationFinished)
-        // if (Input.GetKeyDown(KeyCode.C) && textAnimationFinished)
-        {
-            mouseEnter = false;
-            //stop Coroutine
-            StopAllCoroutines();
-            textAnimationFinished = false;
-            nextIcon.SetActive(false);
-            delayDialogue = 0;
-            DefaultAfterDialogueTrigger();
-            isInteractObjectImage = false;
-        }
+        // // if (!mouseEnter Input.GetKeyDown(KeyCode.C) && textAnimationFinished)
+        // if (!mouseEnter && Input.GetMouseButtonDown(2) && textAnimationFinished)
+        // // if (Input.GetKeyDown(KeyCode.C) && textAnimationFinished)
+        // {
+        //     mouseEnter = false;
+        //     //stop Coroutine
+        //     StopAllCoroutines();
+        //     textAnimationFinished = false;
+        //     nextIcon.SetActive(false);
+        //     delayDialogue = 0;
+        //     DefaultAfterDialogueTrigger();
+        //     isInteractObjectImage = false;
+        // }
     }
     public IEnumerator ShowText()
     {

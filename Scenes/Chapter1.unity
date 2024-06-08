@@ -3289,8 +3289,8 @@ MonoBehaviour:
   scriptAnimRotationPlayer: {fileID: 0}
   bgTitleGameImage: {fileID: 1818083063}
   titleGameImage: {fileID: 1317761600}
-  fadeInImage: 1
-  fadeOutImage: 1
+  fadeInImage: 1.5
+  fadeOutImage: 1.5
 --- !u!114 &178237301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3410,13 +3410,13 @@ MonoBehaviour:
   puzzleJigsawGO: {fileID: 382778411}
   homeAlanGO: {fileID: 1252731047}
   haveTalkedToParents: 0
-  canOpenDoorAfterDialogue: 1
-  canOpenDoorAfterPuzzle: 1
+  canOpenDoorAfterDialogue: 0
+  canOpenDoorAfterPuzzle: 0
   puzzleJigsawSolved: 0
   ImageWakeUpSprite: {fileID: 21300000, guid: 9b44f13f99fd9c44b8cce7a561add39c, type: 3}
   riverBankGO: {fileID: 290010460}
   alanWalletGO: {fileID: 1334765267}
-  foundWalletAndWatch: 1
+  foundWalletAndWatch: 0
   isDialogueWithCindy: 0
   exclamationMarkCindyGO: {fileID: 1748102618}
   loopingRiverBankGO: {fileID: 1921423573}
@@ -32947,7 +32947,7 @@ Transform:
   m_GameObject: {fileID: 1782268183}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.5599923, y: -1.50193, z: -10}
+  m_LocalPosition: {x: 4.559983, y: -1.50193, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -41315,7 +41315,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3888840548805198468, guid: 76c79ce87f854744e84d805e3634328d, type: 3}
       propertyPath: m_Text
-      value: Build Version 0.4.3
+      value: Build Version 1.0.0
       objectReference: {fileID: 0}
     - target: {fileID: 3973635321227180049, guid: 76c79ce87f854744e84d805e3634328d, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -41473,6 +41473,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 178237299}
+    - target: {fileID: 7987204416960376388, guid: 76c79ce87f854744e84d805e3634328d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7987204416960376388, guid: 76c79ce87f854744e84d805e3634328d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

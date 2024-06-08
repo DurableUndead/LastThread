@@ -1781,8 +1781,8 @@ MonoBehaviour:
   scriptAnimRotationPlayer: {fileID: 796112262}
   bgTitleGameImage: {fileID: 1306410759}
   titleGameImage: {fileID: 2130752961}
-  fadeInImage: 1
-  fadeOutImage: 1
+  fadeInImage: 1.5
+  fadeOutImage: 1.5
 --- !u!114 &178237301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2391,7 +2391,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 189113484}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -2473,7 +2473,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Build Version 0.4.3
+  m_Text: Build Version 1.0.0
 --- !u!222 &189113488
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14191,7 +14191,7 @@ Transform:
   m_GameObject: {fileID: 1782268183}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -0.000010664066, y: -1.50193, z: -10}
+  m_LocalPosition: {x: -0.000010801508, y: -1.50193, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

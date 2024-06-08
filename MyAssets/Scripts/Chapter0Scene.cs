@@ -659,7 +659,7 @@ public class Chapter0Scene : MonoBehaviour
         // scriptCindyMovement.intAutoMovement = 0;
         scriptCindyMovement.ChangeMovementType("Right", false);
         scriptCindyMovement.animatorCindy.speed = 1.5f;
-        scriptCindyMovement.speedMovement = 5f;
+        scriptCindyMovement.speedMovement = 3f;
 
         bgRiverBankGO.SetActive(false);
         canvasForRiverBankGO.SetActive(false);
